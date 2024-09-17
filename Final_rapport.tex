@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{book}
 
 \usepackage{tikz}
 \usetikzlibrary{angles, quotes}
@@ -37,11 +37,14 @@
 \usepackage{physics}
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{lineno}
 
 \newcommand{\Ms}[0]{\textup{M}_\odot}
+\newcommand{\todo}[1]{{\textcolor{gray}{\bf \large #1}}}
 
 \let\mcl\mathcal
 \let\ov\overline
+\let\ra\rightarrow
 
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
@@ -53,50 +56,29 @@
 
 \maketitle
 
-\section{Synthèse}
+\tableofcontents
+
+\chapter{Synthèse}
 
 %%% Une synthèse d’une page (ou executive summary) présentant le problème posé et ses enjeux pour le client, les éléments clés de la démarche, les solutions apportées et les résultats obtenus, et ce, en français et en anglais
 
-\tableofcontents
+\chapter{Introduction}
 
-\section{Introduction}
-
-\subsection{Contexte}
+\section{Contexte}
 
 Le modèle standard de la cosmologie, nommé $\Lambda$CDM, suppose que la gravité est décrite à toutes les échelles par la relativité générale, et que les principales contributions à la gravité viennent de la matière noire froide (\textit{Cold Dark Matter}) et l'énergie noire (sous la forme d'une constante cosmologique $\Lambda$). Ces deux inconnues sont nécessaires pour décrire l'évolution de l'Univers ainsi que la croissance des structures aux grandes échelles, et permettent à ce jour de reproduire fidèlement les observations, en particulier l'expansion accélérée de l'univers. Cependant des modèles alternatifs de gravité ont également été proposés pour expliquer cette accélération sans faire intervenir de constante cosmologique, et prédisent des évolutions temporelles différentes de celles de la relativité générale pour certaines quantités.
 
-\subsection{Objectifs}
+\subsection{Analyse du clustering des galaxies pour mesurer $f\sigma_8$}
 
-L'objectif du stage est double~:
-\begin{enumerate}
-    \item Produire des échantillons simulés de SNe basés sur les positions des galaxies de la simulation Uchuu qui reproduit les données spectroscopiques du DESI BGS, ainsi que les observations de ZTF, et les utiliser pour tester le pipeline \verb|LEMAITRE| actuellement en développement au LPNHE pour produire les diagrammes de Hubble et reconstruire la cosmologie sous-jacente des échantillons. Le pipeline étant encore en développement, je développe l'intégration des différents modules et je les teste.
-    \item Comparer les résultats de ce pipeline, \textit{i.e.} les positions ainsi que les vitesses particulières reconstruites, aux données d'entrée et les utiliser pour
-    	\begin{enumerate}
-		\item Estimer $f \sigma_8$ à partir des vitesses particulières de SNe de ZTF et comparer ces résultats avec ceux de B. Carreres \cite{carreres_growth-rate_2023}.
-		\item Produire une analyse jointe du DESI BGS et des SNe de ZTF pour quantifier le gain sur les contraintes de $f\sigma_8$.
-	\end{enumerate}
-\end{enumerate}
-
-\subsection{Enjeux}
-
-\subsection{Reformulation du problème dans son contexte}
-
-
-\section{Approche et analyse}
-
-\subsection{État de l'art}
-%% méthodes, raisons des choix faits, analyses menées (état de l’art)
-
-\subsubsection{Analyse du clustering des galaxies pour mesurer $f\sigma_8$}
-
-Une de ces quantités est le facteur linéaire de croissance des structures à un redshift donné, $f(z)$, qu'il faut donc pouvoir mesurer avec précision en incluant différents effets tels que les \textbf{\textit{Redshift Space Distorsion} (RSD)} (\cite{kaiser_clustering_1987}), des distorsions liées aux transformations des coordonnées comobiles vers l'espace des redshifts. Pour mesurer la croissance des structures, la méthode la plus commune se base sur ces distorsions. Le redshift mesuré, par exemple par spectroscopie, ne contient pas uniquement le redshift cosmologique dû à l'expansion de l'univers, mais inclut également une contribution due aux vitesses particulières des galaxies par effet  Doppler. Ce terme supplémentaire déplace les galaxies dans l'espace des redshifts par rapport à l'espace comobile, et les corrélations spatiales du champ de densité deviennent alors anisotropes : le long de la ligne de visée, les galaxies semblent plus regroupées qu'orthogonalement à la ligne de visée. A grande échelle, l'amplitude de cette anisotropie étant proportionnelle au facteur de croissance des structures $f$ et à l'amplitude des fluctuations du champ de densité, représenté communément par $\sigma_8$ (l'écart-type du champ de densité dans une sphère de rayon 8$h^{-1}$Mpc), ces analyses du clustering des galaxies contraignent le paramètre composite $f(z)\sigma_8(z)$. De nombreuses analyses des distorsions dans l'espace des redshifts ont été effectuées à l'aide de relevés spectroscopiques, tels que 6dFGRS (\cite{beutler_6df_2012}), SDSS-MGS (\cite{howlett_clustering_2015}), FastSound (\cite{okumura_subaru_2016}), SDSS-III BOSS (\cite{alam_clustering_2017}) ou SDSS-IV eBOSS (\cite{eboss_collaboration_completed_2021}). Les dernières mesures atteignent une précision de l'ordre de 10\%, et sont compatibles avec la relativité générale.
+Une de ces quantités est le facteur linéaire de croissance des structures à un redshift donné, $f(z)$, qu'il faut donc pouvoir mesurer avec précision en incluant différents effets tels que les \textbf{\textit{Redshift Space Distorsion} (RSD)} (\cite{kaiser_clustering_1987}), des distorsions liées aux transformations des coordonnées comobiles vers l'espace des redshifts. Pour mesurer la croissance des structures, la méthode la plus commune se base sur ces distorsions. Le redshift mesuré, par exemple par spectroscopie, ne contient pas uniquement le redshift cosmologique dû à l'expansion de l'univers, mais inclut également une contribution due aux vitesses particulières des galaxies par effet  Doppler.
+Ce terme supplémentaire déplace les galaxies dans l'espace des redshifts par rapport à l'espace comobile, et les corrélations spatiales du champ de densité deviennent alors anisotropes : le long de la ligne de visée, les galaxies semblent plus regroupées qu'orthogonalement à la ligne de visée. A grande échelle, l'amplitude de cette anisotropie étant proportionnelle au facteur de croissance des structures $f$ et à l'amplitude des fluctuations du champ de densité, représenté communément par $\sigma_8$ (l'écart-type du champ de densité dans une sphère de rayon 8$h^{-1}$Mpc), ces analyses du clustering des galaxies contraignent le paramètre composite $f(z)\sigma_8(z)$. De nombreuses analyses des distorsions dans l'espace des redshifts ont été effectuées à l'aide de relevés spectroscopiques, tels que 6dFGRS (\cite{beutler_6df_2012}), SDSS-MGS (\cite{howlett_clustering_2015}), FastSound (\cite{okumura_subaru_2016}), SDSS-III BOSS (\cite{alam_clustering_2017}) ou SDSS-IV eBOSS (\cite{eboss_collaboration_completed_2021}). Les dernières mesures atteignent une précision de l'ordre de 10\%, et sont compatibles avec la relativité générale.
 
 Une autre méthode pour mesurer $f\sigma_8$ est de dériver le paramètre des mesures directes des vitesses particulières des galaxies. Les vitesses particulières peuvent être mesurées directement à condition de pouvoir mesurer indépendamment les redshifts et les distances absolues des galaxies. Des mesures précises des redshifts peuvent être obtenues par spectroscopie et des estimations des distances peuvent être obtenues en utilisant les corrélations entre les distances et d'autres observables, telle que la relation de Tully-Fisher pour les galaxies spirales (corrélation entre la vitesse radiale de ses étoiles et la luminosité totale de la galaxie, \cite{tully_new_1977}) ou la méthode du Plan Fondamental (\cite{djorgovski_fundamental_1987}). Ces corrélations sont utilisables uniquement pour des galaxies à des redshifts relativement faibles ($z < 0,1$) car les incertitudes augmentent rapidement avec le redshift. Les propriétés statistiques d'un échantillon de vitesses particulières peuvent ensuite être utilisées seules ou en combinaison avec un champ de densité de galaxies.
 
-\subsubsection{Analyse cosmologique avec des SN Ia}
-\label{sec:art}
+\subsection{Analyse cosmologique avec des SN Ia}
 
-À bas redshift, un autre moyen d'obtenir les distances vient des supernovae (SNe) de type Ia (\cite{hoyle_nucleosynthesis_1960}). Ces SNe sont des explosions thermonucléaire de naine blanche dnas un système binaire, riches en carbone et oxygène, et présentent la particularité d’avoir des conditions d'explosions très similaires les unes aux autres. Grâce à cette standardisabilité, elles constituent d'excellentes chandelles standard, et ont notamment permis la découverte de l'accélération de l'expansion de l'Univers (\cite{perlmutter_cosmology_1998, riess_observational_1998}). La réalisation d'un diagramme de Hubble de nouvelle génération utilisant des lots encore non exploités de SN Ia des relevés \textit{Zwicky Transient Facility} (ZTF, \cite{bellm_zwicky_2018}), le SuperNovae Legacy Survey (SNLS, \cite{pritchet_snls_2004}) et Hyper Suprime-Cam Subaru Strategic Programm (HSC-SSP, \cite{miyazaki_hyper_2012,aihara_hyper_2018}) est actuellement l’objet du projet \verb|LEMAITRE| au LPNHE. Ce projet vise à développer un nouveau pipeline d'analyse cosmologique à partir des SN Ia adapté au traitement des volumes de données attendus des prochains programmes d’observation tels que LSST (\cite{the_lsst_dark_energy_science_collaboration_lsst_2021}).
+À bas redshift, un autre moyen d'obtenir les distances vient des supernovae (SNe) de type Ia (\cite{hoyle_nucleosynthesis_1960}). Ces SNe sont des explosions thermonucléaire de naine blanche dnas un système binaire, riches en carbone et oxygène, et présentent la particularité d’avoir des conditions d'explosions très similaires les unes aux autres. Grâce à cette standardisabilité, elles constituent d'excellentes chandelles standard, et ont notamment permis la découverte de l'accélération de l'expansion de l'Univers (\cite{perlmutter_cosmology_1998, riess_observational_1998}). La réalisation d'un diagramme de Hubble\footnote{Un diagramme de Hubble est la représentation de la relation $v(d)=H(z) d$, où $v$ est la vitesse d'un objet par rapport à l'observeur et $d$ sa distance à l'observeur.} de nouvelle génération utilisant des lots encore non exploités de SN Ia des relevés \textit{Zwicky Transient Facility} (ZTF, \cite{bellm_zwicky_2018}), le SuperNovae Legacy Survey (SNLS, \cite{pritchet_snls_2004}) et Hyper Suprime-Cam Subaru Strategic Programm (HSC-SSP, \cite{miyazaki_hyper_2012,aihara_hyper_2018}) est actuellement l’objet du projet \verb|LEMAITRE| au LPNHE. Ce projet vise à développer un nouveau pipeline d'analyse cosmologique à partir des SN Ia adapté au traitement des volumes de données attendus des prochains programmes d’observation tels que LSST (\cite{the_lsst_dark_energy_science_collaboration_lsst_2021}).
+
 La standardisation des SN Ia est décrite par la formule de Tripp (\cite{tripp_two-parameter_1998})
 \begin{equation}
 \label{eq:tripp}
@@ -109,11 +91,38 @@ Une fois la standardisation effectuée et le modèle accordé au diagramme de Hu
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{figures/Residues.png}
-    \caption{Résidus de SNe simulées au diagramme de Hubble. Crédit : B. Carreres}
+    \caption{Résidus de SNe simulées au diagramme de Hubble sous-jacent. Crédit : B. Carreres}
     \label{fig:residues}
 \end{figure}
 
-\subsubsection{Mesurer $f\sigma_8$ avec le clustering des galaxies et les SN de type Ia}
+\section{Objectifs}
+
+L'objectif du stage est double~:
+\begin{enumerate}
+    \item Produire des échantillons simulés de SNe basés sur les positions des galaxies de la simulation Uchuu qui reproduit les données spectroscopiques du DESI BGS, ainsi que les observations de ZTF, et les utiliser pour tester le pipeline \verb|LEMAITRE| actuellement en développement au LPNHE pour produire les diagrammes de Hubble et reconstruire la cosmologie sous-jacente des échantillons. Le pipeline étant encore en développement, je développe l'intégration des différents modules et je les teste.
+    \item Comparer les résultats de ce pipeline, \textit{i.e.} les positions ainsi que les vitesses particulières reconstruites, aux données d'entrée et les utiliser pour
+    	\begin{enumerate}
+		\item Estimer $f \sigma_8$ à partir des vitesses particulières de SNe de ZTF et comparer ces résultats avec ceux de B. Carreres \cite{carreres_growth-rate_2023}.
+		\item Produire une analyse jointe du DESI BGS et des SNe de ZTF pour quantifier le gain sur les contraintes de $f\sigma_8$.
+	\end{enumerate}
+\end{enumerate}
+
+\section{Enjeux}
+
+% Valider LEMAITRE sur des simus (biais potentiels, corrections, problèmes...)
+
+\todo{Cosmologie de précision sur fs8}
+
+\section{Reformulation du problème dans son contexte}
+
+\todo{?}
+
+\chapter{Approche et analyse}
+
+\section{État de l'art}
+%% méthodes, raisons des choix faits, analyses menées (état de l’art)
+
+\subsection{Mesurer $f\sigma_8$ avec le clustering des galaxies et les SN de type Ia}
 
  Plusieurs méthodes ont été développées pour extraire des mesures du taux de croissance à partir de vitesses particulières~:
  \begin{itemize}
@@ -122,6 +131,7 @@ Une fois la standardisation effectuée et le modèle accordé au diagramme de Hu
      \item la comparaison entre les vitesses observées et celles reconstruites à partir du champ de densité (\cite{davis_effect_2011, carrick_cosmological_2015, boruah_cosmic_2020, said_joint_2020, stahl_peculiar-velocity_2021}). En utilisant un modèle de gravitation, on peut exprimer le champ de vitesse à partir du champ de densité et du taux de croissance des structures. Cette relation peut alors être utilisée pour obtenir $f\sigma_8$ en faisant concorder les vitesse particulières observées et celles obtenues à partir du champ de densité;
      \item l'inférence dite \textit{fieldlevel}, qui consiste à retracer l'évolution complète de l'univers à partir de conditions initiales à l'aide d'un modèle, puis à comparer le résultat obtenu aux observations des champs de densité et vitesses, et rétro-propager les erreurs jusqu'au conditions initiales (\cite{boruah_bayesian_2022, prideaux-ghee_field-based_2023}). 
 \end{itemize}
+
 Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fig. \ref{fig:carreres_11}. J'utilise pour l'analyse $f\sigma_8$ la méthode décrite dans \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}, qui est de comparer les vitesses observées reconstruites avec des SN Ia aux vitesses déduites du champ de densité.
 
 \begin{figure}
@@ -139,12 +149,12 @@ Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fi
     \label{fig:fs8}
 \end{figure}
 
-\subsubsection{Approche de résolution du problème}
+\section{Approche de résolution du problème}
 %% présentation détaillée de l’approche de résolution de problème retenue, des ressources scientifiques, techniques et humaines mises en oeuvre, de l’organisation du travail
 
-La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} pour les simulations et reconstruction de vitesses particulières des SNe en utilisant les nouveaux modules développés pour le projet \verb|LEMAITRE|. L'analyse $f\sigma_8$ suit quand à elle celle de \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}.
+La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} pour les simulations et reconstruction de vitesses particulières des SNe en utilisant les nouveaux modules développés pour le projet \verb|LEMAITRE|. L'analyse $f\sigma_8$ prévue suit quand à elle celle de \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}.
 
-\subsubsection{Génération des SN Ia et reconstruction des vitesses particulières}
+\subsection{Génération des SN Ia et reconstruction des vitesses particulières}
 % \subsection{Simulation Uchuu}
 
 Les vitesses particulières des SNe simulées ne peuvent pas être tirées aléatoirement, puisqu'elles doivent être en accord avec les structures de galaxies et les unes avec les autres. Une possibilité est de simuler la dynamique de la matière noire d'un univers via une simulation à N-corps, et de la peupler de galaxies en fonction de la distribution de densité obtenue. Cette méthode à été utilisée à partir de la simulation Uchuu (\cite{prada_desi_2023}) à 2.1 billions de particules, peuplée avec des galaxies du \textit{DESI Bright Galaxy Survey} (BGS) qui est un set complet de galaxies lumineuses ($r < 19.5$ pour le sous-échantillon \textit{Bright}) à bas redshift ($z<0.4$) (\cite{hahn_desi_2023}), pour produire un univers statistiquement fidèle au notre. Le catalogue obtenu reproduit donc à la fois le champ de densité et le champ de vitesse, à partir duquel des SNe avec vitesses particulières peuvent être tirées.
@@ -180,10 +190,11 @@ où $p$, nommé phase, est le temps dans le référentiel de la SN depuis la dat
 
 Une fois les observations simulées, le set de donné obtenu est passé à travers les différents modules du pipeline \verb|LEMAITRE|~:
 \begin{enumerate}
-    \item Le module PETS (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie mal mesurés. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl.
+    \item Le module PETS (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie ainsi que les SNe mal mesurés. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl.
     \item Le module NaCl (Nouvel algorithme de Courbe de lumière) ajuste un modèle type \verb|SALT2.4| aux SNe et réévalue les paramètres de standardisations. Il fournit également la matrice de covariance des paramètres des différentes SN et des paramètres des modèles ajustés.
     \item Le module EDRIS (Estimateur de Distance pour les Relevés Incomplets de Supernovae) utilise les paramètres de standardisations et leur matrice de covariance pour ajuster un modèle cosmologique sur les points de données et évaluer les paramètres $\alpha$ et $\beta$ du modèle de Tripp (eq. \ref{eq:tripp}).
 \end{enumerate}
+
 Avec les résultats d'EDRIS, on peut remonter aux modules de distances
 \begin{equation}
     \mu = m_b - M_b^*
@@ -212,7 +223,87 @@ Les vitesses particulières ainsi obtenues sont représentées en Fig. \ref{fig:
     \label{fig:vp}
 \end{figure}
 
-\subsubsection{Analyse jointe $f\sigma_8$}
+\section{Résultats intermédiaires et finaux visés}
+%% présentation des résultats intermédiaires et finaux visés
+
+\todo{que ça marche}
+
+\section{Difficultés rencontrées}
+%% exposé des difficultés rencontrées et de la façon dont elles ont été surmontées
+
+La principale difficulté que j'ai rencontré a été de suivre le développement des différents modules de \verb|LEMAITRE| tout en les utilisant et en remplissant mes tâches. Puisque l'intégration des modules n'était pas encore réalisée, j'ai pu identifier différents problèmes qui y étaient lié tels que des différences de convention ou de notation pour des variables. Mes tests ont également permis de révéler certains comportements anormaux des modules lors de leurs utilisation sur des données réalistes (par exemple des erreurs liées à des paramètres sortant des plages de définition du modèle dans NaCl), et de mettre en lumière des étapes de filtrages des données entre les modules afin d'assurer leurs bons fonctionnements. Cela a nécessité de faire des points pour discuter de l'avancement des modules en plus des points hebdomadaires prévus avec les autres membres de l'équipe, afin de remonter et résoudre les problèmes rencontrés, et être à jour sur l'utilisation des modules.
+
+Une autre difficulté notable a été la compréhension fine du domaine et des tâches, afin de proposer une analyse correcte et robuste. J'ai parfois eu du mal à différencier certains concepts et outils, mais avec des explications et l'aide de mes encadrants et des autres chercheurs de l'équipe, j'ai pu surmonter cette difficulté.
+
+
+\section{Gestion des risques réalisée}
+%% gestion des risques réalisée (????)
+
+\todo{?}
+
+\chapter{Résultats}
+%% présentation détaillée des résultats effectivement obtenus en les reliant au problème qui était à traiter et mettant en exergue 
+% la validité des résultats par rapport au problème
+% le caractère innovant / neuf des résultats
+% l’utilité des résultats, l’usage effectif qui sera fait du travail de l’élève ingénieur
+% la mise en exergue des limites du travail et des suites à donner à ce travail
+% la quantification et/ou qualification de la valeur ajoutée
+
+\section{Validation de LEMAITRE sur simulations}
+
+\section{Extraction des vitesses particulières}
+
+
+\chapter{Travail futur}
+%o prolongements possibles du travail de stage : exposé de ce qu’il reste éventuellement à faire pour que les résultats soient complètement obtenus, et de la façon dont le travail pourra être poursuivi par l’entreprise dans le futur
+
+\todo{FS8}
+
+\chapter{Bilan personnel}
+%o bilan des principaux apprentissages professionnels et leur mise en perspective pour le futur professionnel
+
+\todo{TODO}
+
+\chapter{Enjeux éthiques}
+%o prise de recul sur les enjeux d’ordre éthique
+
+\todo{TODO}
+
+\appendix
+\pagenumbering{roman}
+\chapter{Annexes}
+
+\section{Fonctionnement des modules}
+
+\subsection{PETS}
+
+PETS a pour but de sélectionner les SN qui sont suffisamment bien échantillonnées pour l'entraînement du modèle par NaCl.
+Le fonctionnement de PETS est découpé en 3 étapes, tous utilisant le modèle \verb|SALT2.4| déjà entraîné~:
+\begin{enumerate}
+\item Une sélection des points de donnés utilisables.
+\item La réalisation d'une grille de temps de maximums et des fits associés à chacun de ces temps
+\item La sélection des SNe
+\end{enumerate}
+
+La sélection des points de données est effectuée en rejetant itérativement les points de données à plus de 3$\sigma$ du fit \verb|SALT2.4|. Ensuite, en partant du $t_{max, 0}$ d'un fit complet des points restants, une grille de temps de maximum est réalisé. Elle contient 150 points dans les intervalles $[t_{max, 0} - 20 ; t_{max, 0} - 5]$ et $[t_{max, 0} +5; t_{max, 0} + 20]$ et 1000 points dans l'intervalle $[t_{max, 0} - 5 ; t_{max, 0} + 5]$. Le modèle est alors fitté sur les données en fixant le temps de maximum à un de ces points, puis PETS analyse la courbe $\chi^2(t_{max})$ afin de garder ou rejeter la SN. Une SN est gardée si~:
+\begin{enumerate}
+\item $\chi^2(t_{max})$ présente un minimum global à $t_{min}$, qui n'est pas aux bords de l'intervalle $[t_{max,0} - 20 ; t_{max, 0} + 20]$
+\item L'incertitude sur $t_{min}$ est inférieure à 1 jour.
+\item L'écart entre les incertitudes positives et négatives à 3$\sigma$ est inferieur à $0.3$, ce qui caractérise la symétrie de $\chi^2(t_{max})$ autour de $t_{min}$
+\item $\chi^2(t_{max})$ ne présente pas d'autres minimums à 8$\sigma$ de ce minimum global, \textit{i.e.} il n'y a pas d'autres minimums susceptibles de coincer le fit de NaCl.\item Les valeurs de $x_1$ et $c$ fittées sont respectivement inférieures à 4 et 2, ce qui impose que le fit ne décrit pas une SN extrêmement distordue (bien qu'elle soit toujours décrite par le modèle).
+\end{enumerate}
+
+Une version mise à jour de PETS utilisant un modèle NaCl pré-entraîné à la place de \verb|SALT2.4| est en cours de développement, mais je ne l'ai pas utilisée.
+
+
+\subsection{NaCl}
+
+
+
+\subsection{EDRIS}
+
+
+\section{Méthode de l'analyse jointe $f\sigma_8$}
 
 Comme mentionné précédemment, l'analyse $f\sigma_8$ se base sur la méthode de comparaison entre les vitesses particulières et celles obtenues à partir du champ de densité, plus précisément sur la méthodologie de \cite{stahl_peculiar-velocity_2021}.
 
@@ -258,41 +349,6 @@ Cette vraisemblance est alors explorée avec une Chaîne de Markov Monte Carlo, 
     \caption{Paramètre $S_8 = f \sigma_8/(0.3)^{0.55}$ reconstruit par diverses méthodes. Les lignes noires représentent la valeur et l'incertitude de la valeur reconstruite par \cite{stahl_peculiar-velocity_2021}. Crédit : B. Stahl}
     \label{fig:stahl}
 \end{figure}
-
-\subsection{Résultats intermédiaires et finaux visés}
-%% présentation des résultats intermédiaires et finaux visés
-
-\subsection{Difficultés rencontrées}
-%% exposé des difficultés rencontrées et de la façon dont elles ont été surmontées
-
-La principale difficulté que j'ai rencontré a été de suivre le développement des différents modules de \verb|LEMAITRE| tout en les utilisant et en remplissant mes tâches. Puisque l'intégration des modules n'était pas encore réalisée, j'ai pu identifier différents problèmes qui y étaient lié tels que des différences de convention ou de notation pour des variables. Mes tests ont également permis de révéler certains comportements anormaux des modules lors de leurs utilisation sur des données réalistes (par exemple des erreurs liées à des paramètres sortant des plages de définition du modèle dans NaCl), et de mettre en lumière des étapes de filtrages des données entre les modules afin d'assurer leurs bons fonctionnements. Cela a nécessité de faire des points pour discuter de l'avancement des modules en plus des points hebdomadaires prévus avec les autres membres de l'équipe, afin de remonter et résoudre les problèmes rencontrés, et être à jour sur l'utilisation des modules.
-
-Une autre difficulté notable a été la compréhension fine du domaine et des tâches, afin de proposer une analyse correcte et robuste. J'ai parfois eu du mal à différencier certains concepts et outils, mais avec des explications et l'aide de mes encadrants et des autres chercheurs de l'équipe, j'ai pu surmonter cette difficulté.
-
-
-\subsection{Gestion des risques réalisée}
-%% gestion des risques réalisée (????)
-
-
-\section{Résultats}
-%% présentation détaillée des résultats effectivement obtenus en les reliant au problème qui était à traiter et mettant en exergue 
-% la validité des résultats par rapport au problème
-% le caractère innovant / neuf des résultats
-% l’utilité des résultats, l’usage effectif qui sera fait du travail de l’élève ingénieur
-% la mise en exergue des limites du travail et des suites à donner à ce travail
-% la quantification et/ou qualification de la valeur ajoutée
-
-
-\section{Travail futur}
-%o prolongements possibles du travail de stage : exposé de ce qu’il reste éventuellement à faire pour que les résultats soient complètement obtenus, et de la façon dont le travail pourra être poursuivi par l’entreprise dans le futur
-
-
-\section{Bilan personnel}
-%o bilan des principaux apprentissages professionnels et leur mise en perspective pour le futur professionnel
-
-\section{Enjeux éthiques}
-%o prise de recul sur les enjeux d’ordre éthique
-
 
 
 \printbibliography
