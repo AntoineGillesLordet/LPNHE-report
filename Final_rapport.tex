@@ -41,6 +41,7 @@
 
 \newcommand{\Ms}[0]{\textup{M}_\odot}
 \newcommand{\todo}[1]{{\textcolor{gray}{\bf \large #1}}}
+\newcommand{\consignes}[1]{{\textcolor{blue}{\bf \large #1}}}
 
 \let\mcl\mathcal
 \let\ov\overline
@@ -60,7 +61,7 @@
 
 \chapter{Synthèse}
 
-%%% Une synthèse d’une page (ou executive summary) présentant le problème posé et ses enjeux pour le client, les éléments clés de la démarche, les solutions apportées et les résultats obtenus, et ce, en français et en anglais
+\consignes{Une synthèse d’une page (ou executive summary) présentant le problème posé et ses enjeux pour le client, les éléments clés de la démarche, les solutions apportées et les résultats obtenus, et ce, en français et en anglais}
 
 \chapter{Introduction}
 
@@ -109,18 +110,16 @@ L'objectif du stage est double~:
 
 \section{Enjeux}
 
-% Valider LEMAITRE sur des simus (biais potentiels, corrections, problèmes...)
-
-\todo{Cosmologie de précision sur fs8}
+\todo{ Valider LEMAITRE sur des simus (biais potentiels, corrections, problèmes...), Cosmologie de précision sur fs8}
 
 \section{Reformulation du problème dans son contexte}
 
-\todo{?}
+\todo{Pas tout à fait sûr de ce que je dois dire}
 
 \chapter{Approche et analyse}
 
 \section{État de l'art}
-%% méthodes, raisons des choix faits, analyses menées (état de l’art)
+\consignes{méthodes, raisons des choix faits, analyses menées (état de l’art)}
 
 \subsection{Mesurer $f\sigma_8$ avec le clustering des galaxies et les SN de type Ia}
 
@@ -150,12 +149,11 @@ Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fi
 \end{figure}
 
 \section{Approche de résolution du problème}
-%% présentation détaillée de l’approche de résolution de problème retenue, des ressources scientifiques, techniques et humaines mises en oeuvre, de l’organisation du travail
+\consignes{présentation détaillée de l’approche de résolution de problème retenue, des ressources scientifiques, techniques et humaines mises en oeuvre, de l’organisation du travail}
 
 La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} pour les simulations et reconstruction de vitesses particulières des SNe en utilisant les nouveaux modules développés pour le projet \verb|LEMAITRE|. L'analyse $f\sigma_8$ prévue suit quand à elle celle de \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}.
 
 \subsection{Génération des SN Ia et reconstruction des vitesses particulières}
-% \subsection{Simulation Uchuu}
 
 Les vitesses particulières des SNe simulées ne peuvent pas être tirées aléatoirement, puisqu'elles doivent être en accord avec les structures de galaxies et les unes avec les autres. Une possibilité est de simuler la dynamique de la matière noire d'un univers via une simulation à N-corps, et de la peupler de galaxies en fonction de la distribution de densité obtenue. Cette méthode à été utilisée à partir de la simulation Uchuu (\cite{prada_desi_2023}) à 2.1 billions de particules, peuplée avec des galaxies du \textit{DESI Bright Galaxy Survey} (BGS) qui est un set complet de galaxies lumineuses ($r < 19.5$ pour le sous-échantillon \textit{Bright}) à bas redshift ($z<0.4$) (\cite{hahn_desi_2023}), pour produire un univers statistiquement fidèle au notre. Le catalogue obtenu reproduit donc à la fois le champ de densité et le champ de vitesse, à partir duquel des SNe avec vitesses particulières peuvent être tirées.
 
@@ -182,7 +180,7 @@ Seules les galaxies à redshift $z<0.06$ sont utilisées afin de s'affranchir du
 La période du 02/03/2018 au 01/01/2021 utilisée pour le tirage du temps de maximum correspond à la plage temporelle de la DR2.5 de ZTF qui sera exploitée par \verb|LEMAITRE|. Cette restriction sert à la fois à avoir un volume de donné proche de celui que devra traiter le pipeline \verb|LEMAITRE| pour estimer sa rapidité, et à pouvoir quantifier le gain qui pourrait être obtenu sur $f\sigma_8$ avec des réelles. Le taux d'explosions de SN Ia est pris égal à $2,35 .10^4$Gpc$^{-3}$ (\cite{perley_zwicky_2020}).
 Pour le calcul de la magnitude observée, $d_L(z)$ représente la distance de luminosité, qui est calculée à l'aide d'un modèle $\Lambda$CDM contraint par les données de Planck 2015 (\cite{planck_collaboration_planck_2016}) pour correspondre au modèle cosmologique utilisé pour générer la simulation Uchuu.
 
-Une fois les paramètres tirés, des points de données d'observations photométriques et spectroscopiques sont générés en utilisant le modèle de SNe \verb|SALT2.4| (\cite{guy_salt2_2007, rigault_ztf_2024}) et les logs d'observations de ZTF. Ce modèle consiste en trois fonctions $M_0(p, \lambda)$, $M_1(p, \lambda)$ et $CL(\lambda)$ de manière à décrire les flux des SNe par~:
+Une fois les paramètres tirés, des points de données d'observations photométriques et spectroscopiques sont générés en utilisant le modèle de SNe \verb|SALT2.4| (\cite{guy_salt2_2007, rigault_ztf_2024}) et les logs d'observations de ZTF. Ce modèle consiste en trois fonctions $M_0(p, \lambda)$, $M_1(p, \lambda)$ et $CL(\lambda)$ de manière à décrire les flux émis par les SNe dans leurs référentiels propres par~:
 \begin{equation}
     F(SN, p, \lambda) = x_0 \times \qty[M_0(p, \lambda) + x_1 M_1(p, \lambda)] \times \exp[c CL(\lambda)]
 \end{equation}
@@ -224,54 +222,63 @@ Les vitesses particulières ainsi obtenues sont représentées en Fig. \ref{fig:
 \end{figure}
 
 \section{Résultats intermédiaires et finaux visés}
-%% présentation des résultats intermédiaires et finaux visés
+\consignes{présentation des résultats intermédiaires et finaux visés}
 
 \todo{que ça marche}
 
 \section{Difficultés rencontrées}
-%% exposé des difficultés rencontrées et de la façon dont elles ont été surmontées
+\consignes{exposé des difficultés rencontrées et de la façon dont elles ont été surmontées}
 
 La principale difficulté que j'ai rencontré a été de suivre le développement des différents modules de \verb|LEMAITRE| tout en les utilisant et en remplissant mes tâches. Puisque l'intégration des modules n'était pas encore réalisée, j'ai pu identifier différents problèmes qui y étaient lié tels que des différences de convention ou de notation pour des variables. Mes tests ont également permis de révéler certains comportements anormaux des modules lors de leurs utilisation sur des données réalistes (par exemple des erreurs liées à des paramètres sortant des plages de définition du modèle dans NaCl), et de mettre en lumière des étapes de filtrages des données entre les modules afin d'assurer leurs bons fonctionnements. Cela a nécessité de faire des points pour discuter de l'avancement des modules en plus des points hebdomadaires prévus avec les autres membres de l'équipe, afin de remonter et résoudre les problèmes rencontrés, et être à jour sur l'utilisation des modules.
 
 Une autre difficulté notable a été la compréhension fine du domaine et des tâches, afin de proposer une analyse correcte et robuste. J'ai parfois eu du mal à différencier certains concepts et outils, mais avec des explications et l'aide de mes encadrants et des autres chercheurs de l'équipe, j'ai pu surmonter cette difficulté.
 
 
-\section{Gestion des risques réalisée}
-%% gestion des risques réalisée (????)
+\todo{Les accords pour les données DESI/ZTF/BORG}
 
-\todo{?}
+
+\section{Gestion des risques réalisée}
+\consignes{gestion des risques réalisée}
+
+\todo{Tout commentaire ou idée à mettre dans cette partie est la bienvenue}
 
 \chapter{Résultats}
-%% présentation détaillée des résultats effectivement obtenus en les reliant au problème qui était à traiter et mettant en exergue 
-% la validité des résultats par rapport au problème
-% le caractère innovant / neuf des résultats
-% l’utilité des résultats, l’usage effectif qui sera fait du travail de l’élève ingénieur
-% la mise en exergue des limites du travail et des suites à donner à ce travail
-% la quantification et/ou qualification de la valeur ajoutée
+\consignes{présentation détaillée des résultats effectivement obtenus en les reliant au problème qui était à traiter et mettant en exergue :
+\begin{itemize}
+\item la validité des résultats par rapport au problème
+\item le caractère innovant / neuf des résultats
+\item l’utilité des résultats, l’usage effectif qui sera fait du travail de l’élève ingénieur
+\item la mise en exergue des limites du travail et des suites à donner à ce travail
+\item la quantification et/ou qualification de la valeur ajoutée
+\end{itemize}}
+
 
 \section{Validation de LEMAITRE sur simulations}
+
+
 
 \section{Extraction des vitesses particulières}
 
 
+
 \chapter{Travail futur}
-%o prolongements possibles du travail de stage : exposé de ce qu’il reste éventuellement à faire pour que les résultats soient complètement obtenus, et de la façon dont le travail pourra être poursuivi par l’entreprise dans le futur
+\consignes{prolongements possibles du travail de stage : exposé de ce qu’il reste éventuellement à faire pour que les résultats soient complètement obtenus, et de la façon dont le travail pourra être poursuivi par l’entreprise dans le futur}
 
 \todo{FS8}
 
 \chapter{Bilan personnel}
-%o bilan des principaux apprentissages professionnels et leur mise en perspective pour le futur professionnel
+\consignes{bilan des principaux apprentissages professionnels et leur mise en perspective pour le futur professionnel}
 
 \todo{TODO}
 
 \chapter{Enjeux éthiques}
-%o prise de recul sur les enjeux d’ordre éthique
+\consignes{prise de recul sur les enjeux d’ordre éthique}
 
-\todo{TODO}
+\todo{}
 
 \appendix
-\pagenumbering{roman}
 \chapter{Annexes}
+\pagenumbering{roman}
 
 \section{Fonctionnement des modules}
 
@@ -289,8 +296,9 @@ La sélection des points de données est effectuée en rejetant itérativement l
 \begin{enumerate}
 \item $\chi^2(t_{max})$ présente un minimum global à $t_{min}$, qui n'est pas aux bords de l'intervalle $[t_{max,0} - 20 ; t_{max, 0} + 20]$
 \item L'incertitude sur $t_{min}$ est inférieure à 1 jour.
-\item L'écart entre les incertitudes positives et négatives à 3$\sigma$ est inferieur à $0.3$, ce qui caractérise la symétrie de $\chi^2(t_{max})$ autour de $t_{min}$
-\item $\chi^2(t_{max})$ ne présente pas d'autres minimums à 8$\sigma$ de ce minimum global, \textit{i.e.} il n'y a pas d'autres minimums susceptibles de coincer le fit de NaCl.\item Les valeurs de $x_1$ et $c$ fittées sont respectivement inférieures à 4 et 2, ce qui impose que le fit ne décrit pas une SN extrêmement distordue (bien qu'elle soit toujours décrite par le modèle).
+\item L'écart entre les incertitudes positives et négatives à 3$\sigma$ est inferieur à $0.3$, ce qui caractérise la symétrie de $\chi^2(t_{max})$ autour de $t_{min}$.
+\item $\chi^2(t_{max})$ ne présente pas d'autres minimums à 8$\sigma$ de ce minimum global, \textit{i.e.} il n'y a pas d'autres minimums proches susceptibles de coincer le fit de NaCl.
+\item Les valeurs de $x_1$ et $c$ fittées sont respectivement inférieures à 4 et 2, ce qui impose que le fit ne décrit pas une SN extrêmement distordue (bien qu'elle soit toujours décrite par le modèle).
 \end{enumerate}
 
 Une version mise à jour de PETS utilisant un modèle NaCl pré-entraîné à la place de \verb|SALT2.4| est en cours de développement, mais je ne l'ai pas utilisée.
@@ -298,6 +306,65 @@ Une version mise à jour de PETS utilisant un modèle NaCl pré-entraîné à la
 
 \subsection{NaCl}
 
+\subsubsection{Modélisation des SNe}
+
+\verb|NaCl| consiste en une implémentation d'un modèle type \verb|SALT|, avec quelques améliorations. Tout comme \verb|SALT|, le flux émis par les SNe dans leurs référentiels propres est modélisé par une surface spectrale $\mcl S(\lambda, p)$, où $\lambda$ est la longueur d'onde d'émission dans le référentiel de la SN, $p$, la phase, est le temps depuis le maximum d'émission en bande B.
+De cette surface de flux, on peut déduire dans notre référentiel à la fois le flux photométrique, c'est-à-dire le flux observé dans un filtre de bande passante $T(\lambda)$ à une date donnée, et les spectres émis en redshiftant cette surface~:
+\begin{gather}
+	\phi_{phot} = X_0 \frac{1}{1+z} \int \mcl S\qty(\frac{\lambda}{1+z}, p) \frac{\lambda}{hc} T(lambda) \dd{\lambda} \label{eq:phot}\\
+	\phi_{spec}  = X_0 \frac{1}{1+z} \mcl S(\lambda, p) \label{eq:spec}
+\end{gather}
+où $X_0 = \Phi_B \frac{(10\text{pc}^2}{d_L(z)^2}$ est l'amplitude, avec $\Phi_B$ la luminosité maximale en bande B normalisée pour une SN à 10 pc, et $d_L(z)$ est la distance de luminosité. Toute l'information sur la cosmologie est donc encodée dans $X_0$ via la distance de luminosité.
+Pour réduire le temps de calcul, l'équation \ref{eq:phot} est ré-exprimée en intégrant dans le référentiel de la SN, ce qui équivaut à blueshifter les filtres plutôt que de redshifter la surface spectrale~:
+\begin{equation}
+	\phi_{phot} = X_0 (1+z) \int \mcl S(\lambda, p) \frac{\lambda}{hc} T((1+z)\lambda) \dd{\lambda}
+\end{equation}
+
+La surface spectrale est décrite de la même manière que pour \verb|SALT2.4| avec la paramétrisation par SN suivante
+\begin{equation}
+    \mcl S (p, \lambda) = \qty[M_0(p, \lambda) + X_1 M_1(p, \lambda)] \times \exp[0..4 c CL(\lambda)]
+\end{equation}
+où , et $X_1$ et $c$ sont les paramètres de stretch et couleurs propre à la SN considérée.
+
+\subsubsection{Différences entre NaCl et SALT2.4}
+
+Les différences entre \verb|NaCl| et \verb|SALT2.4| ne sont pas liés au modèle de SNe lui-même, mais à des choix dans les paramètres ajustés lors de l'entraînement~:
+\begin{itemize}
+\item Le temps du maximum $t_{max}$ n'est plus déterminé avant entraînement et fixé, mais est laissé comme paramètre libre. Autrement dit, les points de donnés dans l'espace des phases $(\lambda, p)$ sont susceptibles de bouger selon $p$, puisque décaler la date de maximum revient à décaler d'autant tous les points de mesures.
+\item La calibration des filtres est intégrée dans le modèle ce qui permet d'estimer directement son impact sur les paramètres reconstruits, plutôt que d'entraîner le modèle sur différents lots avec des calibrations variables.
+\item En conséquence de la différence précédente, le modèle d'erreur, c'est à dire l'incertitude du modèle sur les valeurs de flux, est également ajusté lors de l'entraînement plutôt qu'estimé a posteriori.
+\end{itemize}
+Le lecteur attentif aura noté que les amplitudes et stretch de SALT était notées avec des minuscules $x_0$ et $x_1$, tandis que celles de NaCl sont notées avec des majuscules $X_0$ et $X_1$. Cette différence est intentionnelle, puisque du fait des différences dans l'entraînement, rien ne garantit que ces paramètres sont exactement les mêmes, ce qui n'est d'ailleurs pas le cas dans les faits (\textcolor{red}{cf Résultats}).
+
+
+\subsubsection{Contraintes}
+
+En conséquence de ces choix, les contraintes imposées sur les modèles diffèrent de celles utilisées pour entraîner \verb|SALT2.4|. Une des idées fondamentales de ces contraintes est que $M_0$ doit décrire la SN moyenne, et que tous les termes autour ne doivent être que des corrections. Cela ce traduit par exemple dans la normalisation des modèles, dégénérée avec $X_0$, en imposant
+\begin{gather}
+	\int M_0(p=0,\lambda) \frac{\lambda}{hc} B(\lambda) \dd{\lambda} = 1\\
+	\int M_0(p=0,\lambda) \frac{\lambda}{hc} B(\lambda) \dd{\lambda} = 0
+\end{gather}
+De même, les couleurs et stretchs sont contraints pour être de moyenne nulle, par
+\begin{gather}
+	\sum_{i=1}^{N_{SN}} c_i = 0\\
+	\sum_{i=1}^{N_{SN}} X_{1,i} = 0\\
+\end{gather}
+À cela s'ajoute une dégénérescence liée aux normalisations des $X_1$ relativement à $M_1$, qui est levée en imposant une contrainte sur la variance des $X_1$
+\begin{gather}
+	\frac{1}{N_{SN}} \sum_{i=1}^{N_{SN}} (X_{1,i} - \ev{X_1})^2 = 1
+\end{gather}
+
+La variabilité du temps de maximum introduit également une dégénérescence avec les modèles $M_0$ et $M_1$. Cette dégénérescence est brisée en imposant aux modèles de présenter un maximum en bande B à $p=0$~:
+\begin{gather}
+	\eval{\dv{p} \int M_0(p,\lambda) \frac{\lambda}{hc} B(\lambda) \dd{\lambda}}_{p=0} = 0\\
+	\eval{\dv{p} \int M_1(p,\lambda) \frac{\lambda}{hc} B(\lambda) \dd{\lambda}}_{p=0} = 0
+\end{gather}
+
+ \subsubsection{Entraînement}
+
+L'entraînement a lieu en 3 étapes après initialisation des modèles $M_0$ et $M_1$ sur les modèles de \verb|SALT2.4|. Une première estimation des paramètres de chaque SN $(x_0, x_1, c, t_{max})$ est réalisée à modèles et modèle d'erreur fixés. Ensuite, les paramètres des SNe sont fixés aux valeurs obtenues, et seul le modèle d'erreur est laissé libre et ajusté. Pour finir, tous les paramètres sont relâchés et le modèle est ajusté en même temps que les paramètres des SNe et le modèle d'erreur. C'est lors de cette dernière étape que les contraintes décrites précédemment sont effectivement appliquées au modèle, puisque \verb|SALT2.4| intégrait d'autres contraintes.
+
+Ce choix vient du fait qu'un entraînement sur tous les paramètres seraient trop coûteux et qu'il pourrait se bloquer plus facilement dans un minimum local.
 
 
 \subsection{EDRIS}
