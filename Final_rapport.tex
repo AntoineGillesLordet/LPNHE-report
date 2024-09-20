@@ -179,7 +179,7 @@ La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} 
 		\node[ellipse, draw, align=center, aspect=2] (lcsim) at (skys |- pets) {Courbes de \\ Lumière \\ simulées};
 		\draw (skys) -- (lcsim) -- (pets);
 	\end{scope}
-	\node[rectangle, draw, align=center, red!50!black] (rec) at (lcsim |- edris) {Reconstruction \\ avec \texttt{SALT2.4} \\ (\texttt{skysurvey})};
+	\node[rectangle, draw, align=center, red!50!black] (rec) at (lcsim |- edris) {Reconstruction \\ avec \texttt{SALT2.4} \\ (via \texttt{skysurvey})};
 	\draw (rec) edge node[above, align=center] {$x_0,x_1,c$} node[below, align=center] {$Cov(x_0,x_1,c)$} (edris);
 	\draw[orange] (lcsim) -- (rec);
 	\draw[orange] (rec) -- (edris);
@@ -274,24 +274,6 @@ La principale difficulté que j'ai rencontré a été de suivre le développemen
 
 Une autre difficulté notable a été la compréhension fine du domaine et des tâches, afin de proposer une analyse correcte et robuste. J'ai parfois eu du mal à différencier certains concepts et outils, mais avec des explications et l'aide de mes encadrants et des autres chercheurs de l'équipe, j'ai pu surmonter cette difficulté.
 
-\todo{Les saletés de float32 de skysurvey}
-
-\todo{problèmes d'évaluation des bandes dans bbf}
-
-\todo{PETS et la détection des minimums locaux trop proches/mauvaises estimations du Tmax}
-
-\todo{variances négatives pour edris ou NaCl du à un mauvais point initial/une mauvaise convergence (importance du premier fit pour NaCl}
-
-\todo{Extension du modèle pour NaCl pour bien intégrer les bandes.}
-
-\todo{valeurs de la régularisation et des contraintes NaCl}
-
-\todo{Problème sur la condition d'arrêt du tncg d'edris}
-
-\todo{Importance des cuts sur les incertitudes pour edris (et lien avec la densité de la matrice)}
-
-\todo{Biais sur $\beta$ lorsque les couleurs sont trop élevées}
-
 
 \todo{Les accords pour les données DESI/ZTF/BORG}
 
@@ -300,6 +282,8 @@ Une autre difficulté notable a été la compréhension fine du domaine et des t
 \consignes{gestion des risques réalisée}
 
 \todo{Tout commentaire ou idée à mettre dans cette partie est la bienvenue}
+
+
 
 \chapter{Résultats}
 \consignes{présentation détaillée des résultats effectivement obtenus en les reliant au problème qui était à traiter et mettant en exergue :
@@ -311,6 +295,38 @@ Une autre difficulté notable a été la compréhension fine du domaine et des t
 \item la quantification et/ou qualification de la valeur ajoutée
 \end{itemize}}
 
+\section{Problèmes identifiés dans le pipeline \texttt{LEMAITRE} et corrections apportées}
+
+J'ai identifié et traité différents problèmes et erreurs au sein du pipeline \texttt{LEMAITRE}. Certains étaient triviaux à traiter une fois identifiés, tel que des erreurs dues à des différences d'encodage (sur 32 ou 64 bits) de certaines valeurs lors de sauvegardes et chargements de données entre des modules, d'autres plus compliqués, et quelques uns restent encore non résolus. Les problèmes rencontrés peuvent être regroupés en deux catégories~: ceux causés par l'utilisation de mauvaises valeurs de méta-paramètres, qui ne remettent pas en cause les méthodes mais nécessite un ajustement de ces paramètres, et ceux liés directement aux méthodes utilisées.
+
+\subsection{Problèmes liés à des valeurs de méta-paramètres}
+
+\subsubsection{Minimums multiples dans \texttt{PETS}}
+
+Un premier problème est apparu lors de l'utilisation de \texttt{PETS} concerne la caractérisation des SNe pour l'entraînement de \texttt{NaCl}. Certains SNe ne présentent des points de mesure que sur la croissance ou la fin de la décroissance de leur luminosité pour des raisons observationnelles tel que leur concordance avec le début ou la fin d'une période d'observation. Ces SNe posent alors le problème d'être difficiles à caractériser, bien que parfaitement décrites par \texttt{SALT2.4}. En particulier, les SNe qui n'ont des points de photométrie que sur la fin de leur décroissance présentent souvent deux minimums locaux (voir \todo{METTRE UNE FIGURE}. Comme \texttt{PETS} utilise le point de donné de flux le plus élevé comme point de départ pour ajuster le $t_{max, 0}$ à partir duquel la grille est générée, il peut converger vers un minimum local bien marqué et générer une grille ne couvrant pas le minimum global au vrai temps de maximum.
+
+La solution employée ici a été de remonter la détection des autres minimums de $3\sigma$ à $8\sigma$, et de retirer les SNe ainsi marquées des données. Une meilleure solution, implémentée pour les utilisations futures de \texttt{PETS}, est d'augmenter l'intervalle couvert par la grille, mais cela nécessite en contrepartie soit de diminuer sa résolution et donc l'estimation des incertitudes, soit d'utiliser plus de points, ce qui augmente le temps de calcul. A noter que si ces SNe sont bien décrites par \texttt{SALT2.4}, elles ne sont pas intéressantes pour entraîner \texttt{NaCl} puisqu'elles ne comportent que peu de point de données et ne couvrent qu'une faible fraction des phases. Elles pourraient être fittées après entraînement afin de gagner en statistiques, mais le gain restera minime puisqu'elles demeurent assez rares (environ ~1\% des SNe respectant par ailleurs les autres critères de \texttt{PETS}).
+
+De plus c'est un problème qui est particulièrement présent dans mes simulations, mais devrait être rare lors de l'utilisation de données réelles. En effet, puisque seules des SNe Ia sont générées, elles sont reconstruites en partant du principe que ce sont des SNe Ia. Sur des données réelles, rien ne garantit qu'un événement transitoire dont on a observé uniquement la décroissance soit une SNe Ia. Il pourrait s'agir d'une SNe Ib, Ic, II, ou d'un autre type d'événement cataclysmique. Dans ce cas, l'événement ne sera pas classé avec certitude comme SN Ia, et ne passera pas donc par \texttt{PETS}.
+ 
+
+\subsubsection{Domaine de définition du modèle de NaCl}
+
+\subsubsection{Régularisation et contraintes dans \texttt{NaCl}}
+
+\subsubsection{Quality cuts pour \texttt{EDRIS}}
+
+
+\subsection{Problèmes liés aux méthodes}
+
+\subsubsection{Effets d'une mauvaise convergence }
+variances négatives pour edris ou NaCl du à un mauvais point initial/une mauvaise convergence (importance du premier fit pour NaCl
+
+\subsubsection{Condition d'arrêt d'\texttt{EDRIS}}
+
+\subsubsection{Biais sur $\beta$}
+Lien sigma c et beta 
+
 
 \section{Validation de LEMAITRE sur simulations}
 \todo{Génération des SNe avec des vitesses particulières tirées d'Uchuu avec skysurvey}
@@ -320,7 +336,6 @@ Une autre difficulté notable a été la compréhension fine du domaine et des t
 \todo{ou traiter avec PETS puis reconstruction NaCl}
 
 \todo{Utiliser EDRIS sur les résultats SALT2.4 et NaCl}
-
 
 
 \section{Extraction des vitesses particulières}
