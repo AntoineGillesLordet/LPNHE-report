@@ -10,6 +10,7 @@
 \tikzexternalize[prefix=tikz/]
 \tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
 \usepackage{shellesc}
+\usepackage{subcaption}
 
 
 \usepackage[backend=biber, style=apa]{biblatex}  
@@ -43,6 +44,7 @@
 \newcommand{\consignes}[1]{{\textcolor{blue}{\bf \large #1}}}
 
 \def\lemaitre{\texttt{LEMAITRE}\xspace}
+\def\skysurvey{\texttt{skysurvey}\xspace}
 \def\pets{\texttt{PETS}\xspace}
 \def\nacl{\texttt{NaCl}\xspace}
 \def\edris{\texttt{EDRIS}\xspace}
@@ -92,7 +94,7 @@ La standardisation des SN Ia est décrite par la formule de Tripp (\cite{tripp_t
 \label{eq:tripp}
     M^*_{b,SN} = M_b - \alpha x_{1,SN} + \beta c_{SN} + \sigma_{int}
 \end{equation}
-où $M^*_{b,SN}$ est la magnitude absolue (\textit{i.e.} dans le référentiel propre) de la SN dans la bande B, $x_{1,SN}$ est le \textit{stretch} (étalement temporel) de la SN, $c_{SN}$ est la couleur (décalage spectral) de la SN, $M_b$ est la magnitude absolue moyenne à $c=0$ et $x_1=0$ dans la bande B, $\alpha$ et $\beta$ sont des coefficients valant respectivement $0.14$ et $3.15$, et $\sigma_{int}$ est la dispersion intrinsèque des SNe, elle suit une distribution Gaussienne.
+où $M^*_{b,SN}$ est la magnitude absolue (\textit{i.e.} dans le référentiel propre) de la SN dans la bande B, $x_{1,SN}$ est le \textit{stretch} (étalement temporel) de la SN, $c_{SN}$ est la couleur (décalage spectral) de la SN, $M_b$ est la magnitude absolue moyenne à $c=0$ et $x_1=0$ dans la bande B, $\alpha$ et $\beta$ sont des coefficients valant respectivement $0.14$ et $3.15$, et $\sigma_{int}$ est la dispersion intrinsèque des SNe. En pratique $\sigma_{int}$ suit une distribution Gaussienne d'écart-type $0.10$.
 
 Une fois la standardisation effectuée et le modèle accordé au diagramme de Hubble, les résidus au modèle donnent accès aux vitesses particulières des SNe, c’est-à-dire la vitesse des galaxies hôtes des SNe par rapport à l’expansion de l’univers (\cite{davis_effect_2011}). Cet effet est représenté en Fig. \ref{fig:residues}. Si les hôtes des SNe n’avaient pas de vitesses particulières, le redshift des SNe proviendrait uniquement de l’expansion de l’univers et elles s’aligneraient parfaitement sur le modèle. En réalité, elles sont décalées horizontalement par rapport à la ligne de base du modèle car les vitesses particulières de leurs hôtes est la source d’un effet Doppler additionnel qui modifie leur redshift~: les SNe qui se rapprochent de nous apparaissent plus bleues et celles qui s’éloignent de nous apparaissent plus rouges qu’elles ne devraient l’être. Elle fournissent donc une estimation des vitesses particulières qui peut être utilisées en combinaison avec un champ de densité de galaxies pour mener une analyse $f\sigma_8$ (\cite{boruah_bayesian_2022, stahl_peculiar-velocity_2021}). Ces analyses jointes permettent de meilleure contraintes sur $f\sigma_8$ à bas redshift que pour les analyses de RSD des galaxies (voir Fig. \ref{fig:fs8}).
 
@@ -156,7 +158,7 @@ Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fi
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{figures/fs8.png}
-    \caption{Prévisions des contraintes sur $f\sigma_8$ pour les relevés DESI (\cite{hahn_desi_2023}), Euclid (\cite{euclid_collaboration_euclid_2024}) et la combinaison de DESI avec des vitesses particulières de ZTF \cite{carreres_growth-rate_2023} ou LSST \cite{howlett_2mtf_2017}. Credit : J. Bautista}
+    \caption{Prévisions des contraintes sur $f\sigma_8$ pour les relevés DESI (\cite{hahn_desi_2023}), Euclid (\cite{euclid_collaboration_euclid_2024}) et la combinaison de DESI avec des vitesses particulières de ZTF (\cite{carreres_growth-rate_2023}) ou LSST (\cite{howlett_2mtf_2017}). Credit : J. Bautista}
     \label{fig:fs8}
 \end{figure}
 
@@ -176,7 +178,7 @@ La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} 
 	
 	\node[rectangle, draw, above=of calib, color=blue, align=center] (logs) {INPUT \\ Logs d'observation de ZTF};	
 	\node[rectangle, draw, right=of logs, color=blue, align=center] (uchuu) {INPUT \\ Simulation Uchuu};
-	\node[rectangle, draw, below=of uchuu, red!50!black] (skys) {\texttt{skysurvey}};
+	\node[rectangle, draw, below=of uchuu, red!50!black] (skys) {\skysurvey};
 
 	\draw (logs) -- (calib) -- (pets) -- (nacl) -- (edris) node[left=2pt, pos=0.5, align=center, black] {$X_0, X_1, c$ \\ $Cov(X_0,X_1,c)$};
 	\draw (edris) -- (out);
@@ -189,16 +191,17 @@ La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} 
 		\node[ellipse, draw, align=center, aspect=2] (lcsim) at (skys |- pets) {Courbes de \\ Lumière \\ simulées};
 		\draw (skys) -- (lcsim) -- (pets);
 	\end{scope}
-	\node[rectangle, draw, align=center, red!50!black] (rec) at (lcsim |- edris) {Reconstruction \\ avec \saltd \\ (via \texttt{skysurvey}/\texttt{sncosmo})};
+	\node[rectangle, draw, align=center, red!50!black] (rec) at (lcsim |- edris) {Reconstruction \\ avec \saltd \\ (via \skysurvey/\texttt{sncosmo})};
 	\draw (rec) edge node[above, align=center] {$x_0,x_1,c$} node[below, align=center] {$Cov(x_0,x_1,c)$} (edris);
 	\draw[orange] (lcsim) -- (rec);
 	\draw[orange] (rec) -- (edris);
 \end{tikzpicture}
-\caption{Chaîne d'analyse \lemaitre développée au LPNHE (représentée en noire), et travail d'intégration effectué (en orange). L'étape de calibration contient en réalité plusieurs modules, mais elle n'a pas été utilisée pour ce stage car les données simulées n'incluait pas d'effets de calibration. \texttt{skysurvey} ne fait pas partie intégrante de \lemaitre, il s'agit d'un sofware indépendant}
+\caption{Chaîne d'analyse \lemaitre développée au LPNHE (représentée en noire), et travail d'intégration effectué (en orange). L'étape de calibration contient en réalité plusieurs modules, mais elle n'a pas été utilisée pour ce stage car les données simulées n'incluait pas d'effets de calibration. \skysurvey ne fait pas partie intégrante de \lemaitre, il s'agit d'un sofware indépendant}
 \label{fig:lemaitre_pipeline}
 \end{figure}
 
 \subsection{Génération des SN Ia et reconstruction des vitesses particulières}
+\label{sec:gne_SN}
 
 Les vitesses particulières des SNe simulées ne peuvent pas être tirées aléatoirement, puisqu'elles doivent être en accord avec les structures de galaxies et les unes avec les autres. Une possibilité est de simuler la dynamique de la matière noire d'un univers via une simulation à N-corps, et de la peupler de galaxies en fonction de la distribution de densité obtenue. Cette méthode à été utilisée à partir de la simulation Uchuu (\cite{prada_desi_2023}) à 2.1 billions de particules, peuplée avec des galaxies du \textit{DESI Bright Galaxy Survey} (BGS) qui est un set complet de galaxies lumineuses ($r < 19.5$ pour le sous-échantillon \textit{Bright}) à bas redshift ($z<0.4$) (\cite{hahn_desi_2023}), pour produire un univers statistiquement fidèle au notre. Le catalogue obtenu reproduit donc à la fois le champ de densité et le champ de vitesse, à partir duquel des SNe avec vitesses particulières peuvent être tirées.
 
@@ -213,14 +216,14 @@ Dans un premier temps, un échantillon de SN Ia est généré selon les distribu
          Stretch $x_1$ & Gaussienne bimodale (\cite{nicolas_redshift_2021})\\
          Couleur $c$ &  Loi exponentielle convoluée avec une gaussienne (\cite{ginolin_ztf_2024}) \\
          Magnitude absolue $m_{abs}$ & Obtenue par la formule de Tripp\\
-         Magnitude observée $m_{obs}$ & $m_{obs} = 5 \log(d_L(z)) + 25 + m_{abs}$\\
+         Magnitude observée $m_{obs}$ & $m_{obs} = 5 \log(d_L(z_{cosmo})) + 25 + m_{abs}$\\
          Amplitude $x_0$ & $x_0 = 10^{0.4(m_b - m_{obs})}$
     \end{tabular}
-    \caption{Distributions des paramètres pour le tirage des SN Ia}
+    \caption{Distributions utilisées pour le tirage des paramètres des SN Ia. Il est important de noter que le redshift utilisé pour le calcul des magnitudes observées utilise le redshift cosmologique, et non le redshift observé.}
     \label{tab:snia}
 \end{table}
 
-Seules les galaxies à redshift $z<0.06$ sont utilisées afin de s'affranchir du biais de Malmquist (voir notamment \cite{carreres_growth-rate_2023} ou \cite{boyd_accounting_2024}). Ce biais observationnel vient du fait que les télescopes ont une magnitude limite d'observation, au-delà de laquelle les SNe ne sont plus détectées. Or, à un redshift donné, les SNe couvrent une plage de magnitude du fait de la dispersion due aux paramètres de standardisations, à la dispersion intrinsèque et aux vitesses particulières. Ainsi, à haut redshift, les SNe les moins brillantes ne sont pas observées, ce qui biaiserait une estimation des paramètres cosmologique. ZTF est considéré complet jusqu'à $z=0.6$, ce qui signifie que l'impacte du biais de Malmquist en dessous de ce redshift est négligeable.
+Seules les galaxies à redshift $z<0.06$ sont utilisées afin de s'affranchir du biais de Malmquist (voir notamment \cite{carreres_growth-rate_2023} ou \cite{boyd_accounting_2024}). Ce biais observationnel vient du fait que les télescopes ont une magnitude limite d'observation, au-delà de laquelle les SNe ne sont plus détectées. Or, à un redshift donné, les SNe couvrent une plage de magnitude du fait de la dispersion due aux paramètres de standardisations, à la dispersion intrinsèque et aux vitesses particulières. Ainsi, à haut redshift, les SNe les moins brillantes ne sont pas observées, ce qui biaiserait une estimation des paramètres cosmologique. ZTF est considéré complet jusqu'à $z=0.06$, ce qui signifie que l'impacte du biais de Malmquist en dessous de ce redshift est négligeable.
 
 La période du 02/03/2018 au 01/01/2021 utilisée pour le tirage du temps de maximum correspond à la plage temporelle de la DR2.5 de ZTF qui sera exploitée par \lemaitre. Cette restriction sert à la fois à avoir un volume de donné proche de celui que devra traiter le pipeline \lemaitre pour estimer sa rapidité, et à pouvoir quantifier le gain qui pourrait être obtenu sur $f\sigma_8$ avec des réelles. Le taux d'explosions de SN Ia est pris égal à $2,35 .10^4$Gpc$^{-3}$ (\cite{perley_zwicky_2020}).
 Pour le calcul de la magnitude observée, $d_L(z)$ représente la distance de luminosité, qui est calculée à l'aide d'un modèle $\Lambda$CDM contraint par les données de Planck 2015 (\cite{planck_collaboration_planck_2016}) pour correspondre au modèle cosmologique utilisé pour générer la simulation Uchuu.
@@ -229,13 +232,13 @@ Une fois les paramètres tirés, des points de données d'observations photomét
 \begin{equation}
     F(SN, p, \lambda) = x_0 \times \qty[M_0(p, \lambda) + x_1 M_1(p, \lambda)] \times \exp[c CL(\lambda)]
 \end{equation}
-où $p$, nommé phase, est le temps dans le référentiel de la SN depuis la date du maximum de luminosité dans la bande B, $\lambda$ est la longueur d'onde dans le référentiel de la SN, $x_0$ est l'amplitude du flux, et $x_1$ et $c$ sont les paramètres de standardisations de stretch et couleur.
+où $p$, nommé phase, est le temps dans le référentiel de la SN depuis la date du maximum de luminosité dans la bande B, $\lambda$ est la longueur d'onde dans le référentiel de la SN, $x_0$ est l'amplitude du flux, et $x_1$ et $c$ sont les paramètres de standardisations de stretch et couleur. $M_0$ et $M_1$ sont appelés les modèles et $CL$ la loi de couleur.
 
 Une fois les observations simulées, le set de donné obtenu est passé à travers les différents modules du pipeline \lemaitre~:
 \begin{enumerate}
-    \item Le module PETS (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie ainsi que les SNe mal mesurés. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl, voir Annexe \ref{anx:pets}.
-    \item Le module NaCl (Nouvel algorithme de Courbe de lumière) ajuste un modèle type \saltd aux SNe et réévalue les paramètres de standardisations. Il fournit également la matrice de covariance des paramètres des différentes SN et des paramètres des modèles ajustés, voir Annexe \ref{anx:nacl}.
-    \item Le module EDRIS (Estimateur de Distance pour les Relevés Incomplets de Supernovae) utilise les paramètres de standardisations et leur matrice de covariance pour ajuster un modèle cosmologique sur les points de données et évaluer les paramètres $\alpha$ et $\beta$ du modèle de Tripp (eq. \ref{eq:tripp}), voir Annexe \ref{anx:edris}.
+    \item Le module \pets (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie ainsi que les SNe mal mesurés. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl, voir Annexe \ref{anx:pets}.
+    \item Le module \nacl (Nouvel algorithme de Courbe de lumière) ajuste un modèle type \saltd aux SNe et réévalue les paramètres de standardisations. Il fournit également la matrice de covariance des paramètres des différentes SN et des paramètres des modèles ajustés, voir Annexe \ref{anx:nacl}.
+    \item Le module \edris (Estimateur de Distance pour les Relevés Incomplets de Supernovae) utilise les paramètres de standardisations et leur matrice de covariance pour ajuster un modèle cosmologique sur les points de données et évaluer les paramètres $\alpha$ et $\beta$ du modèle de Tripp (eq. \ref{eq:tripp}), voir Annexe \ref{anx:edris}.
 \end{enumerate}
 
 Avec les résultats d'EDRIS, on peut remonter aux modules de distances
@@ -261,21 +264,28 @@ avec $c$ la vitesse de la lumière.
 \section{Résultats intermédiaires et finaux visés}
 \consignes{présentation des résultats intermédiaires et finaux visés}
 
-\todo{Générer des SNe avec des vitesses particulières tirées d'Uchuu avec skysurvey}
+\subsection{Résultats intermédiaires}
 
-\todo{Les reconstruire avec SALT2.4}
+\subsubsection{Simulations avec vitesses particulières}
 
-\todo{ou traiter avec PETS puis reconstruction NaCl}
+Le premier résultat visé est de générer des SNe à partir de la simulation Uchuu contenant l'information des vitesses particulières avec \skysurvey. Ce tirage doit reproduire la distribution en redshift des galaxies hôtes, et permettre une reconstruction des vitesses particulières à partir du diagramme de Hubble. Une fois les paramètres tirés, les courbes de lumière associées doivent être générées en utilisant les logs d'observations des relevés ZTF, SNLS et HSC.
 
-\todo{Utiliser EDRIS sur les résultats SALT2.4 et NaCl}
+\subsubsection{Reconstruction des SNe avec \saltd}
 
-\todo{Obtenir les VP}
+Le second résultat visé est de reconstruire les paramètres des SNe à partir de leurs courbes de lumière à l'aide de \saltd, et de caractériser cette reconstruction.
 
-\todo{Obtenir une grille de densité adaptée pour l'analyse fs8}
+\subsubsection{Reconstruction de la cosmologie avec \edris et extraction des vitesses particulières}
 
-\todo{Réaliser l'analyse fs8}
+Une fois les paramètres \saltd reconstruits, \edris sera exécuté afin d'obtenir la cosmologie sous-jacente et les coefficients de standardisation $\alpha$ et $\beta$.
+Cela permettra alors d'obtenir les vitesses particulières via les résidus au diagramme de Hubble, et de caractériser les biais éventuels.
 
+\subsubsection{Filtrage par \pets et reconstruction des SNe avec \nacl}
 
+En parallèle, le même résultat est attendu en utilisant \pets pour la sélection d'un lot d'entraînement puis l'entraînement du modèle et la reconstruction des paramètres des SNe avec \nacl. Cette deuxième reconstruction sera également injectée dans \edris afin d'obtenir les vitesses particulières, et caractériser les biais éventuels de \nacl.
+
+\subsection{Résultats finaux}
+
+Les résultats finaux visés contiennent la caractérisation des deux branches de reconstruction et leur comparaison, ainsi que l'exploitation des vitesses particulières reconstruites dans une analyse $f\sigma_8$ jointe Uchuu x ZTF.
 
 \section{Difficultés rencontrées}
 \consignes{exposé des difficultés rencontrées et de la façon dont elles ont été surmontées}
@@ -304,6 +314,56 @@ Une autre difficulté notable a été la compréhension fine du domaine et des t
 \item la mise en exergue des limites du travail et des suites à donner à ce travail
 \item la quantification et/ou qualification de la valeur ajoutée
 \end{itemize}}
+
+
+\section{Validation de LEMAITRE sur simulations}
+
+\subsection{Génération de SNe à partir d'Uchuu}
+
+La distribution spatiale des SNe tirées est présentée en Fig. \ref{fig:z_draw} et \ref{fig:ang_draw}. La distribution en redshift observés (incluant les vitesses particulières) diffère bien des redshifts cosmologiques, et la distribution angulaire reproduit la footprint DESI Y5, qui est similaire à la footprint ZTF.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.4\textwidth}
+		\includegraphics[width=\textwidth]{figures/redshift_draw.png}
+		\caption{Distribution des redshift tirés à partir du catalogue de galaxies Uchuu. Le redshift cosmologique correspond au redshift de la position de la galaxie, le redshift observé inclue l'effet Doppler des vitesses particulières.}
+		\label{fig:z_draw}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/angular_draw.png}
+		\caption{Distribution angulaire des SNe tirées à partir du catalogue de galaxies Uchuu.}
+		\label{fig:ang_draw}
+	\end{subfigure}
+	
+	\caption{Distribution spatiale des SNe tirées}
+\end{figure}
+
+De plus il est déjà possible de quantifier l'effet de la distribution intrinsèque sur la reconstruction des vitesses particulières. En effet, une erreur commise sur les modules de distances impact directement le redshift cosmologiques reconstruit, et donc les vitesses particulières (cf. Fig \ref{fig:vp_sigma_int}). Cette erreur est corrélée avec le redshift, et devient plus importante à haut redshift car $\mu(z)$ y croît plus lentement.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/sigma_int_effect_vp.png}
+    \caption{Illustration de l'erreur commise à $1\sigma$ sur les redshifts cosmologiques reconstruits due à la dispersion intrinsèque.}
+    \label{fig:vp_sigma_int}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/vp_draw.png}
+    \caption{Distribution des vitesses particulières reconstruites directement à partir des SNe tirées à partir du catalogue de galaxies Uchuu. La ligne en pointillés noire représente la ligne de base $v_{pec, SN} = v_{pec, Uchuu}$, tandis que les lignes oranges représente l'erreur à $1\sigma$ due à la dispersion intrinsèque.}
+    \label{fig:vp_draw}
+\end{figure}
+
+
+
+\todo{Les reconstruire avec SALT2.4}
+
+\todo{ou traiter avec PETS puis reconstruction NaCl}
+
+\todo{Utiliser EDRIS sur les résultats SALT2.4 et NaCl}
+
 
 \section{Problèmes identifiés dans le pipeline \lemaitre et corrections apportées}
 
@@ -360,7 +420,7 @@ Dans le cas de \nacl, cela a mis en lumière la nécessité d'avoir une bonne co
 
 Il existe une dégénérescence entre le coefficient $\beta$ de la formule de Tripp et le paramètre de dispersion intrinsèque $\sigma_{int}$ dans \edris, biais qui est particulièrement marqué lorsque l'incertitude sur la couleur $\sigma_c$ est élevée. Ce problème était déjà connu, mais a été confirmé sur les simulations produites lors de ce stage lorsque la reconstruction est effectuée avec \saltd. Ce n'est pas le cas pour la reconstruction avec \nacl car les erreurs sont sous-estimées pour une raison encore inconnue, mais ce problème pourrait également survenir à l'avenir. La solution retenue est alors de fixer la dispersion intrinsèque à sa valeur utilisée pour les simulations, $\sigma_{int} = 0.1$, puisqu'il s'agit de la dispersion observée expérimentalement.
 
-\subsubsection{Condition d'arrêt d'\edris}
+\subsubsection{Condition d'arrêt du gradient conjugué dans \edris}
 
 Lors de l'utilisation d'\edris, j'ai été amené à me documenter sur le détail de la méthode utilisée. En particulier, l'optimisation utilisée est décrite dans \cite{martens_deep_2010}, et mentionne explicitement que pour un problème linéaire $Ax = b$, les méthodes de gradient conjugué ne minimisent pas l'erreur quadratique $\norm{Ax-b}^2$ mais la forme quadratique $\phi(x) = \frac{1}{2} x^T A x - b^T x$. Bien que ces deux formulations présentent le même minimum global, une solution acceptable mais sous-optimale pour l'un peut s'avérer être mauvaise pour l'autre. En particulier lors d'une exécution de gradient conjugué, si $\phi(x)$ est bien décroissante, $\norm{Ax-b}^2$ fluctue violemment et ne commence à tendre vers 0 qu'à la fin de l'optimisation. Pourtant, les conditions d'arrêt des implémentations de gradient conjugué se basent souvent sur $\norm{Ax-b}^2$ et non $\phi(x)$, potentiellement car cette dernière n'est pas bornée par 0. L'auteur propose alors de modifier la condition d'arrêt pour la conditionner au taux de réduction de $\phi$, moyenné sur $k$ itérations
 \begin{equation}
@@ -371,15 +431,6 @@ Le problème pour \edris  vient alors de son implémentation. Afin d'accélérer
 
 Ce problème demeure à ce jour non résolu d'une part car son effet, s'il est bien présent, n'était pas la cause majeure d'une mauvaise convergence (voir notamment \ref{sec:qc_edris}), et d'autre part car sa résolution est compliquée puisqu'elle nécessite d'ajouter une condition d'arrêt non déterministe à la fonction de gradient conjugué, ce dont \texttt{JAX} ne s’accommode pas trivialement.
 
-
-\section{Validation de LEMAITRE sur simulations}
-\todo{Génération des SNe avec des vitesses particulières tirées d'Uchuu avec skysurvey}
-
-\todo{Les reconstruire avec SALT2.4}
-
-\todo{ou traiter avec PETS puis reconstruction NaCl}
-
-\todo{Utiliser EDRIS sur les résultats SALT2.4 et NaCl}
 
 
 \section{Extraction des vitesses particulières}
@@ -521,7 +572,13 @@ Ce choix vient du fait qu'un entraînement sur tous les paramètres seraient tro
 \subsection{\edris}
 \label{anx:edris}
 
-Le module \edris réalise un diagramme de Hubble en ajustant un modèle cosmologique aux modules de distances de SNe.
+Le module \edris réalise un diagramme de Hubble en ajustant un modèle cosmologique aux modules de distances de SNe en prenant en compte les effets de sélections tel que le biais de Malmquist, et en estimant directement la matrice de covariance des paramètres. Il utilise pour cela la méthode d'optimisation dite \textit{Hessian-free} décrite dans \cite{martens_deep_2010}. Cette méthode présente l'avantage de ne nécessiter que des calculs de gradients afin de déterminer une approximation de la hessienne, et non de la hessienne complète.
+
+
+
+
+
+
 
 \section{Méthode de l'analyse jointe $f\sigma_8$}
 \label{anx:fs8}
