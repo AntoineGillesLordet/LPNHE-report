@@ -43,7 +43,7 @@
 \newcommand{\todo}[1]{{\textcolor{gray}{\bf \large #1}}}
 \newcommand{\consignes}[1]{{\textcolor{blue}{\bf \large #1}}}
 
-\def\lemaitre{\texttt{LEMAITRE}\xspace}
+\def\lemaitre{\textsc{Lemaître}\xspace}
 \def\skysurvey{\texttt{skysurvey}\xspace}
 \def\pets{\texttt{PETS}\xspace}
 \def\nacl{\texttt{NaCl}\xspace}
@@ -58,7 +58,7 @@
 
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
-\title{Second Rapport de stage de Recherche au LPNHE\\\vspace{.3em} \large Mesure de la croissance des structures avec les galaxies du DESI BGS et les supernovae de type Ia de ZTF~: vers une analyse jointe}
+\title{Rapport final de stage de Recherche au LPNHE\\\vspace{.3em} \large Mesure de la croissance des structures avec les galaxies du DESI BGS et les supernovae de type Ia de ZTF~: vers une analyse jointe}
 \author{Antoine Gilles--Lordet\\ \vspace{.1em} \small encadré par Pauline Zarrouk et Nicolas Regnault }
 \date{}
 
@@ -72,47 +72,75 @@
 
 \consignes{Une synthèse d’une page (ou executive summary) présentant le problème posé et ses enjeux pour le client, les éléments clés de la démarche, les solutions apportées et les résultats obtenus, et ce, en français et en anglais}
 
+La cosmologie moderne repose sur un modèle nommé $\Lambda$CDM, construit à partir de la relativité générale d'Albert Einstein, et supposant que l'univers contient environ 5\% de matière ordinaire, 25\% de matière noire qui n'interagit que gravitationnellement, et de 60\% d'énergie noire dont le rôle est d'accéléré l'expansion de l'Univers. Cette accélération est encore mal comprise, et des modèles alternatifs de gravitation l'explique sans faire intervenir cette dernière composante. Dans ce contexte, ce stage vise à déterminer le taux de croissance des structures dans l'Univers, car l'évolution temporelle de cette grandeur dépend directement du modèle considérée. Elle constitue donc un test de la relativité générale aux échelles cosmologiques.
+
+Ce stage se base sur les données de deux relevés, le relevé \textit{Dark Energy Spectroscopic Instrument} (DESI) et le relevé \textit{Zwicky Transient Facility} (ZTF). DESI a pour objectif de cataloguer et cartographier les galaxies de notre Univers proche, en mesurant leurs positions angulaires et leur redshift par spectroscopie. Ces galaxies possèdent une vitesse propre par rapport à l'expansion de l'Univers car elles sont constamment attirées par les puits de potentiels gravitationnels. Ces vitesses particulières déforment alors la distribution des redshift par effet Doppler, et il est possible de mesurer le taux de croissance des structures à partir de cette distorsion. ZTF est quand à lui un programme d'observation visant à détecter les phénomènes transitoires, en particulier les \textit{supernovae} (SN) de type Ia. Ces SNe sont particulièrement intéressante puisqu'elles constituent des chandelles standards, c'est-à-dire que leurs luminosités et leurs distances sont corrélées, ce qui permet de reconstruire avec précision la vitesse de leur galaxies hôtes. Leur utilisation en combinaison avec un catalogue de galaxies permet d'améliorer considérablement la précision sur la mesure du taux de croissance des structures.
+
+Lors de ce stage, j'ai assemblée une chaîne d'analyse cosmologique et je l'ai testée sur des simulations. Pour cela des SNe possédant des vitesses particulières sont générées selon un modèle cosmologique fixé, et des observations sont simulées à l'aide des logs d'observations de ZTF. La chaîne d'analyse permet alors de reconstruire les paramètres de ces SNe ainsi que leurs vitesses particulières, afin d'en déduire le taux de croissance des structures.
+
 \chapter{Introduction}
 
 \section{Contexte}
 
-Le modèle standard de la cosmologie, nommé $\Lambda$CDM, suppose que la gravité est décrite à toutes les échelles par la relativité générale, et que les principales contributions à la gravité viennent de la matière noire froide (\textit{Cold Dark Matter}) et l'énergie noire (sous la forme d'une constante cosmologique $\Lambda$). Ces deux inconnues sont nécessaires pour décrire l'évolution de l'Univers ainsi que la croissance des structures aux grandes échelles, et permettent à ce jour de reproduire fidèlement les observations, en particulier l'expansion accélérée de l'univers. Cependant des modèles alternatifs de gravité ont également été proposés pour expliquer cette accélération sans faire intervenir de constante cosmologique, et prédisent des évolutions temporelles différentes de celles de la relativité générale pour certaines quantités.
+Le modèle standard de la cosmologie, nommé $\Lambda$CDM, suppose que la gravité est décrite à toutes les échelles par la relativité générale, et que les principales contributions à la gravité viennent de la matière noire froide (\textit{Cold Dark Matter}) et l'énergie noire (sous la forme d'une constante cosmologique $\Lambda$). Ces deux inconnues sont nécessaires pour décrire l'évolution de l'Univers ainsi que la croissance des structures aux grandes échelles, et permettent à ce jour de reproduire fidèlement les observations, en particulier l'expansion accélérée de l'Univers. Cependant des modèles alternatifs de gravité ont également été proposés pour expliquer cette accélération sans faire intervenir de constante cosmologique, et prédisent des évolutions temporelles différentes de celles de la relativité générale pour certaines quantités.
 
-\todo{Tension sur $\Lambda$CDM et $f\sigma_8$}
+Parmi ces quantités, on trouve notamment le taux de croissance des structures en fonction du redshift\footnote{En français, \textit{décalage vers le rouge}, effets de dilatation des longueurs d'ondes des photons entre leur émission et leur observation sur Terre du à l'expansion de l'Univers. Le terme anglais sera utilisé plutôt que sa traduction pour alléger les propos.} $f(z)$, et l'écart-type du champ de densité dans une sphère de rayon 8$h^{-1}$Mpc, $\sigma_8$. Ces deux quantités sont intéressantes car on peut montrer les vitesses particulières des galaxies, c'est-à-dire leurs vitesses par rapport à l'expansion de l'univers, sont proportionnelles au produit $f(z)\sigma_8(z)$ et caractérisent ainsi la formation des structures observées dans l'univers.
 
-Une de ces quantités est le facteur linéaire de croissance des structures à un redshift donné 
+En plus de la nature inconnue de la matière noire et de l'énergie noire, le modèle $\Lambda$CDM présente également des tensions sur certains paramètres. Une tension survient lorsque des analyses utilisant différents types d'observation obtiennent une différence significative de valeur de paramètres. La plus connue est la tension sur la constante de Hubble $H_0$\footnote{les mesures directes utilisant le fond diffus cosmologique donne $H_0 \sim 67$ km.s$^{-1}$.Mpc$^{-1}$, tandis que les mesures indirectes reposant sur des supernovae ou des phénomènes de lentillage gravitationnel tendent vers $H_0 \sim 73$ km.s$^{-1}$.Mpc$^{-1}$.}, mais il existe également une tension sur $\sigma_8$ (voir les valeurs en Table \ref{tab:fs8}. Il est donc particulièrement important de déterminer sa valeur avec précision.
 
-DES Y3 + KIDS-1000 \cite{dark_energy_survey_y3_2023} $\sigma_8 = 0.825^{+0.067}_{-0.073}$
-SDSS IV : \cite{eboss_collaboration_completed_2021}$\sigma_8 = 0.85 \pm 0.03$
-Planck2018 : \cite{planck_collaboration_planck_2020} $\sigma_8 = 0.811\pm 0.006$
-DESI : \cite{chen_not_2024}, $\sigma_8 = 0.878^{+0.089}_{-0.080}$
+\begin{table}
+	\begin{tabular}{l|c}
+		Relevé & valeur\\
+		\hline\\
+		Planck2018 (\cite{planck_collaboration_planck_2020}) & $\sigma_8 = 0.811\pm 0.006$\\
+		DES Y3 + KIDS-1000 (\cite{dark_energy_survey_y3_2023}) & $\sigma_8 = 0.825^{+0.067}_{-0.073}$\\
+		SDSS IV  (\cite{eboss_collaboration_completed_2021}) & $\sigma_8 = 0.85 \pm 0.03$\\
+		DESI (\cite{chen_not_2024}) & $\sigma_8 = 0.878^{+0.089}_{-0.080}$
+	\end{tabular}
+	\caption{Mesures de $\sigma_8$ avec différentes sondes}
+	\label{tab:fs8}
+\end{table}
 
 \subsection{Analyse du clustering des galaxies pour mesurer $f\sigma_8$}
 
-Il faut donc pouvoir mesurer le facteur de croissance des structures $f(z)$ avec précision en incluant différents effets tels que les \textbf{\textit{Redshift Space Distorsion} (RSD)} (\cite{kaiser_clustering_1987}), des distorsions liées aux transformations des coordonnées comobiles vers l'espace des redshifts. Pour mesurer la croissance des structures, la méthode la plus commune se base sur ces distorsions. Le redshift mesuré, par exemple par spectroscopie, ne contient pas uniquement le redshift cosmologique dû à l'expansion de l'univers, mais inclut également une contribution due aux vitesses particulières des galaxies par effet  Doppler.
+Pour mesurer la croissance des structures, la méthode la plus commune se base sur les \textbf{\textit{Redshift Space Distorsion} (RSD)} (\cite{kaiser_clustering_1987}), des distorsions liées aux transformations des coordonnées comobiles vers l'espace des redshifts. Le redshift mesuré, par exemple par spectroscopie, ne contient pas uniquement le redshift cosmologique dû à l'expansion de l'univers, mais inclut également une contribution par effet Doppler due aux vitesses particulières des galaxies, c'est-à-dire leurs vitesses propres par rapport à l'expansion de l'Univers.
+
 Ce terme supplémentaire déplace les galaxies dans l'espace des redshifts par rapport à l'espace comobile, et les corrélations spatiales du champ de densité deviennent alors anisotropes : le long de la ligne de visée, les galaxies semblent plus regroupées qu'orthogonalement à la ligne de visée. A grande échelle, l'amplitude de cette anisotropie étant proportionnelle au facteur de croissance des structures $f$ et à l'amplitude des fluctuations du champ de densité, représenté communément par $\sigma_8$ (l'écart-type du champ de densité dans une sphère de rayon 8$h^{-1}$Mpc), ces analyses du clustering des galaxies contraignent le paramètre composite $f(z)\sigma_8(z)$. De nombreuses analyses des distorsions dans l'espace des redshifts ont été effectuées à l'aide de relevés spectroscopiques, tels que 6dFGRS (\cite{beutler_6df_2012}), SDSS-MGS (\cite{howlett_clustering_2015}), FastSound (\cite{okumura_subaru_2016}), SDSS-III BOSS (\cite{alam_clustering_2017}) ou SDSS-IV eBOSS (\cite{eboss_collaboration_completed_2021}). Les dernières mesures atteignent une précision de l'ordre de 10\%, et sont compatibles avec la relativité générale.
 
 Une autre méthode pour mesurer $f\sigma_8$ est de dériver le paramètre des mesures directes des vitesses particulières des galaxies. Les vitesses particulières peuvent être mesurées directement à condition de pouvoir mesurer indépendamment les redshifts et les distances absolues des galaxies. Des mesures précises des redshifts peuvent être obtenues par spectroscopie et des estimations des distances peuvent être obtenues en utilisant les corrélations entre les distances et d'autres observables, telle que la relation de Tully-Fisher pour les galaxies spirales (corrélation entre la vitesse radiale de ses étoiles et la luminosité totale de la galaxie, \cite{tully_new_1977}) ou la méthode du Plan Fondamental (\cite{djorgovski_fundamental_1987}). Ces corrélations sont utilisables uniquement pour des galaxies à des redshifts relativement faibles ($z < 0,1$) car les incertitudes augmentent rapidement avec le redshift. Les propriétés statistiques d'un échantillon de vitesses particulières peuvent ensuite être utilisées seules ou en combinaison avec un champ de densité de galaxies (\cite{adams_joint_2020, qin_redshift_2019, turner_local_2023}.
 
-\subsection{Analyse cosmologique avec des SN Ia}
+\subsection{DESI DR1}
 
-À bas redshift, un autre moyen d'obtenir les distances vient des supernovae (SNe) de type Ia (\cite{hoyle_nucleosynthesis_1960}). Ces SNe sont des explosions thermonucléaire de naine blanche dnas un système binaire, riches en carbone et oxygène, et présentent la particularité d’avoir des conditions d'explosions très similaires les unes aux autres. Grâce à cette standardisabilité, elles constituent d'excellentes chandelles standard, et ont notamment permis la découverte de l'accélération de l'expansion de l'Univers (\cite{perlmutter_cosmology_1998, riess_observational_1998}). La réalisation d'un diagramme de Hubble\footnote{Un diagramme de Hubble est la représentation de la relation $v(d)=H(z) d$, où $v$ est la vitesse d'un objet par rapport à l'observeur et $d$ sa distance à l'observeur.} de nouvelle génération utilisant des lots encore non exploités de SN Ia des relevés \textit{Zwicky Transient Facility} (ZTF, \cite{bellm_zwicky_2018}), le SuperNovae Legacy Survey (SNLS, \cite{pritchet_snls_2004}) et Hyper Suprime-Cam Subaru Strategic Programm (HSC-SSP, \cite{miyazaki_hyper_2012,aihara_hyper_2018}) est actuellement l’objet du projet \lemaitre au LPNHE. Ce projet vise à développer un nouveau pipeline d'analyse cosmologique à partir des SN Ia adapté au traitement des volumes de données attendus des prochains programmes d’observation tels que LSST (\cite{the_lsst_dark_energy_science_collaboration_lsst_2021}).
+\todo{PRESENTER DESI}
 
-La standardisation des SN Ia est décrite par la formule de Tripp (\cite{tripp_two-parameter_1998})
+Cette méthode à été utilisée à partir de la simulation Uchuu (\cite{prada_desi_2023}) à 2.1 milliars de particules, peuplée avec des galaxies du \textit{DESI Bright Galaxy Survey} (BGS) qui est un set complet de galaxies lumineuses ($r < 19.5$ pour le sous-échantillon \textit{Bright}) à bas redshift ($z<0.4$) (\cite{hahn_desi_2023}), pour produire un univers statistiquement fidèle au notre. Le catalogue obtenu reproduit donc à la fois le champ de densité et le champ de vitesse, à partir duquel des SNe avec vitesses particulières peuvent être tirées.
+
+
+\subsection{Analyse cosmologique avec des SN Ia pour mesurer $f\sigma_8$}
+
+À bas redshift, un autre moyen d'obtenir les distances vient des supernovae (SNe) de type Ia (\cite{hoyle_nucleosynthesis_1960}). Ces SNe sont des explosions thermonucléaire de naine blanche dans un système binaire, riches en carbone et oxygène, et présentent la particularité d’avoir des conditions d'explosions très similaires les unes aux autres. En particulier, les évolutions temporelles de leur luminosité dans leurs référentiels propres sont très similaires. Le maximum de flux émis, environ 5 milliards de fois plus que le soleil, est corrélé à leurs durées et leurs couleurs intrinsèque selon deux lois, communément appelées \textit{brighter-slower} et \textit{brighter-bluer}. Les SNe plus brillantes présentent une décroissance plus lente (donc durent plus longtemps), et présentent un décalage de leurs longueurs d'ondes émises vers le bleu, qui n'est pas du à un effet de redshift.
+
+Grâce à ces deux corrélations, il est possible de décrire leurs flux maximaux à l'aide de deux paramètres, nommés \textit{stretch}\footnote{Comme pour le redshift, le paramètre de \textit{stretch} n'a pas d'équivalent français utilisé dans la communauté, le terme anglais sera donc employé à la place.} et couleur, et d'exprimer leur flux maximal en fonction d'un flux moyen et de contributions liées au stretch et à la couleur.
+
+Cette caractéristique rend les SNe Ia standardisables et en fait d'excellentes chandelles standard~: des événements astrophysiques dont la luminosité peut être modélisée, ce qui permet d'en déduire directement leurs distances. Les SNe Ia ont ainsi permis la découverte de l'accélération de l'expansion de l'Univers (\cite{perlmutter_cosmology_1998, riess_observational_1998}).
+
+Pour exprimer cette standardisation, il est plus commode de travailler avec des magnitudes plutôt que des flux, définies par $M=\log_{10}(\mcl f)$. La standardisation des SN Ia est alors décrite par la formule de Tripp (\cite{tripp_two-parameter_1998})
 \begin{equation}
 \label{eq:tripp}
     M^*_{b,SN} = M_b - \alpha x_{1,SN} + \beta c_{SN} + \sigma_{int}
 \end{equation}
-où $M^*_{b,SN}$ est la magnitude absolue (\textit{i.e.} dans le référentiel propre) de la SN dans la bande B, $x_{1,SN}$ est le \textit{stretch} (étalement temporel) de la SN, $c_{SN}$ est la couleur (décalage spectral) de la SN, $M_b$ est la magnitude absolue moyenne à $c=0$ et $x_1=0$ dans la bande B, $\alpha$ et $\beta$ sont des coefficients valant respectivement $0.14$ et $3.15$, et $\sigma_{int}$ est la dispersion intrinsèque des SNe. En pratique $\sigma_{int}$ suit une distribution Gaussienne d'écart-type $0.10$.
+où $M^*_{b,SN}$ est la magnitude absolue\footnote{\textit{i.e.} dans le référentiel propre} en bande B, $x_{1,SN}$ est le \textit{stretch}, $c_{SN}$ est la couleur, et $M_b$ est la magnitude absolue moyenne à $c=0$ et $x_1=0$ dans la bande B. Expérimentalement, on mesure $M_b=19.3$, ainsi que les coefficients $\alpha=0.14$ et $\beta=3.15$. En réalité, la standardisation n'est pas parfaite et une dispersion intrinsèque subsiste, représentée par $\sigma_{int}$. Cette dispersion est modélisée par une distribution gaussienne d'écart type $0.10$.
 
-Une fois la standardisation effectuée et le modèle accordé au diagramme de Hubble, les résidus au modèle donnent accès aux vitesses particulières des SNe, c’est-à-dire la vitesse des galaxies hôtes des SNe par rapport à l’expansion de l’univers (\cite{davis_effect_2011}). Cet effet est représenté en Fig. \ref{fig:residues}. Si les hôtes des SNe n’avaient pas de vitesses particulières, le redshift des SNe proviendrait uniquement de l’expansion de l’univers et elles s’aligneraient parfaitement sur le modèle. En réalité, elles sont décalées horizontalement par rapport à la ligne de base du modèle car les vitesses particulières de leurs hôtes est la source d’un effet Doppler additionnel qui modifie leur redshift~: les SNe qui se rapprochent de nous apparaissent plus bleues et celles qui s’éloignent de nous apparaissent plus rouges qu’elles ne devraient l’être. Elle fournissent donc une estimation des vitesses particulières qui peut être utilisées en combinaison avec un champ de densité de galaxies pour mener une analyse $f\sigma_8$ (\cite{boruah_bayesian_2022, stahl_peculiar-velocity_2021}). Ces analyses jointes permettent de meilleure contraintes sur $f\sigma_8$ à bas redshift que pour les analyses de RSD des galaxies (voir Fig. \ref{fig:fs8}).
+L'outil principal pour exploiter les SNe est le diagramme de Hubble, la représentation de la relation entre les distances des SNe, représentées par leurs magnitudes, avec leurs vitesses, représentée par leurs redshifts. Un tel diagramme est représenté en Figure \ref{fig:residues}. Un modèle peut alors être ajusté, et les résidus au modèle donnent accès aux vitesses particulières des SNe (\cite{davis_effect_2011}). En effet, les magnitudes des SNe dépendent de leurs redshift cosmologiques, dus à l'expansion de l'univers, et non de leurs redshift observé, qui inclue les vitesses particulières. Les SNe apparaissent alors comme décalées horizontalement par rapport au diagramme de Hubble, et leurs vitesses particulières sont contenues dans les résidus au modèle.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{figures/Residues.png}
-    \caption{Diagramme de Hubble et SNe simulés. Les vitesses particulières selon la ligne de visée provoque un écart entre leur redshift cosmologique et le redshift observé, ce qui se traduit par un décalage horizontal des SNe par rapport à la ligne de base du diagramme de Hubble. Les SNe ayant une vitesse particulière positive s'éloignent de nous et nous apparaissent plus rouges, tandis que celles ayant une vitesse particulière négative nous apparaissent plus bleues. Crédit : B. Carreres}
+    \caption{Diagramme de Hubble de SNe simulés. Les vitesses particulières selon la ligne de visée provoque un écart entre leur redshift cosmologique et le redshift observé, ce qui se traduit par un décalage horizontal des SNe par rapport à la ligne de base du diagramme de Hubble. Les SNe ayant une vitesse particulière positive s'éloignent de nous et nous apparaissent plus rouges, tandis que celles ayant une vitesse particulière négative nous apparaissent plus bleues. Crédit : B. Carreres}
     \label{fig:residues}
 \end{figure}
+
+Les analyses de clustering de galaxies sont moins performantes à bas redshift, car le volume étudié ne contient qu'un faible nombre de galaxies et cette statistique est insuffisante pour produire des analyses précises. Les SNe Ia constituent alors un bien meilleur traceur du champs de vitesses à bas redshift que les galaxies, et permettent de meilleurs contraintes sur la croissance des structures (cf Figure \ref{fig:fs8}).
 
 \begin{figure}
     \centering
@@ -121,67 +149,16 @@ Une fois la standardisation effectuée et le modèle accordé au diagramme de Hu
     \label{fig:fs8}
 \end{figure}
 
-\subsection{DESI DR1}
+\subsection{Le projet \lemaitre}
 
-\subsection{ZTF DR2/2.5}
+ La réalisation d'un diagramme de Hubble de nouvelle génération utilisant des lots encore non exploités de SN Ia des relevés \textit{Zwicky Transient Facility} (ZTF, \cite{bellm_zwicky_2018}), SuperNovae Legacy Survey (SNLS, \cite{pritchet_snls_2004}) et Hyper Suprime-Cam Subaru Strategic Programm (HSC-SSP, \cite{miyazaki_hyper_2012,aihara_hyper_2018}) est actuellement l’objet du projet \lemaitre au LPNHE. Ce projet vise à développer un nouveau pipeline d'analyse cosmologique des SN Ia à partir de zéro, adapté au traitement des volumes de données attendus des prochains programmes d’observation tels que LSST (\cite{the_lsst_dark_energy_science_collaboration_lsst_2021}). Ce projet utilisant des lots non exploités, la mesure des paramètres du modèle sera donc indépendante des mesures précédentes.
 
-
-\section{Objectifs}
-
-L'objectif du stage est double~:
+La partie analyse cosmologique du pipeline \lemaitre \footnote{Un module de calibration est présent en amont, mais n'est pas l'objet de ce stage et ne sera donc pas abordé.} (voir également la Figure \ref{fig:lemaitre_pipeline}) est composé des modules suivants~:
 \begin{enumerate}
-    \item Produire des échantillons simulés de SNe basés sur les positions des galaxies de la simulation Uchuu qui reproduit les données spectroscopiques du DESI BGS, ainsi que les observations de ZTF, et les utiliser pour tester le pipeline \lemaitre actuellement en développement au LPNHE pour produire les diagrammes de Hubble et reconstruire la cosmologie sous-jacente des échantillons. Le pipeline étant encore en développement, je développe l'intégration des différents modules et je les teste.
-    \item Comparer les résultats de ce pipeline, \textit{i.e.} les positions ainsi que les vitesses particulières reconstruites, aux données d'entrée et les utiliser pour
-    	\begin{enumerate}
-		\item Estimer $f \sigma_8$ à partir des vitesses particulières de SNe de ZTF et comparer ces résultats avec ceux de B. Carreres (\cite{carreres_growth-rate_2023}).
-		\item Produire une analyse jointe du DESI BGS et des SNe de ZTF pour quantifier le gain sur les contraintes de $f\sigma_8$.
-	\end{enumerate}
+    \item Le module \pets (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie ainsi que les SNe mal échantillonnée. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl. La principale difficulté que doit résoudre ce module est de proposer une sélection indépendante du redshift et du rapport signal sur bruit, car cela introduirait des biais dans la suite de l'analyse. Plus de détails sont disponibles en Annexe \ref{anx:pets}.
+    \item Le module \nacl (Nouvel algorithme de Courbe de lumière) évalue ensuite les luminosités des SNe dans leurs référentiels propres, ainsi que leurs paramètres de standardisations en entraînant un modèle empirique. Il vise à ré-implémenter un modèle type \saltd ( adapté à l'analyse des volumes de données des relevés futures. De plus, les incertitudes sont propagées lors de l'entraînement, et ne nécessite pas leurs caractérisations a posteriori sur des simulations. Le fonctionnement détaillé de ce module est présenté en Annexe \ref{anx:nacl}.
+    \item Le module \edris (Estimateur de Distance pour les Relevés Incomplets de Supernovae) utilise les paramètres de standardisations et leur matrice de covariance pour ajuster un modèle cosmologique, en prenant en compte des effets de sélection de manière analytique. Là encore, l'estimation des biais introduit par des effets de sélections sur les modèles est habituellement traitée a posteriori sur des simulations. Le détail de ce module est présenté en Annexe \ref{anx:edris}.
 \end{enumerate}
-
-\section{Enjeux}
-
-L'enjeu majeur de ce stage est la validation du pipeline \lemaitre sur des simulations. En particulier, l'intégration faisant partie des tâches de ce stage, les différents modules n'ont été testés qu'individuellement sur des données simplifiées ou approximées. Les simulations de SNe utilisées et passées à travers tous les modules sont plus réalistes et permettront de mettre en lumière les points critiques dans l'exécution du pipeline. Ces points critiques incluent (sans être restreints à) le paramétrage des modules, des différences éventuelles de convention ou de nommage des variables utilisées, des erreurs dans les modèles, approximations ou dans leur implémentation et la caractérisation des biais potentiels.
-Le fait de travailler sur des simulations permet un plus fin contrôle des conditions de test que les données réelles, et de facilement prendre en compte ou retirer différents effets.
-
-Un second enjeu est l'estimation du gain offert par \lemaitre, et plus généralement des SNe de ZTF, dans l'estimation de $f\sigma_8$ par rapport à une analyse du seul clustering du DESI BGS. Comme évoqué précédemment, la détermination précise de ce paramètre est essentielle pour pouvoir valider ou invalider différents modèles de gravitation.
-
-
-
-\section{Reformulation du problème dans son contexte}
-
-\todo{Estimation fs8 -> contraintes sur les modèles, meilleure compréhension/modélisation de l'univers}
-
-
-\chapter{Approche et analyse}
-
-\section{État de l'art}
-\consignes{méthodes, raisons des choix faits, analyses menées (état de l’art)}
-
-\subsection{Mesurer $f\sigma_8$ avec le clustering des galaxies et les SN de type Ia}
-\label{sec:art}
- Plusieurs méthodes ont été développées pour extraire des mesures du taux de croissance à partir de vitesses particulières~:
- \begin{itemize}
-     \item la méthode dite du maximum de vraisemblance, où les champs de vitesse (et de densité) sont supposés être tirés de distributions Gaussiennes multivariées et sur lesquels un ajustement de $f\sigma_8$ est réalisé par maximum de vraisemblance (\cite{johnson_6df_2014, huterer_testing_2017, howlett_2mtf_2017, adams_joint_2020, lai_using_2022, carreres_growth-rate_2023});
-     \item l'analyse de statistiques compressées à deux points telles que la fonction de corrélation à deux points, le spectre de puissance, ou les vitesses moyennes par paire sur lesquelles $f\sigma_8$ est ajusté (\cite{nusser_velocity-density_2017, dupuy_estimation_2019, qin_redshift_2019, turner_local_2023});
-     \item la comparaison entre les vitesses observées et celles reconstruites à partir du champ de densité (\cite{davis_effect_2011, carrick_cosmological_2015, boruah_cosmic_2020, said_joint_2020, stahl_peculiar-velocity_2021}). En utilisant un modèle de gravitation, on peut exprimer le champ de vitesse à partir du champ de densité et du taux de croissance des structures. Cette relation peut alors être utilisée pour obtenir $f\sigma_8$ en faisant concorder les vitesse particulières observées et celles obtenues à partir du champ de densité;
-     \item l'inférence dite \textit{fieldlevel}, qui consiste à retracer l'évolution complète de l'univers à partir de conditions initiales à l'aide d'un modèle, puis à comparer le résultat obtenu aux observations des champs de densité et vitesses, et rétro-propager les erreurs jusqu'au conditions initiales (\cite{boruah_bayesian_2022, prideaux-ghee_field-based_2023}). 
-\end{itemize}
-
-Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fig. \ref{fig:carreres_11}. J'utilise pour l'analyse $f\sigma_8$ la méthode décrite dans \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}, qui est de comparer les vitesses observées reconstruites avec des SN Ia aux vitesses déduites du champ de densité. Une description plus détaillée est donnée en Annexe \ref{anx:fs8}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/Carreres_fig_11.png}
-    \caption{Mesures du coefficient de croissance des structures $f\sigma_8$ à partir de vitesses particulières et de catalogues de galaxies. Les barres d'erreurs en trait fin inclues les erreurs systématiques, à l'exception de Dupuy et al. 2019, pour lequel la contribution supplémentaire vient de la variance cosmique. Credit : 
-    \cite{carreres_growth-rate_2023}.}
-    \label{fig:carreres_11}
-\end{figure}
-
-
-\section{Approche de résolution du problème}
-\consignes{présentation détaillée de l’approche de résolution de problème retenue, des ressources scientifiques, techniques et humaines mises en oeuvre, de l’organisation du travail}
-
-La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} pour les simulations et reconstruction de vitesses particulières des SNe en utilisant les nouveaux modules développés pour le projet \lemaitre. L'analyse $f\sigma_8$ prévue suit quand à elle celle de \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}.
 
 \begin{figure}
 \centering
@@ -216,10 +193,70 @@ La méthode générale employée suit celle de \cite{carreres_growth-rate_2023} 
 \label{fig:lemaitre_pipeline}
 \end{figure}
 
-\subsection{Génération des SN Ia et reconstruction des vitesses particulières}
-\label{sec:gne_SN}
+Aux paramètres de standardisations $(x_1, c)$ précédemment introduits, on ajoute également le paramètre d'amplitude $x_0 = 10^{0.4 M^*_b}$, car la magnitude intervient sous cette forme dans le modèle \saltd. Les paramètres d'amplitude et de stretch utilisés par \nacl seront en revanche notés $X_0$, $X_1$ et $C$, car du fait des différences dans les contraintes et du ré-entraînement (voir Annexe \ref{anx:nacl}), rien ne garantit que ces paramètres soient exactement les mêmes. Dans les faits, ce n'est d'ailleurs pas le cas, mais les modules de distance demeurent eux bien constants entre \saltd et \nacl.
 
-Les vitesses particulières des SNe simulées ne peuvent pas être tirées aléatoirement, puisqu'elles doivent être en accord avec les structures de galaxies et les unes avec les autres. Une possibilité est de simuler la dynamique de la matière noire d'un univers via une simulation à N-corps, et de la peupler de galaxies en fonction de la distribution de densité obtenue. Cette méthode à été utilisée à partir de la simulation Uchuu (\cite{prada_desi_2023}) à 2.1 billions de particules, peuplée avec des galaxies du \textit{DESI Bright Galaxy Survey} (BGS) qui est un set complet de galaxies lumineuses ($r < 19.5$ pour le sous-échantillon \textit{Bright}) à bas redshift ($z<0.4$) (\cite{hahn_desi_2023}), pour produire un univers statistiquement fidèle au notre. Le catalogue obtenu reproduit donc à la fois le champ de densité et le champ de vitesse, à partir duquel des SNe avec vitesses particulières peuvent être tirées.
+\subsection{Analyse jointe }
+
+Il est également possible de cumuler les deux analyses, en introduisant dans le clustering des galaxies les vitesses particulières des SNe. Une telle analyse $f\sigma_8$ a par exemple été menée dans \cite{boruah_bayesian_2022, stahl_peculiar-velocity_2021}. Ces analyses jointes permettent de meilleure contraintes sur $f\sigma_8$ à bas redshift que pour les analyses de RSD des galaxies seules (voir Fig. \ref{fig:fs8}), et sont donc particulièrement intéressante obtenir des mesure de précision.
+
+\section{Objectifs}
+
+L'objectif du stage est double~:
+\begin{enumerate}
+    \item Produire des échantillons simulés de SNe basés sur les positions des galaxies de la simulation Uchuu qui reproduit les données spectroscopiques du DESI BGS, ainsi que les observations de ZTF, et les utiliser pour tester le pipeline \lemaitre actuellement en développement au LPNHE pour produire les diagrammes de Hubble et reconstruire la cosmologie sous-jacente des échantillons. Le pipeline étant encore en développement, je développe l'intégration des différents modules et je les teste.
+    \item Comparer les résultats de ce pipeline, \textit{i.e.} les positions ainsi que les vitesses particulières reconstruites, aux données d'entrée et les utiliser pour
+    	\begin{enumerate}
+		\item Estimer $f \sigma_8$ à partir des vitesses particulières de SNe de ZTF et comparer ces résultats avec ceux de B. Carreres (\cite{carreres_growth-rate_2023}).
+		\item Produire une analyse jointe du DESI BGS et des SNe de ZTF pour quantifier le gain sur les contraintes de $f\sigma_8$.
+	\end{enumerate}
+\end{enumerate}
+
+\section{Enjeux}
+
+L'enjeu majeur de ce stage est la validation du pipeline \lemaitre sur des simulations. En particulier, l'intégration faisant partie des tâches de ce stage, les différents modules n'ont été testés qu'individuellement sur des données simplifiées ou approximées. Les simulations de SNe utilisées et passées à travers tous les modules sont plus réalistes et permettront de mettre en lumière les points critiques dans l'exécution du pipeline. Ces points critiques incluent (sans être restreints à) le paramétrage des modules, des différences éventuelles de convention ou de nommage des variables utilisées, des erreurs dans les modèles, approximations ou dans leur implémentation et la caractérisation des biais potentiels.
+Le fait de travailler sur des simulations permet un plus fin contrôle des conditions de test que les données réelles, et de facilement prendre en compte ou retirer différents effets.
+
+Un second enjeu est l'estimation du gain offert par \lemaitre, et plus généralement des SNe de ZTF, dans l'estimation de $f\sigma_8$ par rapport à une analyse du seul clustering du DESI BGS. Comme évoqué précédemment, la détermination précise de ce paramètre est essentielle pour pouvoir valider ou invalider différents modèles de gravitation.
+
+\section{Reformulation du problème dans son contexte}
+
+L'estimation précise du paramètre $f\sigma_8$ est essentielle à la cosmologie actuelle. Elle permet a minima de contraindre les paramètres du modèle $\Lambda$CDM, et de valider ou invalider différents modèles de gravités dont la relativité générale afin d'améliorer notre compréhension de l'Univers. Cette estimation nécessite, à bas redshift, l'utilisation de traceurs plus performants que les seuls catalogues de galaxie du fait du faible volume exploré. Les données de SNe Ia peuvent fournir les vitesses particulières nécessaires à cette estimation, mais les relevés récents et futurs nécessiteront de traiter des volumes de données plus importants qu'auparavant. Dans ce contexte, le développement d'une nouvelle chaîne d'analyse adaptée est fondamental, et est l'objectif du pipeline \lemaitre. Ce pipeline nécessite cependant d'être testé sur des simulations afin de diagnostiquer d'éventuels problème ou biais, et de quantifier la précision sur les vitesses particulières reconstruites.
+
+
+\chapter{Approche et analyse}
+
+\section{État de l'art}
+\consignes{méthodes, raisons des choix faits, analyses menées (état de l’art)}
+
+\subsection{Mesurer $f\sigma_8$ avec le clustering des galaxies et les SN de type Ia}
+\label{sec:art}
+ Plusieurs méthodes ont été développées pour extraire des mesures du taux de croissance à partir de vitesses particulières~:
+ \begin{itemize}
+     \item la méthode dite du maximum de vraisemblance, où les champs de vitesse (et de densité) sont supposés être tirés de distributions Gaussiennes multivariées et sur lesquels un ajustement de $f\sigma_8$ est réalisé par maximum de vraisemblance (\cite{johnson_6df_2014, huterer_testing_2017, howlett_2mtf_2017, adams_joint_2020, lai_using_2022, carreres_growth-rate_2023});
+     \item l'analyse de statistiques compressées à deux points telles que la fonction de corrélation à deux points, le spectre de puissance, ou les vitesses moyennes par paire sur lesquelles $f\sigma_8$ est ajusté (\cite{nusser_velocity-density_2017, dupuy_estimation_2019, qin_redshift_2019, turner_local_2023});
+     \item la comparaison entre les vitesses observées et celles reconstruites à partir du champ de densité (\cite{davis_effect_2011, carrick_cosmological_2015, boruah_cosmic_2020, said_joint_2020, stahl_peculiar-velocity_2021}). En utilisant un modèle de gravitation, on peut exprimer le champ de vitesse à partir du champ de densité et du taux de croissance des structures. Cette relation peut alors être utilisée pour obtenir $f\sigma_8$ en faisant concorder les vitesse particulières observées et celles obtenues à partir du champ de densité;
+     \item l'inférence dite \textit{fieldlevel}, qui consiste à retracer l'évolution complète de l'univers à partir de conditions initiales à l'aide d'un modèle, puis à comparer le résultat obtenu aux observations des champs de densité et vitesses, et rétro-propager les erreurs jusqu'au conditions initiales (\cite{boruah_bayesian_2022, prideaux-ghee_field-based_2023}). 
+\end{itemize}
+
+Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fig. \ref{fig:carreres_11}. J'utilise pour l'analyse $f\sigma_8$ la méthode décrite dans \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}, qui est de comparer les vitesses observées reconstruites avec des SN Ia aux vitesses déduites du champ de densité. Une description plus détaillée est donnée en Annexe \ref{anx:fs8}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/Carreres_fig_11.png}
+    \caption{Mesures du coefficient de croissance des structures $f\sigma_8$ à partir de vitesses particulières et de catalogues de galaxies. Les barres d'erreurs en trait fin inclues les erreurs systématiques, à l'exception de Dupuy et al. 2019, pour lequel la contribution supplémentaire vient de la variance cosmique. Credit : 
+    \cite{carreres_growth-rate_2023}.}
+    \label{fig:carreres_11}
+\end{figure}
+
+\section{Approche de résolution du problème}
+\consignes{présentation détaillée de l’approche de résolution de problème retenue, des ressources scientifiques, techniques et humaines mises en oeuvre, de l’organisation du travail}
+
+La méthode employée pour la génération suit celle de \cite{carreres_growth-rate_2023} pour les simulations, c'est à dire de tirer les paramètres de standardisations de distributions expérimentales, puis de générer des observations à partir de ces paramètres et des logs d'observations réels de ZTF. La reconstruction de vitesses particulières des SNe utilisera elle les nouveaux modules développés pour le projet \lemaitre. L'analyse $f\sigma_8$ prévue suit quand à elle celle de \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}.
+
+\subsection{Génération des SN Ia}
+\label{sec:gen_SN}
+
+Les vitesses particulières des SNe simulées ne peuvent pas être tirées aléatoirement, puisqu'elles doivent être en accord avec les structures de galaxies et les unes avec les autres. Une possibilité est de simuler la dynamique de la matière noire d'un univers via une simulation à N-corps, et de la peupler de galaxies en fonction de la distribution de densité obtenue. 
 
 Dans un premier temps, un échantillon de SN Ia est généré selon les distributions observées des paramètres $x_0$, $x_1$, $c$ et $t_0$ (voir Table \ref{tab:snia}), et les positions et redshifts des galaxies BGS simulées dans Uchuu à l'aide de \skysurvey\footnote{\href{https://skysurvey.readthedocs.io/en/latest/}{https://skysurvey.readthedocs.io/en/latest/}}.
 
@@ -242,40 +279,42 @@ Dans un premier temps, un échantillon de SN Ia est généré selon les distribu
 Seules les galaxies à redshift $z<0.06$ sont utilisées afin de s'affranchir du biais de Malmquist (voir notamment \cite{carreres_growth-rate_2023} ou \cite{boyd_accounting_2024}). Ce biais observationnel vient du fait que les télescopes ont une magnitude limite d'observation, au-delà de laquelle les SNe ne sont plus détectées. Or, à un redshift donné, les SNe couvrent une plage de magnitude du fait de la dispersion due aux paramètres de standardisations, à la dispersion intrinsèque et aux vitesses particulières. Ainsi, à haut redshift, les SNe les moins brillantes ne sont pas observées, ce qui biaiserait une estimation des paramètres cosmologique. ZTF est considéré complet jusqu'à $z=0.06$, ce qui signifie que l'impact du biais de Malmquist en dessous de ce redshift est négligeable.
 
 La période du 02/03/2018 au 01/01/2021 utilisée pour le tirage du temps de maximum correspond à la plage temporelle de la DR2 de ZTF\cite{rigault_ztf_2024}. Cette restriction sert à la fois à avoir un volume de donné proche de celui que devra traiter le pipeline \lemaitre pour estimer sa rapidité, et à pouvoir quantifier le gain qui pourrait être obtenu sur $f\sigma_8$ avec des données réelles. Le taux d'explosions de SN Ia est pris égal à $2,35 .10^4$Gpc$^{-3}$ (\cite{perley_zwicky_2020}).
-Pour le calcul de la magnitude observée, $d_L(z)$ représente la distance de luminosité, qui est calculée à l'aide d'un modèle $\Lambda$CDM contraint par les données de Planck 2015 (\cite{planck_collaboration_planck_2016}) pour correspondre au modèle cosmologique utilisé pour générer la simulation Uchuu.
+Pour le calcul de la magnitude observée, $d_L(z)$ représente la distance de luminosité, qui est calculée à l'aide d'un modèle $\Lambda$CDM contraint par les données de Planck 2015 (\cite{planck_collaboration_planck_2016}) pour correspondre au modèle cosmologique utilisé par la simulation Uchuu.
+
+Une simulation du relevé SNLS est également réalisée afin d'avoir un échantillon de SNe à plus haut redshift pour mieux contraindre le modèle cosmologique. Comme les redshifts observés par SNLS vont environ de $z=0.1$ à $z=1.2$, ils sont trop élévés pour le catalogue Uchuu BGS. Les positions des SNe sont donc tirées uniformément dans la footprint SNLS, et n'incluent pas d'effets de vitesses particulières. Seule la simulation de ZTF sera utilisée pour la reconstruction des vitesses particulières.
+
+\subsection{Reconstruction des vitesses particulières}
 
 Une fois les paramètres tirés, des points de données d'observations photométriques et spectroscopiques sont générés en utilisant le modèle de SNe \saltd (\cite{guy_salt2_2007, rigault_ztf_2024}) et les logs d'observations de ZTF. Ce modèle consiste en trois fonctions $M_0(p, \lambda)$, $M_1(p, \lambda)$ et $CL(\lambda)$ de manière à décrire les flux émis par les SNe dans leurs référentiels propres par~:
 \begin{equation}
-    F(SN, p, \lambda) = x_0 \times \qty[M_0(p, \lambda) + x_1 M_1(p, \lambda)] \times \exp[c CL(\lambda)]
+    F(SN, p, \lambda) = x_0 \times \qty[M^{\saltd}_0(p, \lambda) + x_1 M_1^{\saltd}(p, \lambda)] \times \exp[c CL^{\saltd}(\lambda)]
 \end{equation}
 où $p$, nommé phase, est le temps dans le référentiel de la SN depuis la date du maximum de luminosité dans la bande B, $\lambda$ est la longueur d'onde dans le référentiel de la SN, $x_0$ est l'amplitude du flux, et $x_1$ et $c$ sont les paramètres de standardisations de stretch et couleur. $M_0$ et $M_1$ sont appelés les modèles et $CL$ la loi de couleur.
-
-Une fois les observations simulées, le set de donné obtenu est passé à travers les différents modules du pipeline \lemaitre~:
-\begin{enumerate}
-    \item Le module \pets (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie ainsi que les SNe mal mesurés. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl, voir Annexe \ref{anx:pets}.
-    \item Le module \nacl (Nouvel algorithme de Courbe de lumière) ajuste un modèle type \saltd aux SNe et réévalue les paramètres de standardisations. Il fournit également la matrice de covariance des paramètres des différentes SN et des paramètres des modèles ajustés, voir Annexe \ref{anx:nacl}.
-    \item Le module \edris (Estimateur de Distance pour les Relevés Incomplets de Supernovae) utilise les paramètres de standardisations et leur matrice de covariance pour ajuster un modèle cosmologique sur les points de données et évaluer les paramètres $\alpha$ et $\beta$ du modèle de Tripp (eq. \ref{eq:tripp}), voir Annexe \ref{anx:edris}.
-\end{enumerate}
 
 Avec les résultats d'EDRIS, on peut remonter aux modules de distances
 \begin{equation}
     \mu = m_b - M_b^*
 \end{equation}
 où $m_b$ est la magnitude maximale dans la bande B.
-Comme les modules de distances ne dépendent que du redshift via le modèle cosmologique, en théorie $\mu = \mu(z)$ et tout les points devraient s'aligner sur le modèle (à une dispersion Gaussienne introduite par $\sigma_{int}$ près). En réalité comme mentionné en section \ref{sec:art}, les vitesses particulières ont pour effet de décaler les redshifts observés. Les points de données sont décalés horizontalement par rapport à la courbe théorique de $\mu(z)$ (voir Fig. \ref{fig:residues} et \ref{fig:edris_fit}).
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/edris_model_fit.png}
-    \caption{Modèle et standardisation ajustés par EDRIS}
-    \label{fig:edris_fit}
-\end{figure}
+Comme les modules de distances ne dépendent que du redshift via le modèle cosmologique, en théorie $\mu = \mu(z)$ et tout les points devraient s'aligner sur le modèle (à une dispersion Gaussienne introduite par $\sigma_{int}$ près). En réalité comme mentionné en section \ref{sec:art}, les vitesses particulières ont pour effet de décaler les redshifts observés. Les points de données sont décalés horizontalement par rapport à la courbe théorique de $\mu(z)$ (voir Fig. \ref{fig:residues}).
 
 On peut alors inverser cette courbe pour obtenir une relation $z(\mu)$, c'est-à-dire obtenir le redshift auquel correspond un module de distance, puis remonter aux vitesses particulières en utilisant~:
 \begin{equation}
     v_p = c (z_{obs} - z(\mu))
 \end{equation}
-avec $c$ la vitesse de la lumière.
+avec $c$ la vitesse de la lumière\footnote{à ne pas confondre avec la couleur. Comme il s'agit de l'unique utilisation de la vitesse de la lumière dans ce travail, la couleur continuera à être noté $c$}.
+
+\subsection{Meilleure reconstruction}
+
+Une meilleure reconstruction est possible en ré-entraînant le modèle lors de l'ajustement des paramètres. En effet, le modèle \saltd a été entraîné, puis les incertitudes évaluées sur des simulations. Or le modèle n'était pas nécessairement bien contraint sur l'intégralité de sa surface, et les incertitudes ne sont donc pas toujours fiables. Un ré-entraînement incluant la propagation des incertitudes devrait donc permettre d'améliorer la reconstruction du flux
+\begin{equation}
+    F(SN, p, \lambda) = X_0 \times \qty[M^{\nacl}_0(p, \lambda) + X_1 M^{\nacl}_1(p, \lambda)] \times \exp[0..4 C CL^{\nacl}(\lambda)]
+\end{equation}
+
+
+\todo{Avec réentraînement du modèle par \nacl, et intégration}
+
+
 
 \section{Résultats intermédiaires et finaux visés}
 \consignes{présentation des résultats intermédiaires et finaux visés}
@@ -295,7 +334,7 @@ Le second résultat visé est de reconstruire les paramètres des SNe à partir 
 Une fois les paramètres \saltd reconstruits, \edris sera exécuté afin d'obtenir la cosmologie sous-jacente et les coefficients de standardisation $\alpha$ et $\beta$.
 Cela permettra alors d'obtenir les vitesses particulières via les résidus au diagramme de Hubble, et de caractériser les biais éventuels.
 
-\subsubsection{Filtrage par \pets et reconstruction des SNe avec \nacl}
+\subsubsection{Reconstruction des SNe avec \lemaitre}
 
 En parallèle, le même résultat est attendu en utilisant \pets pour la sélection d'un lot d'entraînement puis l'entraînement du modèle et la reconstruction des paramètres des SNe avec \nacl. Cette deuxième reconstruction sera également injectée dans \edris afin d'obtenir les vitesses particulières, et caractériser les biais éventuels de \nacl.
 
@@ -367,7 +406,7 @@ De plus il est déjà possible de quantifier l'effet de la distribution intrins�
 	\label{fig:vp_sigma_int}
 \end{figure}
 
-La distribution des vitesses particulières ainsi reconstruites est représentée en Fig. \ref{fig:vp_draw}. Les vitesses particulières sont reconstruites avec une erreur moyenne de $18.4$km/s et une dispersion de $596.8$km/s. On observe bien une augmentation de l'erreur commise sur les vitesses particulières reconstruites, et cette augmentation suit l'erreur théorique due à la dispersion intrinsèque. De plus, si on calcule la moyenne des erreurs théoriques due à la dispersion intrinsèque sur l'échantillon complet, on obtient $\sigma_{v_{pec}}(\sigma_int) = 592.4$km/s, ce qui est proche de la dispersion observée.
+La distribution des vitesses particulières ainsi reconstruites est représentée en Fig. \ref{fig:vp_draw}. Les vitesses particulières sont reconstruites avec une erreur moyenne de $18.4$km/s et une dispersion de $596.8$km/s. On observe bien une augmentation de l'erreur commise sur les vitesses particulières reconstruites, et cette augmentation suit l'erreur théorique due à la dispersion intrinsèque. De plus, si on calcule la moyenne des erreurs théoriques due à la dispersion intrinsèque sur l'échantillon complet, on obtient $\sigma_{v_{pec}}(\sigma_{int}) = 592.4$km/s, ce qui est proche de la dispersion observée.
 
 \begin{figure}
 	\centering
@@ -376,9 +415,29 @@ La distribution des vitesses particulières ainsi reconstruites est représenté
 	\label{fig:vp_draw}
 \end{figure}
 
+Une fois les paramètres des SNe tirés, les observations photométriques et spectroscopiques sont générées sur la base du modèle \saltd et des logs d'observation de ZTF. De telles courbes de lumière et spectres sont représentés en Figure \ref{fig:obs}.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[c]{0.45\textwidth}
+%		\includegraphics[width=\textwidth]{figures/redshift_draw.png}
+		\caption{Courbes de lumière générées à partir des paramètres tirés. Les couleurs représentent les différents filtres utilisés.}
+		\label{fig:lc}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.5\textwidth}
+		\centering
+%		\includegraphics[width=\textwidth, trim={1cm 2.5cm 1cm 2.5cm}, clip]{figures/angular_draw.png}
+		\caption{Spectre généré à partir des paramètres tirés}
+		\label{fig:spectra}
+	\end{subfigure}
+	\label{fig:obs}
+	\caption{Exemple d'observations simulées pour les échantillons de SNe}
+\end{figure}
+
 \subsection{Filtrage par \pets}
 
-Quelques SNe 
+Le filtrage effectué par \pets permet d'enlever les SNe qui sont mal échantillonnées. Le nombre de SNe retirées à chaque étape de sélection est indiqué en Table \ref{tab:pets}, et suivent la démarche décrite en Annexe \ref{anx:pets}.
 
 \begin{table}
     \centering
@@ -388,14 +447,18 @@ Quelques SNe
          Total & - & 1591\\
          \saltd converge & 442 & 1149\\
          $\sigma_{t_{max}}<1$ & 31 & 1118\\
-         $|err^{t_{max}}_{3\sigma, max} - err^{t_{max}}_{3\sigma, max}|<0.3$ & 77 & 1041\\
+         $\chi^2(t_{max})$ est symétrique autour de $t_{max}$ & 77 & 1041\\
          Pas d'autres minimums à $8\sigma$ & 9 & 1032\\
 	$|x_1|<4$ & 0 & 1032\\
 	$|c|<2$ & 0  & 1032
     \end{tabular}
-    \caption{SNe rejetées par \pets à chaque étape de sélection}
+    \caption{SNe rejetées par \pets à chaque étape de sélection pour le lot ZTF simulé}
     \label{tab:pets}
 \end{table}
+
+ Des cas de figure typiques sont représentés en Figures \ref{fig:pets_good}, \ref{fig:pets_bad} et \ref{fig:pets_worst}.
+ 
+La première représente le cas d'une SNe bien échantillonnée~: le minimum de la fonction $\chi^2(t_{max}$ est unique, bien défini, et présente une incertitude de $0.012$ jours, ce qui est extrêmement faible. Cette précision est telle que les intervalles à $1\sigma$ et $3\sigma$ sont indiscernables du trait plein du $t_{max}$ déterminé, qui correspond parfaitement avec celui du fit initial. Les paramètres $x_1$ et $c$ ont également des valeurs raisonnables, la SN est donc conservée.
 
 \begin{figure}
 	\begin{subfigure}{0.45\textwidth}
@@ -412,7 +475,8 @@ Quelques SNe
 	\caption{SNe validée par \pets. Le minimum du $\chi^2$ est unique et bien défini.}
 	\label{fig:pets_good}
 \end{figure}
-
+ 
+Le second cas de figure (Figure \ref{fig:pets_bad}), est celui d'une SNe mal échantillonnée~: le minimum de la fonction $\chi^2(t_{max}$ est toujours unique, mais mal défini car le $\chi^2$ varie peu autour du minimum, ce qui a pour conséquence une incertitude de $^{+0.764}_{-0.828}$ jours et une asymétrie du $\chi^2$. Cette aplatissement du $\chi^2$ autour du minimum a pour conséquence majeure d'entraîner de fortes variations des fonctions $x_1(t_{max})$ et $c(t_{max})$, notamment vers $t_{max}=58 810$ où les deux paramètres sortent des plages acceptables. Ce comportement est à éviter pour l'entraînement de \nacl, car l'ajustement des paramètres du modèle conjointement à ceux des SNe a plus de chance de se bloquer et d'obtenir des paramètres de standardisations anormalement élevés. Cette SN est donc rejetée.
 
 \begin{figure}
 	\begin{subfigure}{0.45\textwidth}
@@ -429,6 +493,8 @@ Quelques SNe
 	\caption{SNe rejetée par \pets. Le minimum du $\chi^2$ est unique mais mal défini.}
 	\label{fig:pets_bad}
 \end{figure}
+
+Le troisième cas de figure concerne un cas pathologique, qui a été diagnostiqué lors de ce stage et est détaillé en Section \ref{sec:min_mult}. En effet, la SNe ne présente des points de photométrie que sur la fin de sa décroissance, ce qui a pour effet de focaliser la première estimation de $t_{max}$ autour de ces points. \pets ignorant alors les minimums aux extrémités de l'intervalle de $t_{max}$ utilisés, cette SNe ne présentait qu'un minimum bien défini, avec une incertitude faible de $\pm 0.111$ jours, et était donc satisfaisante. Ce comportement a donc été modifié pour prendre en compte les minimums aux extrémités, et la détection de minimums potentiellement problématiques remontée à $\Delta \chi^2 = 64$ (équivalent à une détection à $8\sigma$) plutôt que $\Delta \chi^2 = 9$ (respectivement $3\sigma$).
 
 
 \begin{figure}
@@ -449,7 +515,8 @@ Quelques SNe
 
 \subsection{Reconstruction avec \saltd}
 
-La première reconstruction possible une fois les courbes de lumières simulées à l'aide de \skysurvey est d'utiliser \saltd. 
+La première reconstruction possible une fois les courbes de lumières simulées à l'aide de \skysurvey est d'utiliser \saltd.
+\todo{Chaine rapide}
 
 %\begin{figure}
 %	\centering
@@ -458,9 +525,11 @@ La première reconstruction possible une fois les courbes de lumières simulées
 %	\label{fig:salt}
 %\end{figure}
 
-\todo{Reconstruction NaCl}
 
-\todo{Utiliser EDRIS sur les résultats SALT2.4 et NaCl}
+\subsection{Analyse cosmologique sur les résultats \saltd}
+
+
+\subsection{Reconstruction et vitesses particulières avec \nacl}
 
 
 \section{Problèmes identifiés dans le pipeline \lemaitre et corrections apportées}
@@ -470,8 +539,9 @@ J'ai identifié et traité différents problèmes et erreurs au sein du pipeline
 \subsection{Problèmes liés à des valeurs de méta-paramètres}
 
 \subsubsection{Minimums multiples dans \pets}
+\label{sec:min_mult}
 
-Un premier problème est apparu lors de l'utilisation de \pets concerne la caractérisation des SNe pour l'entraînement de \nacl. Certaines SNe ne présentent des points de mesure que sur la croissance ou la fin de la décroissance de leur luminosité pour des raisons observationnelles tel que leur concordance avec le début ou la fin d'une période d'observation. Ces SNe posent alors le problème d'être difficiles à caractériser, bien que parfaitement décrites par \saltd. En particulier, les SNe qui n'ont des points de photométrie que sur la fin de leur décroissance présentent souvent deux minimums locaux (voir \todo{METTRE UNE FIGURE}. Comme \pets utilise le point de données de flux le plus élevé comme point de départ pour ajuster le $t_{max, 0}$ à partir duquel la grille est générée, il peut converger vers un minimum local bien marqué et générer une grille ne couvrant pas le minimum global au vrai temps de maximum.
+Un premier problème est apparu lors de l'utilisation de \pets concerne la caractérisation des SNe pour l'entraînement de \nacl. Certaines SNe ne présentent des points de mesure que sur la croissance ou la fin de la décroissance de leur luminosité pour des raisons observationnelles tel que leur concordance avec le début ou la fin d'une période d'observation. Ces SNe posent alors le problème d'être difficiles à caractériser, bien que parfaitement décrites par \saltd. En particulier, les SNe qui n'ont des points de photométrie que sur la fin de leur décroissance présentent souvent deux minimums locaux (voir Figure \ref{fig:pets_worst}). Comme \pets utilise le point de données de flux le plus élevé comme point de départ pour ajuster le $t_{max, 0}$ à partir duquel la grille est générée, il peut converger vers un minimum local bien marqué et générer une grille ne couvrant pas le minimum global au vrai temps de maximum.
 
 La solution employée ici a été de remonter la détection des autres minimums de $3\sigma$ à $8\sigma$, et de retirer les SNe ainsi identifiées comme problématiques du lot de données à analyser. Une meilleure solution, implémentée pour les utilisations futures de \pets, est d'augmenter l'intervalle couvert par la grille, mais cela nécessite en contrepartie soit de diminuer sa résolution et donc l'estimation des incertitudes, soit d'utiliser plus de points, ce qui augmente le temps de calcul. A noter que si ces SNe sont bien décrites par \saltd, elles ne sont pas intéressantes pour entraîner \nacl puisqu'elles ne comportent que peu de point de données et ne couvrent qu'une faible fraction des phases. Elles pourraient être fittées après entraînement afin de gagner en statistiques, mais le gain restera minime puisqu'elles demeurent assez rares (environ ~1\% des SNe respectant par ailleurs les autres critères de \pets).
 
@@ -552,7 +622,10 @@ Les vitesses particulières ainsi obtenues sont représentées en Fig. \ref{fig:
 
 \section{Postérité pour l'entreprise}
 
-\todo{Mahmoud utilise des simus semblables, intégration implémentée dans george par Jérémy}
+
+La génération des SNe est effectuée à l'aide du module \skysurvey, mais il s'agit d'une nouvelle fonctionnalité qui n'était pas disponible auparavant. Si le tirage utilise actuellement les positions des SNe suivant le catalogue Uchuu BGS, il est possible d'utiliser n'importe quelle autre catalogue de galaxies ou plus généralement n'importe quelle table de coordonnées $(RA,DEC,Z)$. Mon implémentation est actuellement en cours d'intégration au module \skysurvey comme méthode potentielle de tirage des positions, afin de pouvoir être réutilisée pour des analyses futures.
+
+\todo{Mahmoud utilise des simus semblables, intégration implémentée dans george par Jérémy, skysurvey}
 
 
 
