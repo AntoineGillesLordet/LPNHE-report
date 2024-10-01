@@ -571,7 +571,9 @@ Les modules de distances sont très biens reconstruits, l'erreur moyenne commise
 
 \subsection{Analyse cosmologique sur les résultats \saltd}
 
-Les vitesses particulières obtenues sont représentées en Fig. \ref{fig:vp_salt}. Les vitesses reconstruites sont en bon accord avec les vitesses injectées, mais présentent un léger biais. L'erreur moyenne n'est que de $270$km.s$^{-1}$ et l'écart type de l'erreur commise est de $791$km.s$^{-1}$, ce qui est plus élevé de 36\% que l'effet attendu de la dispersion intrinsèque, à $581$km.s$^{-1}$. On peut également noter le fait que le biais sur la moyenne des erreurs évolue avec le redshift, qui peut être à l'origine d'une part du biais non nul observé sur l'ensemble de l'échantillon, et d'autre part de l'élargissement de la dispersion. Un tel effet est intéressant puisqu'il pourrait s'agir d'un effet de flux cohérent, c'est-à-dire que les galaxies hôtes présentent toutes une même composante de vitesse par rapport à l'observateur liée à la formation d'une structure commune. 
+Les vitesses particulières obtenues sont représentées en Fig. \ref{fig:vp_salt}. Les vitesses reconstruites sont en bon accord avec les vitesses injectées, mais présentent un léger biais. L'erreur moyenne n'est que de $270$km.s$^{-1}$ et l'écart type de l'erreur commise est de $791$km.s$^{-1}$, ce qui est plus élevé de 36\% que l'effet attendu de la dispersion intrinsèque, à $581$km.s$^{-1}$. On peut également noter le fait que le biais sur la moyenne des erreurs évolue avec le redshift, qui peut être à l'origine d'une part du biais non nul observé sur l'ensemble de l'échantillon, et d'autre part de l'élargissement de la dispersion. Un tel effet est intéressant puisqu'il pourrait s'agir d'un effet de flux cohérent, c'est-à-dire que les galaxies hôtes présentent toutes une même composante de vitesse par rapport à l'observateur liée à la formation d'une structure commune.
+
+Ce biais peut également être causé par une mauvaise estimation des paramètres du modèle par \edris~: un des principal défaut des analyses cosmologiques basées sur les SNe Ia est qu'elles n'imposent pas de contraintes sur la constante de Hubble $H_0$ car elle intervient dans le calcul de la magnitude selon le modèle sous la forme d'un terme additif. Cela signifie qu'une variation du à la calibration des flux ou de la magnitude de référence en bande B $m_B$ peut être à tort interprétée comme une modification de $H_0$. Pour les vitesses particulières, un tel effet se traduirait par un déplacement vertical artificiel des modules de distance, et introduirait donc un biais sur l'ensemble des modules de distance reconstruits par \edris.
 
 \begin{figure}
 	\centering
@@ -584,7 +586,7 @@ Les vitesses particulières obtenues sont représentées en Fig. \ref{fig:vp_sal
 \subsection{Reconstruction et vitesses particulières avec \nacl}
 En exécutant la même chaîne avec le résultat de \nacl, on obtient les résultats suivants.
 
-Les résultats de l'entraînement de \nacl sont présentés en Figur \ref{fig:nacl_residuals} pour les paramètres des SNe, en Figure \ref{fig:nacl_models} pour les modèles, et en Figure \ref{fig:nacl_mu} pour les modules de distances.
+Les résultats de l'entraînement de \nacl sont présentés en Figure \ref{fig:nacl_residuals} pour les paramètres des SNe, en Figure \ref{fig:nacl_models} pour les modèles, et en Figure \ref{fig:nacl_mu} pour les modules de distances.
 
 \begin{figure}
 	\centering
@@ -658,23 +660,25 @@ Les biais présents ne gênent en rien la modélisation des courbes de lumière 
 		\label{fig:nacl_m1}
 	\end{subfigure}
 	\hfill	
-	\begin{subfigure}{0.9\textwidth}
+	\begin{subfigure}[c]{0.35\textwidth}
 		\centering
 		\includegraphics[width=0.8\textwidth]{figures/nacl_cl.png}
 		\caption{Loi de couleur $CL(\lambda)$}
 		\label{fig:nacl_cl}
 	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.6\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/nacl_coverage.png}
+		\caption{Couverture du modèle par les points de photométrie (\textit{i.e.} des courbes de lumières) et les points de spectroscopie}
+		\label{fig:nacl_coverage}
+	\end{subfigure}
+
 	\caption{Modèles \saltd et modèles \nacl entraînés. Les zones de fortes fluctuations des modèles entraînés, autour des bornes de la surface, est du au manque de points de données contraignant le modèle}
 	\label{fig:nacl_models}
 \end{figure}
 
-Le ré-entraînement des modèles 
-
-\begin{figure}
-
-\end{figure}
-
-Les modules de distances reconstruits par \nacl présentent un biais d'environ $-0.2$ mag (cf Figure \ref{fig:nacl_mu}), mais ce biais n'est pas gênant pour la suite de l'analyse. En effet, comme mentionné précédemment, les magnitudes ne sont définies que relativement les unes aux autres.
+Les modèles ré-entraînés semble diverger et fluctuent anormalement aux bornes de leurs ensembles de définition (cf Figure \ref{fig:nacl_m0}, \ref{fig:nacl_m1}), mais cela n'est pas un problème. En effet, ce sont des zones sur lesquels le modèle \saltd initial étaient défini, mais qui n'était pas contraintes par les données utilisées pour l'entraînement (cf. Figure \ref{fig:nacl_coverage}). Le modèle ajusté n'est donc pas fiable dans ces régions. Ces fortes fluctuations sont toutefois surprenantes, d'une part car la contrainte de régularisation (voir Annexe \ref{anx:nacl}) vise précisément à empêcher ces fluctuations, d'autre part car c'est habituellement la marque d'un sur-entraînement, pour lequel le modèle a trop de paramètres libres et manque de données pour les contraindre. En revanche, les modèles \saltd et \nacl s'accordent dans les régions contraintes par les données.
 
 \begin{figure}
     \centering
@@ -682,8 +686,9 @@ Les modules de distances reconstruits par \nacl présentent un biais d'environ $
     \caption{Résidus des modules de distances $\mu = -2.5\log_{10} X_0 - 0.14 \times X_1 + 3.15 \times  C$ reconstruits par \nacl. Ils présentent un biais d'environ $-0.2$ mag, qui est causé par le ré-entraînement des modèles, mais n'est pas gênant pour l'analyse cosmologique.}
     \label{fig:nacl_mu}
 \end{figure}
+Les modules de distances reconstruits par \nacl présentent un biais d'environ $-0.2$ mag (cf Figure \ref{fig:nacl_mu}), mais ce biais n'est pas gênant pour la suite de l'analyse. En effet, comme mentionné précédemment, les magnitudes ne sont définies que relativement les unes aux autres.
 
-Les vitesses particulières obtenues sont représentées en Fig. \ref{fig:vp_nacl}. Les vitesses reconstruites sont en bon accord avec les vitesses injectées, mais présentent un léger biais. L'erreur moyenne n'est que de $265$km.s$^{-1}$ et l'écart type de l'erreur commise est de $686$km.s$^{-1}$, ce qui correspond à une augmentation de la dispersion de 18\% par rapport à l'effet attendu de la dispersion intrinsèque.
+Les vitesses particulières obtenues à l'aide d'\edris sont représentées en Fig. \ref{fig:vp_nacl}. Les vitesses reconstruites sont en bon accord avec les vitesses injectées, mais présentent un léger biais. L'erreur moyenne n'est que de $265$km.s$^{-1}$ et l'écart type de l'erreur commise est de $686$km.s$^{-1}$, ce qui correspond à une augmentation de la dispersion de 18\% par rapport à l'effet attendu de la dispersion intrinsèque.
 
 \begin{figure}
 	\centering
@@ -692,10 +697,7 @@ Les vitesses particulières obtenues sont représentées en Fig. \ref{fig:vp_nac
 	\label{fig:vp_nacl}
 \end{figure}
 
-
-Le biais entre les vitesses reconstruites par \saltd et \nacl étant semblables, son origine ne provient pas de l'algorithme de reconstruction des paramètres de standardisation. Il peut être en revanche causé par une mauvaise estimation des paramètres du modèle par \edris~: un des principal défaut des analyses cosmologiques basées sur les SNe Ia est qu'elles n'imposent pas de contraintes sur la constante de Hubble $H_0$ car elle intervient dans le calcul de la magnitude selon le modèle sous la forme d'un terme additif. Cela signifie qu'une variation du à la calibration des flux ou de la magnitude de référence en bande B $m_B$ peut être à tort interprétée comme une modification de $H_0$. Pour les vitesses particulières, un tel effet se traduirait par un déplacement vertical artificiel des modules de distance, et introduirait donc un biais généralisé sur l'ensemble des SNe.
-
-En revanche le ré-entraînement du modèle pour \nacl a permis une meilleure estimation des vitesses particulières, puisque la dispersion additionnelle sur l'effet de la dispersion intrinsèque a été réduit de 38\% à 18\%.
+Le biais entre les vitesses reconstruites par \saltd et \nacl étant semblables, son origine ne provient pas de l'algorithme utilisé pour la reconstruction des paramètres de standardisation. En revanche le ré-entraînement du modèle pour \nacl a permis une meilleure estimation des vitesses particulières, puisque la dispersion additionnelle sur l'effet de la dispersion intrinsèque a été réduit de 38\% à 18\%.
 
 
 \section{Problèmes identifiés dans le pipeline \lemaitre et corrections apportées}
@@ -877,7 +879,6 @@ Les différences entre \nacl et \saltd ne sont pas liées au modèle de SNe lui-
 \item La calibration des filtres est intégrée dans le modèle ce qui permet d'estimer directement son impact sur les paramètres reconstruits, plutôt que d'entraîner le modèle sur différents lots avec des calibrations variables.
 \item En conséquence de la différence précédente, le modèle d'erreur, c'est à dire l'incertitude du modèle sur les valeurs de flux, est également ajusté lors de l'entraînement plutôt qu'estimé a posteriori.
 \end{itemize}
-Le lecteur attentif aura noté que les amplitudes et stretch de SALT étaient notées avec des minuscules $x_0$ et $x_1$, tandis que celles de NaCl sont notées avec des majuscules $X_0$ et $X_1$. Cette différence est intentionnelle, puisque du fait des différences dans les contraintes et l'entraînement, rien ne garantit que ces paramètres soient exactement les mêmes, ce qui n'est d'ailleurs pas le cas dans les faits (\textcolor{red}{cf Résultats}).
 
 \subsubsection{Contraintes}
 
