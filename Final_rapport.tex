@@ -13,11 +13,11 @@
 \usepackage{subcaption}
 
 
-\usepackage[backend=biber, style=apa, maxcitenames=3]{biblatex}  
+\usepackage[backend=biber, style=apa, maxcitenames=2, uniquelist=false, uniquename=false]{biblatex}  
 \addbibresource{biblio.bib}
 
 
-\usepackage[english]{babel}
+\usepackage[francais]{babel}
 \usepackage[a4paper]{geometry}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.17} 
@@ -41,7 +41,7 @@
 
 \newcommand{\Ms}[0]{\textup{M}_\odot}
 \newcommand{\todo}[1]{{\textcolor{red}{\bf \large #1}}}
-\newcommand{\consignes}[1]{{\textcolor{blue}{\bf \large #1}}}
+
 
 \def\lemaitre{\textsc{Lemaître}\xspace}
 \def\skysurvey{\texttt{skysurvey}\xspace}
@@ -50,6 +50,41 @@
 \def\edris{\texttt{EDRIS}\xspace}
 \def\saltd{\texttt{SALT2.4}\xspace}
 
+\renewcommand\maketitle{\begin{titlepage}
+	\let\footnotesize\small
+	\let\footnoterule\relax
+	\let \footnote \thanks
+	\null\vfil
+	\vskip 60\p@
+	\begin{center}%
+		{\huge \@title \par}%
+		\vskip 3em%
+		{\large
+		\lineskip .75em%
+		\begin{tabular}[t]{c}%
+			\@author
+		\end{tabular}\par}%
+		\vskip 1.5em%
+		{\large \@date \par}%
+		\vskip 2em%
+		\includegraphics[height=3cm]{figures/logo_lpnhe.png} \\[1cm]
+		\includegraphics[height=3cm]{figures/CentraleSupélec Quadri UPSaclay.png}
+	\end{center}\par
+	\@thanks
+	\vfil\null
+\end{titlepage}%
+\setcounter{footnote}{0}%
+\global\let\thanks\relax
+\global\let\maketitle\relax
+\global\let\@thanks\@empty
+\global\let\@author\@empty
+\global\let\@date\@empty
+\global\let\@title\@empty
+\global\let\title\relax
+\global\let\author\relax
+\global\let\date\relax
+\global\let\and\relax
+}
 
 
 \let\mcl\mathcal
@@ -58,13 +93,19 @@
 
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
-\title{Rapport final de stage de Recherche au LPNHE\\\vspace{.3em} \large Mesure de la croissance des structures avec les galaxies du DESI BGS et les supernovae de type Ia de ZTF~: vers une analyse jointe}
-\author{Antoine Gilles--Lordet\\ \vspace{.1em} \small encadré par Pauline Zarrouk et Nicolas Regnault }
-\date{}
+\title{Rapport final de stage de fin d'études\\[.3em] \LARGE Mesure de la croissance des structures avec les galaxies du DESI BGS et les supernovae de type Ia de ZTF~: vers une analyse jointe}
+\author{ \large Antoine Gilles--Lordet\\[.1em] encadré par Pauline Zarrouk et Nicolas Regnault }
 
 \begin{document}
-
+\pagenumbering{gobble}
 \maketitle
+
+\chapter*{Remerciements}
+
+Je tiens à remercier l'ensemble du LPNHE et tout particulièrement le groupe cosmologie, pour l'accueil qu'ils m'ont réservés pour mon projet de troisième année puis mon stage de fin d'études. Ce fut un véritable plaisir de travailler avec mes encadrants, Pauline Zarrouk et Nicolas Regnault, et bien que je parte effectuer ma thèse à Stockholm, j'espère que j'aurai d'autres occasions de collaborer avec eux. Je remercie également Thomas De Jaeger, Dylan Kuhn et Mahmoud Osman pour leurs aides multiples sur l'utilisation des modules \pets, \edris et \nacl, et Marc Betoule pour ses explications très claires sur toutes les méthodes d'analyses utilisées.
+
+\clearpage
+\pagenumbering{arabic}
 
 \tableofcontents
 
@@ -79,7 +120,7 @@ Ce stage se base sur les données de deux relevés, le relevé \textit{Dark Ener
 Lors de ce stage, j'ai assemblée une chaîne d'analyse cosmologique et je l'ai testée sur des simulations. Pour cela des SNe de type Ia possédant des vitesses particulières sont générées selon un modèle cosmologique fixé et le catalogue de galaxies Uchuu BGS, et des observations sont simulées à l'aide des logs d'observations de ZTF. La chaîne d'analyse \lemaitre actuellement en développement au LPNHE est alors utilisée afin de reconstruire les paramètres de ces SNe ainsi que leurs vitesses particulières, ce qui constitue la base d'une future mesure du taux de croissances des structures dans l'Univers à l'aide de SNe.
 
 \clearpage
-\section*{Version anglaise}
+\section*{English version}
 Modern cosmology is based on a model build from Albert Einstein's general relativity known as$\Lambda$CDM, which assumes that the Universe contains around 5\% ordinary matter, 25\% dark matter that only interacts gravitationally, and 60\% dark energy whose role is to accelerate the expansion of the Universe. This acceleration is still poorly understood, and alternative models of gravitation have been proposed to explain it without involving this last component. In this context, this internship aims to determine the growth rate of structures in the Universe, as the temporal evolution of this quantity depends directly on the underlying cosmological model. It is therefore a test of general relativity on cosmological scales.
 
 This internship uses data from two surveys, \textit{Dark Energy Spectroscopic Instrument} (DESI) and \textit{Zwicky Transient Facility} (ZTF). DESI aims to catalogue and map the galaxies in our nearby Universe, by measuring their angular positions and redshifts using spectroscopy. These galaxies move relatively to us due to the expansion of the Universe and also posses their own velocity relative to the expansion of the Universe, as they are constantly falling in gravitational potential wells. These peculiar velocities distort the redshift distribution by Doppler effect and it is possible to measure the growth rate of structures from this distortion. ZTF is an observation programme designed to detect transient phenomena, in particular type Ia \textit{supernovae} (SNe). These SNe are called standard candles which means that their luminosities and distances are correlated. We can then reconstruct the theoretical redshifts according to their distances and deduce the component arising from peculiar velocities in the observed redshifts. This allows to accurately reconstruct the velocity of their host galaxies. Using type Ia SNe in combination with a galaxy catalogue considerably improves the accuracy of the growth rate of structures.
@@ -119,38 +160,38 @@ Une autre méthode pour mesurer $f\sigma_8$ est de dériver le paramètre des me
 
 \subsection{DESI}
 
-De telles analyses font parties des objectifs du relevé \textit{Dark Energy Spectrscopic Instrument} (DESI). Ce programme d'observation utilise 5000 fibres optiques positionnées à l'aide de robots pour réaliser des spectres des galaxies nous entourant, afin de construire une cartographie 3D de l'univers proche, jusqu'à $z=1.7$. Ce relevé constitue le relevé de galaxies le plus dense jamais réalisées, les premières données publiées (nommées DESI EDR, \textit{Early Data Release}) représentent 700 000 objets, et seulement 1\% du volume final couvert. La publication des données DESI Y1 (\textit{Year 1}), dont la prise s'est arrêtée en juin 2022 est prévue pour 2025, mais a déjà permis la réalisation d'analyses cosmologiques (\cite{desi_collaboration_desi_2024}, \cite{desi_collaboration_desi_2024-1}, \cite{desi_collaboration_desi_2024-2}) ainsi que la production de catalogues simulés fidèles à l'univers observé, tel que le catalogue Uchuu.
+De telles analyses font parties des objectifs du relevé \textit{Dark Energy Spectrscopic Instrument} (DESI). Ce programme d'observation utilise 5000 fibres optiques positionnées à l'aide de robots pour réaliser des spectres des galaxies nous entourant, afin de construire une cartographie 3D de l'univers proche, jusqu'à $z=1.7$. Ce relevé constitue le relevé de galaxies le plus dense jamais réalisées, les premières données publiées (nommées DESI EDR, \textit{Early Data Release}) représentent 700 000 objets, et seulement 1\% du volume final couvert. La publication des données DESI Y1 (\textit{Year 1}), dont la prise s'est arrêtée en juin 2022 est prévue pour 2025, mais a déjà permis la réalisation d'analyses cosmologiques (\cite{desi_collaboration_desi_2024-1,desi_collaboration_desi_2024-2, desi_collaboration_desi_2024}) ainsi que la production de catalogues simulés fidèles à l'univers observé, tel que le catalogue Uchuu.
 
 Ce catalogue a été réalisé à partir de la simulation éponyme Uchuu\footnote{\href{https://skiesanduniverses.org/Simulations/Uchuu/}{https://skiesanduniverses.org/Simulations/Uchuu/}} (\cite{prada_desi_2023}), une simulation à N-corps utilisant 2.1 milliards de particules, peuplée avec des galaxies du \textit{DESI Bright Galaxy Survey} (BGS) qui est un set complet de galaxies lumineuses\footnote{ce sous-échantillon est défini comme ayant une magnitude en bande r inférieure à $19.5$} à bas redshift ($z<0.4$) (\cite{hahn_desi_2023}), pour produire un univers statistiquement fidèle au notre. Le catalogue ainsi obtenu reproduit le champ de densité de la simulation Uchuu mais aussi le champ de vitesse. Il donne donc accès aux redshifts cosmologiques et aux redshifts observés, et peut être utilisé comme base d'une analyse $f\sigma_8$ sur des simulations.
 
 
 \subsection{Analyse cosmologique avec des SN Ia pour mesurer $f\sigma_8$}
 
-À bas redshift, un autre moyen d'obtenir les distances vient des supernovae (SNe) de type Ia (\cite{hoyle_nucleosynthesis_1960}). Ces SNe sont des explosions thermonucléaire de naine blanche dans un système binaire, riches en carbone et oxygène, et présentent la particularité d’avoir des conditions d'explosions très similaires les unes aux autres. En particulier, les évolutions temporelles de leur luminosité dans leurs référentiels propres sont très similaires. Le maximum de flux émis, environ 5 milliards de fois plus que le soleil, est corrélé à leurs durées et leurs couleurs intrinsèque selon deux lois, communément appelées \textit{brighter-slower} et \textit{brighter-bluer}. Les SNe plus brillantes présentent une décroissance plus lente (donc durent plus longtemps), et présentent un décalage de leurs longueurs d'ondes émises vers le bleu, qui n'est pas du à un effet de redshift.
+À bas redshift, un autre moyen d'obtenir les distances vient des supernovae (SNe) de type Ia (\cite{hoyle_nucleosynthesis_1960}). Ces SNe sont des explosions thermonucléaires de naines blanches dans un système binaire, riches en carbone et oxygène, et présentent la particularité d’avoir des conditions d'explosions très similaires les unes aux autres. En particulier, les évolutions temporelles de leur luminosité dans leurs référentiels propres sont très similaires. Le maximum de flux émis, environ $10^{10}$ fois plus que le soleil, est corrélé à leurs durées et leurs couleurs intrinsèque selon deux lois, communément appelées \textit{brighter-slower} et \textit{brighter-bluer}. Les SNe plus brillantes présentent une décroissance plus lente (donc durent plus longtemps), et présentent un décalage de leurs longueurs d'ondes émises vers le bleu, qui n'est pas du à un effet de redshift.
 
 Grâce à ces deux corrélations, il est possible de décrire leurs flux maximaux à l'aide de deux paramètres, nommés \textit{stretch}\footnote{Comme pour le redshift, le paramètre de \textit{stretch} n'a pas d'équivalent français utilisé dans la communauté, le terme anglais sera donc employé à la place.} et couleur, et d'exprimer leur flux maximal en fonction d'un flux moyen et de contributions liées au stretch et à la couleur.
 
 Cette caractéristique rend les SNe Ia standardisables et en fait d'excellentes chandelles standard~: des événements astrophysiques dont la luminosité peut être modélisée, ce qui permet d'en déduire directement leurs distances. Les SNe Ia ont ainsi permis la découverte de l'accélération de l'expansion de l'Univers (\cite{perlmutter_cosmology_1998, riess_observational_1998}).
 
-Pour exprimer cette standardisation, il est plus commode de travailler avec des magnitudes plutôt que des flux, définies par $M=\log_{10}(\mcl f)$. La standardisation des SN Ia est alors décrite par la formule de Tripp (\cite{tripp_two-parameter_1998})
+Pour exprimer cette standardisation, il est plus commode de travailler avec des magnitudes plutôt que des flux. Les magnitudes sont définies par $M=\log_{10}(\mcl f)$, et les magnitudes absolues par $M_{abs} = \log_{10}(\mcl f /\mcl f_{ref})$, où $\mcl f_{ref}$ est le flux qu'aurait l'objet s'il se situait à une distance de 10 parsecs. La standardisation des SN Ia est alors décrite par la formule de Tripp (\cite{tripp_two-parameter_1998})
 \begin{equation}
 \label{eq:tripp}
-    M^*_{b,SN} = M_b - \alpha x_{1,SN} + \beta c_{SN} + \sigma_{int}
+    M^*_{b,SN} = M_b - \alpha x_{1,SN} + \beta c_{SN} + n(\sigma_{int}) \sigma
 \end{equation}
-où $M^*_{b,SN}$ est la magnitude absolue\footnote{\textit{i.e.} dans le référentiel propre} en bande B de la SN, $x_{1,SN}$ son \textit{stretch} et $c_{SN}$ sa couleur. $M_b$ est la magnitude absolue moyenne à $c=0$ et $x_1=0$ dans la bande B. Expérimentalement, on mesure $M_b=19.3$, ainsi que les coefficients $\alpha=0.14$ et $\beta=3.15$. En réalité, la standardisation n'est pas parfaite et une dispersion intrinsèque subsiste, représentée par $\sigma_{int}$. Cette dispersion est modélisée par une distribution gaussienne d'écart type $0.10$.
+où $M^*_{b,SN}$ est la magnitude absolue en bande B de la SN, $x_{1,SN}$ son stretch et $c_{SN}$ sa couleur. $M_b$ est la magnitude absolue moyenne à $c=0$ et $x_1=0$ dans la bande B. Expérimentalement, on mesure $M_b=19.3$, ainsi que les coefficients $\alpha=0.14$ et $\beta=3.15$. En réalité, la standardisation n'est pas parfaite et une dispersion intrinsèque subsiste, représentée par $\sigma_{int}$. Cette dispersion est modélisée par une distribution gaussienne d'écart type $0.10$.
 
 L'outil principal pour exploiter les SNe est le diagramme de Hubble, la représentation de la relation entre les distances des SNe, représentées par leurs magnitudes, avec leurs vitesses, représentée par leurs redshifts. Un tel diagramme est représenté en Figure \ref{fig:residues}. Un modèle peut alors être ajusté, et les résidus au modèle donnent accès aux vitesses particulières des SNe (\cite{davis_effect_2011}). En effet, les magnitudes des SNe dépendent de leurs redshift cosmologiques, dus à l'expansion de l'univers, et non de leurs redshift observé, qui inclue les vitesses particulières. Les SNe apparaissent alors comme décalées horizontalement par rapport au diagramme de Hubble, et leurs vitesses particulières sont contenues dans les résidus au modèle.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/Residues.png}
     \caption{Diagramme de Hubble de SNe simulés. Les vitesses particulières selon la ligne de visée provoque un écart entre leur redshift cosmologique et le redshift observé, ce qui se traduit par un décalage horizontal des SNe par rapport à la ligne de base du diagramme de Hubble. Les SNe ayant une vitesse particulière positive s'éloignent de nous et nous apparaissent plus rouges, tandis que celles ayant une vitesse particulière négative nous apparaissent plus bleues. Crédit : B. Carreres}
     \label{fig:residues}
 \end{figure}
 
-Les analyses de clustering de galaxies sont moins performantes à bas redshift, car le volume étudié ne contient qu'un faible nombre de galaxies et cette statistique est insuffisante pour produire des analyses précises. Les SNe Ia constituent alors un bien meilleur traceur du champs de vitesses à bas redshift que les galaxies, et permettent de meilleurs contraintes sur la croissance des structures (cf Figure \ref{fig:fs8}).
+Les analyses de clustering de galaxies sont moins performantes à bas redshift, car le volume étudié ne contient qu'un faible nombre de galaxies et cette statistique est insuffisante pour produire des analyses précises. Les SNe Ia constituent alors un bien meilleur traceur du champ de vitesses à bas redshift que les galaxies, mais leur statistique est trop faible pour décrire le champs de densité. Une analyse jointe reposant sur les deux types de traceurs permet d'obtenir de meilleurs contraintes sur la croissance des structures qu'une analyse uniquement des galaxies (cf Figure \ref{fig:fs8}).
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/fs8.png}
     \caption{Prévisions des contraintes sur $f\sigma_8$ pour les relevés DESI (\cite{hahn_desi_2023}), Euclid (\cite{euclid_collaboration_euclid_2024}) et la combinaison de DESI avec des vitesses particulières de ZTF (\cite{carreres_growth-rate_2023}) ou LSST (\cite{howlett_2mtf_2017}). Credit : J. Bautista}
@@ -163,14 +204,14 @@ Les analyses de clustering de galaxies sont moins performantes à bas redshift, 
 
 La partie analyse cosmologique du pipeline \lemaitre \footnote{Un module de calibration est présent en amont, mais n'est pas l'objet de ce stage et ne sera donc pas abordé.} (voir également la Figure \ref{fig:lemaitre_pipeline}) est composé des modules suivants~:
 \begin{enumerate}
-    \item Le module \pets (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie ainsi que les SNe mal échantillonnée. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl. La principale difficulté que doit résoudre ce module est de proposer une sélection indépendante du redshift et du rapport signal sur bruit, car cela introduirait des biais dans la suite de l'analyse. Plus de détails sont disponibles en Annexe \ref{anx:pets}.
-    \item Le module \nacl (Nouvel algorithme de Courbe de lumière) évalue ensuite les luminosités des SNe dans leurs référentiels propres, ainsi que leurs paramètres de standardisations en entraînant un modèle empirique. Il vise à ré-implémenter un modèle type \saltd ( adapté à l'analyse des volumes de données des relevés futures. De plus, les incertitudes sont propagées lors de l'entraînement, et ne nécessite pas leurs caractérisations a posteriori sur des simulations. Le fonctionnement détaillé de ce module est présenté en Annexe \ref{anx:nacl}.
-    \item Le module \edris (Estimateur de Distance pour les Relevés Incomplets de Supernovae) utilise les paramètres de standardisations et leur matrice de covariance pour ajuster un modèle cosmologique, en prenant en compte des effets de sélection de manière analytique. Là encore, l'estimation des biais introduit par des effets de sélections sur les modèles est habituellement traitée a posteriori sur des simulations. Le détail de ce module est présenté en Annexe \ref{anx:edris}.
+    \item Le module \pets (Preprocessing and sElection of a Training Sample) effectue une première sélection en éliminant les points de photométrie ainsi que les SNe mal échantillonnées. Il donne également une première évaluation des paramètre de standardisation des SNe, qui sert de point de départ pour NaCl. La principale difficulté que doit résoudre ce module est de proposer une sélection dont l'efficacité est indépendante du redshift et du rapport signal sur bruit, car cela introduirait des biais dans la suite de l'analyse. Plus de détails sont disponibles en Annexe \ref{anx:pets}.
+    \item Le module \nacl (Nouvel algorithme de Courbe de lumière) évalue ensuite les luminosités des SNe dans leurs référentiels propres, ainsi que leurs paramètres de standardisation en entraînant un modèle empirique. Il vise à ré-implémenter un modèle type \saltd dapté à l'analyse des volumes de données des relevés futures. De plus, les incertitudes sont propagées lors de l'entraînement, et ne nécessite pas leurs caractérisations a posteriori sur des simulations. Le fonctionnement détaillé de ce module est présenté en Annexe \ref{anx:nacl}.
+    \item Le module \edris (Estimateur de Distance pour les Relevés Incomplets de Supernovae) utilise les paramètres de standardisation et leur matrice de covariance pour ajuster un modèle cosmologique, en prenant en compte des effets de sélection de manière analytique. Là encore, l'estimation des biais introduit par des effets de sélections sur les modèles est habituellement traitée a posteriori sur des simulations. Le détail de ce module est présenté en Annexe \ref{anx:edris}.
 \end{enumerate}
 
-Un des objectifs à long terme du projet \lemaitre qui guide le développement des modules est de disposer d'un pipeline d'intégration continue. Cela signifie qu'un module doit à terme pouvoir être modifié ou remplacé, et qu'une nouvelle analyse cosmologique complète doit pouvoir automatiquement être réalisée. L'ambition est d'ainsi pouvoir continuer à développer les modules existants, en prenant en compte différents effets ou biais et d'obtenir rapidement une estimation des gains et des biais potentiels sur les paramètres cosmologiques.
+Un des objectifs à court terme du projet \lemaitre qui guide le développement des modules est de disposer d'un pipeline d'intégration continue. Cela signifie que dès qu'un module est modifié ou que les données changent, une nouvelle analyse cosmologique complète est automatiquement réalisée. L'ambition est d'ainsi pouvoir continuer à développer les modules existants, en prenant en compte différents effets ou biais et d'obtenir rapidement une estimation des gains et des biais potentiels sur les paramètres cosmologiques.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \begin{tikzpicture}[-stealth, line width=1.2pt]
 	\node[rectangle, draw] (calib) at (0,0) {Calibration};
@@ -205,7 +246,7 @@ Un des objectifs à long terme du projet \lemaitre qui guide le développement d
 
 \subsection{Analyse jointe }
 
-Il est également possible de cumuler les deux analyses, en introduisant dans le clustering des galaxies les vitesses particulières des SNe. Une telle analyse $f\sigma_8$ a par exemple été menée dans \cite{boruah_bayesian_2022, stahl_peculiar-velocity_2021}. Ces analyses jointes permettent de meilleure contraintes sur $f\sigma_8$ à bas redshift que pour les analyses de RSD des galaxies seules (voir Fig. \ref{fig:fs8}), et sont donc particulièrement intéressante obtenir des mesure de précision.
+Il est également possible de cumuler les deux analyses, en introduisant dans le clustering des galaxies les vitesses particulières des SNe. Une telle analyse $f\sigma_8$ a par exemple été menée dans \cite{boruah_bayesian_2022, stahl_peculiar-velocity_2021}. Ces analyses jointes permettent de meilleure contraintes sur $f\sigma_8$ à bas redshift que pour les analyses de RSD des galaxies seules (voir Fig. \ref{fig:fs8}), et sont donc particulièrement intéressantes obtenir des mesures de précision.
 
 \section{Objectifs}
 
@@ -234,7 +275,7 @@ L'estimation précise du paramètre $f\sigma_8$ est essentielle à la cosmologie
 \chapter{Approche et analyse}
 
 \section{État de l'art}
-\consignes{méthodes, raisons des choix faits, analyses menées (état de l’art)}
+
 
 \subsection{Mesurer $f\sigma_8$ avec le clustering des galaxies et les SN de type Ia}
 \label{sec:art}
@@ -248,7 +289,7 @@ L'estimation précise du paramètre $f\sigma_8$ est essentielle à la cosmologie
 
 Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fig. \ref{fig:carreres_11}. J'utilise pour l'analyse $f\sigma_8$ la méthode décrite dans \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}, qui est de comparer les vitesses observées reconstruites avec des SN Ia aux vitesses déduites du champ de densité. Une description plus détaillée est donnée en Annexe \ref{anx:fs8}.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/Carreres_fig_11.png}
     \caption{Mesures du coefficient de croissance des structures $f\sigma_8$ à partir de vitesses particulières et de catalogues de galaxies. Les barres d'erreurs en trait fin inclues les erreurs systématiques, à l'exception de Dupuy et al. 2019, pour lequel la contribution supplémentaire vient de la variance cosmique. Credit : 
@@ -257,9 +298,9 @@ Un résumé des valeurs obtenues par ces diverses analyse est représenté en Fi
 \end{figure}
 
 \section{Approche de résolution du problème}
-\consignes{présentation détaillée de l’approche de résolution de problème retenue, des ressources scientifiques, techniques et humaines mises en oeuvre, de l’organisation du travail}
 
-La méthode employée pour la génération suit celle de \cite{carreres_growth-rate_2023} pour les simulations, c'est à dire de tirer les paramètres de standardisations de distributions expérimentales, puis de générer des observations à partir de ces paramètres et des logs d'observations réels de ZTF. La reconstruction de vitesses particulières des SNe utilisera elle les nouveaux modules développés pour le projet \lemaitre. L'analyse $f\sigma_8$ prévue suit quand à elle celle de \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}.
+
+La méthode employée pour la génération suit celle de \cite{carreres_growth-rate_2023} pour les simulations, c'est à dire de tirer les paramètres de standardisation de distributions expérimentales, puis de générer des observations à partir de ces paramètres et des logs d'observations réels de ZTF. La reconstruction de vitesses particulières des SNe utilisera elle les nouveaux modules développés pour le projet \lemaitre. L'analyse $f\sigma_8$ prévue suit quand à elle celle de \cite{boruah_cosmic_2020,stahl_peculiar-velocity_2021}.
 
 \subsection{Génération des SN Ia}
 \label{sec:gen_SN}
@@ -276,7 +317,7 @@ Dans un premier temps, un échantillon de SN Ia est généré selon les distribu
          Temps de maximum du flux en bande B $t_0$ & Uniforme entre le 02/03/2018 et le 01/01/2021\\
          Stretch $x_1$ & Gaussienne bimodale (\cite{nicolas_redshift_2021})\\
          Couleur $c$ &  Loi exponentielle convoluée avec une gaussienne (\cite{ginolin_ztf_2024}) \\
-         Magnitude absolue $m_{abs}$ & Obtenue par la formule de Tripp\\
+         Magnitude absolue $m_{abs}$ & Obtenue par la formule de Tripp (eq \ref{eq:tripp})\\
          Magnitude observée $m_{obs}$ & $m_{obs} = 5 \log(d_L(z_{cosmo})) + 25 + m_{abs}$\\
          Amplitude $x_0$ & $x_0 = 10^{0.4(m_b - m_{obs})}$
     \end{tabular}
@@ -284,7 +325,7 @@ Dans un premier temps, un échantillon de SN Ia est généré selon les distribu
     \label{tab:snia}
 \end{table}
 
-Seules les galaxies à redshift $z<0.06$ sont utilisées afin de s'affranchir du biais de Malmquist (voir notamment \cite{carreres_growth-rate_2023} ou \cite{boyd_accounting_2024}). Ce biais observationnel vient du fait que les télescopes ont une magnitude limite d'observation, au-delà de laquelle les SNe ne sont plus détectées. Or, à un redshift donné, les SNe couvrent une plage de magnitude du fait de la dispersion due aux paramètres de standardisations, à la dispersion intrinsèque et aux vitesses particulières. Ainsi, à haut redshift, les SNe les moins brillantes ne sont pas observées, ce qui biaiserait une estimation des paramètres cosmologique. ZTF est considéré complet jusqu'à $z=0.06$, ce qui signifie que l'impact du biais de Malmquist en dessous de ce redshift est négligeable.
+Seules les galaxies à redshift $z<0.06$ sont utilisées afin de s'affranchir du biais de Malmquist (voir notamment \cite{carreres_growth-rate_2023} ou \cite{boyd_accounting_2024}). Ce biais observationnel vient du fait que les télescopes ont une magnitude limite d'observation, au-delà de laquelle les SNe ne sont plus détectées. Or, à un redshift donné, les SNe couvrent une plage de magnitude du fait de la dispersion due aux paramètres de standardisation, à la dispersion intrinsèque et aux vitesses particulières. Ainsi, à haut redshift, les SNe les moins brillantes ne sont pas observées, ce qui biaiserait une estimation des paramètres cosmologique. ZTF est considéré complet jusqu'à $z=0.06$, ce qui signifie que l'impact du biais de Malmquist en dessous de ce redshift est négligeable.
 
 La période du 02/03/2018 au 01/01/2021 utilisée pour le tirage du temps de maximum correspond à la plage temporelle de la DR2 de ZTF\cite{rigault_ztf_2024}. Cette restriction sert à la fois à avoir un volume de donné proche de celui que devra traiter le pipeline \lemaitre pour estimer sa rapidité, et à pouvoir quantifier le gain qui pourrait être obtenu sur $f\sigma_8$ avec des données réelles. Le taux d'explosions de SN Ia est pris égal à $2,35 .10^4$Gpc$^{-3}$ (\cite{perley_zwicky_2020}).
 Pour le calcul de la magnitude observée, $d_L(z)$ représente la distance de luminosité, qui est calculée à l'aide d'un modèle $\Lambda$CDM contraint par les données de Planck 2015 (\cite{planck_collaboration_planck_2016}) pour correspondre au modèle cosmologique utilisé par la simulation Uchuu.
@@ -297,9 +338,9 @@ Une fois les paramètres tirés, des points de données d'observations photomét
 \begin{equation}
     F(SN, p, \lambda) = x_0 \times \qty[M^{\saltd}_0(p, \lambda) + x_1 M_1^{\saltd}(p, \lambda)] \times \exp[c\ CL^{\saltd}(\lambda)]
 \end{equation}
-où $p$, nommé phase, est le temps dans le référentiel de la SN depuis la date du maximum de luminosité dans la bande B, $\lambda$ est la longueur d'onde dans le référentiel de la SN, $x_0$ est l'amplitude du flux, et $x_1$ et $c$ sont les paramètres de standardisations de stretch et couleur. $M_0$ et $M_1$ sont appelés les modèles et $CL$ la loi de couleur.
+où $p$, nommé phase, est le temps dans le référentiel de la SN depuis la date du maximum de luminosité dans la bande B, $\lambda$ est la longueur d'onde dans le référentiel de la SN, $x_0$ est l'amplitude du flux, et $x_1$ et $c$ sont les paramètres de standardisation de stretch et couleur. $M_0$ et $M_1$ sont appelés les modèles et $CL$ la loi de couleur.
 
-Une fois les paramètres de standardisations obtenus, il est alors possibles d'en déduire $M_b^*$ à l'aide de la formule de Tripp (eq \ref{eq:tripp}), puis d'obtenir les modules de distances
+Une fois les paramètres de standardisation obtenus, il est alors possibles d'en déduire $M_b^*$ à l'aide de la formule de Tripp (eq \ref{eq:tripp}), puis d'obtenir les modules de distances
 \begin{equation}
     \mu = m_b - M_b^* = m_b - M_b + \alpha x_{1, SN} - \beta c_{SN}
 \end{equation}
@@ -328,7 +369,6 @@ L'analyse $f\sigma_8$ initialement prévue n'a pas encore pu être réalisée, e
 
 
 \section{Résultats intermédiaires et finaux visés}
-\consignes{présentation des résultats intermédiaires et finaux visés}
 
 \subsection{Résultats intermédiaires}
 
@@ -351,12 +391,11 @@ En parallèle, le même résultat est attendu en utilisant \pets pour la sélect
 
 \subsection{Résultats finaux}
 
-Les résultats finaux visés contiennent la caractérisation des deux branches de reconstruction et leur comparaison, ainsi que l'exploitation des vitesses particulières reconstruites dans une analyse $f\sigma_8$ jointe Uchuu x ZTF.
+Les résultats finaux visés contiennent la caractérisation des deux reconstructions \saltd et \nacl et leur comparaison, ainsi que l'exploitation des vitesses particulières reconstruites dans une analyse $f\sigma_8$ jointe Uchuu x ZTF.
 
 \section{Difficultés rencontrées}
-\consignes{exposé des difficultés rencontrées et de la façon dont elles ont été surmontées}
 
-La principale difficulté que j'ai rencontré a été de suivre le développement des différents modules de \lemaitre tout en les utilisant et en remplissant mes tâches. Puisque l'intégration des modules n'était pas encore réalisée, j'ai pu identifier différents problèmes qui y étaient liés tels que des différences de convention ou de notation pour des variables. Mes tests ont également permis de révéler certains comportements anormaux des modules lors de leurs utilisations sur des données réalistes (par exemple des erreurs liées à des paramètres sortant des plages de définition du modèle dans NaCl), et de mettre en lumière des étapes de filtrages des données entre les modules afin d'assurer leurs bons fonctionnements. Cela a nécessité de faire des points pour discuter de l'avancement des modules en plus des points hebdomadaires prévus avec les autres membres de l'équipe, afin de remonter et résoudre les problèmes rencontrés, et être à jour sur l'utilisation des modules.
+La principale difficulté que j'ai rencontré a été de suivre le développement des différents modules de \lemaitre tout en les utilisant et en remplissant mes tâches. Puisque l'intégration des modules n'était pas encore réalisée, j'ai pu identifier différents problèmes qui y étaient liés tels que des différences de convention ou de notation pour des variables. Mes tests ont également permis de révéler certains comportements anormaux des modules lors de leurs utilisations sur des données réalistes (par exemple des erreurs liées à des paramètres sortant des plages de définition du modèle dans NaCl), et de mettre en lumière des étapes de filtrages des données entre les modules afin d'assurer leur bon fonctionnement. Cela a nécessité de faire des points pour discuter de l'avancement des modules en plus des points hebdomadaires prévus avec les autres membres de l'équipe, afin de remonter et résoudre les problèmes rencontrés, et être à jour sur l'utilisation des modules.
 
 Une autre difficulté notable a été la compréhension fine du domaine et des tâches, afin de proposer une analyse correcte et robuste. J'ai parfois eu du mal à différencier certains concepts et outils, mais avec des explications et l'aide de mes encadrants et des autres chercheurs de l'équipe, j'ai pu surmonter cette difficulté.
 
@@ -364,7 +403,7 @@ La principale difficulté nouvelle, dont je n'avais pas forcément conscience en
 
 
 \section{Gestion des risques réalisée}
-\consignes{gestion des risques réalisée}
+
 
 Les analyses cosmologiques souffrent principalement de deux risques~: la disponibilité des données, et le temps nécessaires à leur traitement.
 
@@ -379,23 +418,14 @@ Un autre risque majeur en cosmologie est le temps de calcul nécessaire au trait
 
 
 \chapter{Résultats}
-\consignes{présentation détaillée des résultats effectivement obtenus en les reliant au problème qui était à traiter et mettant en exergue :
-\begin{itemize}
-\item la validité des résultats par rapport au problème
-\item le caractère innovant / neuf des résultats
-\item l’utilité des résultats, l’usage effectif qui sera fait du travail de l’élève ingénieur
-\item la mise en exergue des limites du travail et des suites à donner à ce travail
-\item la quantification et/ou qualification de la valeur ajoutée
-\end{itemize}}
 
-
-\section{Validation de LEMAITRE sur simulations}
+\section{Validation du pipeline LEMAITRE sur simulations}
 
 \subsection{Génération de SNe à partir d'Uchuu}
 
 La distribution spatiale des SNe tirées est présentée en Fig. \ref{fig:z_draw} et \ref{fig:ang_draw}. La distribution en redshift observés (incluant les vitesses particulières) diffère bien des redshifts cosmologiques, et la distribution angulaire reproduit la footprint DESI Y5, qui est similaire à la footprint ZTF.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}[c]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{figures/redshift_draw.png}
@@ -415,7 +445,7 @@ La distribution spatiale des SNe tirées est présentée en Fig. \ref{fig:z_draw
 
 De plus il est déjà possible de quantifier l'effet de la distribution intrinsèque sur la reconstruction des vitesses particulières. En effet, une erreur commise sur les modules de distances impact directement le redshift cosmologiques reconstruit, et donc les vitesses particulières (cf. Fig \ref{fig:vp_sigma_int}). Cette erreur est corrélée avec le redshift, et devient plus importante à haut redshift car $\mu(z)$ y croît plus lentement.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/sigma_int_effect_vp.png}
 	\caption{Illustration de l'erreur commise à $1\sigma$ sur les redshifts cosmologiques reconstruits due à la dispersion intrinsèque.}
@@ -424,7 +454,7 @@ De plus il est déjà possible de quantifier l'effet de la distribution intrins�
 
 La distribution des vitesses particulières ainsi reconstruites est représentée en Fig. \ref{fig:vp_draw}. Les vitesses particulières sont reconstruites avec une erreur moyenne de $18.4$km/s et une dispersion de $596.8$km/s. On observe bien une augmentation de l'erreur commise sur les vitesses particulières reconstruites, et cette augmentation suit l'erreur théorique due à la dispersion intrinsèque. De plus, si on calcule la moyenne des erreurs théoriques due à la dispersion intrinsèque sur l'échantillon complet, on obtient $\sigma_{v_{pec}}(\sigma_{int}) = 592.4$km/s, ce qui est proche de la dispersion observée.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.9\textwidth]{figures/vp_draw.png}
 	\caption{Distribution des vitesses particulières reconstruites directement à partir des SNe tirées à partir du catalogue de galaxies Uchuu. La ligne en pointillés noire (graphiques de gauche) représente la ligne de base $v_{pec, SN} = v_{pec, Uchuu}$, les lignes oranges (en bas à gauche) représente l'erreur théorique à $1\sigma$ due à la dispersion intrinsèque, et les lignes rouges pleine et en pointillés (en bas à droite) représentent respectivement la moyenne et la déviation standard des erreurs. Les barres d'erreurs en vert (en bas à gauche) montre l'évolution de la moyenne et de la dispersion des erreurs en fonction du redshift.}
@@ -433,17 +463,17 @@ La distribution des vitesses particulières ainsi reconstruites est représenté
 
 Une fois les paramètres des SNe tirés, les observations photométriques et spectroscopiques sont générées sur la base du modèle \saltd et des logs d'observation de ZTF. De telles courbes de lumière et spectres sont représentés en Figure \ref{fig:obs}.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
-	\begin{subfigure}[c]{0.45\textwidth}
-%		\includegraphics[width=\textwidth]{figures/lc.png}
+	\begin{subfigure}[c]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/276_lc_truth.png}
 		\caption{Courbes de lumière générées à partir des paramètres tirés. Les couleurs représentent les différents filtres utilisés.}
 		\label{fig:lc}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[c]{0.5\textwidth}
+	\begin{subfigure}[c]{0.45\textwidth}
 		\centering
-%		\includegraphics[width=\textwidth]{figures/spectra.png}
+		\includegraphics[width=\textwidth]{figures/gen_spec.png}
 		\caption{Spectre généré à partir des paramètres tirés}
 		\label{fig:spectra}
 	\end{subfigure}
@@ -476,7 +506,7 @@ Le filtrage effectué par \pets permet d'enlever les SNe qui sont mal échantill
  
 La première représente le cas d'une SNe bien échantillonnée~: le minimum de la fonction $\chi^2(t_{max}$ est unique, bien défini, et présente une incertitude de $0.012$ jours, ce qui est extrêmement faible. Cette précision est telle que les intervalles à $1\sigma$ et $3\sigma$ sont indiscernables du trait plein du $t_{max}$ déterminé, qui correspond parfaitement avec celui du fit initial. Les paramètres $x_1$ et $c$ ont également des valeurs raisonnables, la SN est donc conservée.
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{subfigure}{0.45\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/276_lc_truth.png}
@@ -492,9 +522,9 @@ La première représente le cas d'une SNe bien échantillonnée~: le minimum de 
 	\label{fig:pets_good}
 \end{figure}
  
-Le second cas de figure (Figure \ref{fig:pets_bad}), est celui d'une SNe mal échantillonnée~: le minimum de la fonction $\chi^2(t_{max}$ est toujours unique, mais mal défini car le $\chi^2$ varie peu autour du minimum, ce qui a pour conséquence une incertitude de $^{+0.764}_{-0.828}$ jours et une asymétrie du $\chi^2$. Cette aplatissement du $\chi^2$ autour du minimum a pour conséquence majeure d'entraîner de fortes variations des fonctions $x_1(t_{max})$ et $c(t_{max})$, notamment vers $t_{max}=58 810$ où les deux paramètres sortent des plages acceptables. Ce comportement est à éviter pour l'entraînement de \nacl, car l'ajustement des paramètres du modèle conjointement à ceux des SNe a plus de chance de se bloquer et d'obtenir des paramètres de standardisations anormalement élevés. Cette SN est donc rejetée.
+Le second cas de figure (Figure \ref{fig:pets_bad}), est celui d'une SNe mal échantillonnée~: le minimum de la fonction $\chi^2(t_{max}$ est toujours unique, mais mal défini car le $\chi^2$ varie peu autour du minimum, ce qui a pour conséquence une incertitude de $^{+0.764}_{-0.828}$ jours et une asymétrie du $\chi^2$. Cette aplatissement du $\chi^2$ autour du minimum a pour conséquence majeure d'entraîner de fortes variations des fonctions $x_1(t_{max})$ et $c(t_{max})$, notamment vers $t_{max}=58 810$ où les deux paramètres sortent des plages acceptables. Ce comportement est à éviter pour l'entraînement de \nacl, car l'ajustement des paramètres du modèle conjointement à ceux des SNe a plus de chance de se bloquer et d'obtenir des paramètres de standardisation anormalement élevés. Cette SN est donc rejetée.
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{subfigure}{0.45\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/10_lc_truth.png}
@@ -513,7 +543,7 @@ Le second cas de figure (Figure \ref{fig:pets_bad}), est celui d'une SNe mal éc
 Le troisième cas de figure concerne un cas pathologique, qui a été diagnostiqué lors de ce stage et est détaillé en Section \ref{sec:min_mult}. En effet, la SNe ne présente des points de photométrie que sur la fin de sa décroissance, ce qui a pour effet de focaliser la première estimation de $t_{max}$ autour de ces points. \pets ignorant alors les minimums aux extrémités de l'intervalle de $t_{max}$ utilisés, cette SNe ne présentait qu'un minimum bien défini, avec une incertitude faible de $\pm 0.111$ jours, et était donc satisfaisante. Ce comportement a donc été modifié pour prendre en compte les minimums aux extrémités, et la détection de minimums potentiellement problématiques remontée à $\Delta \chi^2 = 64$ (équivalent à une détection à $8\sigma$) plutôt que $\Delta \chi^2 = 9$ (respectivement $3\sigma$).
 
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{subfigure}{0.45\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/544_lc_truth.png}
@@ -533,7 +563,7 @@ Le troisième cas de figure concerne un cas pathologique, qui a été diagnostiq
 
 La première reconstruction des paramètres de standardisation possible une fois les courbes de lumières simulées et traitées avec \pets est obtenue avec le modèle \saltd. Les résidus sur les paramètres reconstruits sont présentés en Figures \ref{fig:salt_residuals} et \ref{fig:salt_mu}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}{0.45\textwidth}
 		\centering
@@ -566,9 +596,9 @@ La première reconstruction des paramètres de standardisation possible une fois
 	\label{fig:salt_residuals}
 \end{figure}
 
-Sans grande surprise, les paramètres de standardisations sont bien reconstruits puisque seules des SNe bien échantillonnées sont utilisées. On peut toutefois noter le biais qui survient pour les grandes amplitudes (cf Figure \ref{fig:salt_x0}), et les incertitudes étonnamment élevées pour certains stretch (cf Figure \ref{fig:salt_x1}) et couleurs (cf Figure \ref{fig:salt_c}), alors que les résidus des valeurs reconstruites sont faibles. Cela est du en grande partie au fait que le modèle d'erreur a été ajusté à l'aides de simulations après entraînement pour \saltd. Pour la reconstruction des temps de maximum (cf Figure \ref{fig:salt_tmax}), on peut clairement voir la distinction temporelle entre SNLS et ZTF, et il n'est pas surprenant que les résidus de SNLS soient plus importants. En effet, SNLS observe des SNe plus lointaine, donc les flux reçus sont bien plus faibles que ceux de ZTF. Cela a pour effet d'avoir des incertitudes relatives sur les flux plus importantes, et le temps de maximum est moins bien contraint.
+Sans grande surprise, les paramètres de standardisation sont bien reconstruits puisque seules des SNe bien échantillonnées sont utilisées. On peut toutefois noter le biais qui survient pour les grandes amplitudes (cf Figure \ref{fig:salt_x0}), et les incertitudes étonnamment élevées pour certains stretch (cf Figure \ref{fig:salt_x1}) et couleurs (cf Figure \ref{fig:salt_c}), alors que les résidus des valeurs reconstruites sont faibles. Cela est du en grande partie au fait que le modèle d'erreur a été ajusté à l'aides de simulations après entraînement pour \saltd. Pour la reconstruction des temps de maximum (cf Figure \ref{fig:salt_tmax}), on peut clairement voir la distinction temporelle entre SNLS et ZTF, et il n'est pas surprenant que les résidus de SNLS soient plus importants. En effet, SNLS observe des SNe plus lointaine, donc les flux reçus sont bien plus faibles que ceux de ZTF. Cela a pour effet d'avoir des incertitudes relatives sur les flux plus importantes, et le temps de maximum est moins bien contraint.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/salt_mu.png}
     \caption{Résidus des modules de distances $\mu = -2.5\log_{10} x_0 - 0.14 \times x_1 + 3.15 \times  c$ reconstruits par \saltd.}
@@ -583,7 +613,7 @@ Les vitesses particulières obtenues sont représentées en Fig. \ref{fig:vp_sal
 
 Ce biais peut également être causé par une mauvaise estimation des paramètres du modèle par \edris~: un des principal défaut des analyses cosmologiques basées sur les SNe Ia est qu'elles n'imposent pas de contraintes sur la constante de Hubble $H_0$ car elle intervient dans le calcul de la magnitude selon le modèle sous la forme d'un terme additif. Cela signifie qu'une variation du à la calibration des flux ou de la magnitude de référence en bande B $m_B$ peut être à tort interprétée comme une modification de $H_0$. Pour les vitesses particulières, un tel effet se traduirait par un déplacement vertical artificiel des modules de distance, et introduirait donc un biais sur l'ensemble des modules de distance reconstruits par \edris.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{figures/vp_salt.png}
 	\caption{Distribution des vitesses particulières reconstruites avec \edris à partir de \saltd ($v_{pec,SN}$). La ligne en pointillés noire (graphiques de gauche) représente la ligne de base $v_{pec, SN} = v_{pec, Uchuu}$, les lignes oranges (en bas à gauche) représente l'erreur théorique à $1\sigma$ due à la dispersion intrinsèque, et les lignes rouges pleine et en pointillés (en bas à droite) représentent respectivement la moyenne et la déviation standard des erreurs. Les barres d'erreurs en vert (en bas à gauche) montre un biais de la moyenne des erreurs en fonction du redshift, il peut s'agir d'un effet de flux cohérent.}
@@ -596,7 +626,7 @@ En exécutant la même chaîne avec le résultat de \nacl, on obtient les résul
 
 Les résultats de l'entraînement de \nacl sont présentés en Figure \ref{fig:nacl_residuals} pour les paramètres des SNe, en Figure \ref{fig:nacl_models} pour les modèles, et en Figure \ref{fig:nacl_mu} pour les modules de distances.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}{0.45\textwidth}
 		\centering
@@ -631,7 +661,7 @@ Les résultats de l'entraînement de \nacl sont présentés en Figure \ref{fig:n
 
 Les paramètres reconstruits présentent plusieurs biais, mais qui ne sont pas problématiques. En effet, le biais sur les amplitudes $X_0$ n'apparaît que pour les grandes amplitudes, qui ne concernent que les SNe à haut redshift de SNLS et dont on ne peut pas mesurer la vitesse particulière à cause de la dispersion intrinsèque. Les biais sur le stretch $X_1$ et la couleur $C$, sont principalement dus à la renormalisation des modèles $M_0^{\nacl}(p, \lambda)$ et $M_1^{\nacl}(p,\lambda)$. De même, le biais d'environ $0.6$ jours sur le temps de maximum, est causé par le ré-entraînement de $M_0^{\nacl}(p, \lambda)$.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}{0.45\textwidth}
 		\centering
@@ -652,7 +682,7 @@ Les paramètres reconstruits présentent plusieurs biais, mais qui ne sont pas p
 
 Les biais présents ne gênent en rien la modélisation des courbes de lumière ni des spectres (cf Figure \ref{fig:nacl_lcsp}) et sont purement du au ré-entraînement des modèles. Les incertitudes rapportées ne sont pas non plus aberrantes comparées à l'amplitude des paramètres.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}{0.9\textwidth}
 		\centering
@@ -688,7 +718,7 @@ Les biais présents ne gênent en rien la modélisation des courbes de lumière 
 
 Les modèles ré-entraînés semble diverger et fluctuent anormalement aux bornes de leurs ensembles de définition (cf Figure \ref{fig:nacl_m0}, \ref{fig:nacl_m1}), mais cela n'est pas un problème. En effet, ce sont des zones sur lesquels le modèle \saltd initial étaient défini, mais qui n'était pas contraintes par les données utilisées pour l'entraînement (cf. Figure \ref{fig:nacl_coverage}). Le modèle ajusté n'est donc pas fiable dans ces régions. Ces fortes fluctuations sont toutefois surprenantes, d'une part car la contrainte de régularisation (voir Annexe \ref{anx:nacl}) vise précisément à empêcher ces fluctuations, d'autre part car c'est habituellement la marque d'un sur-entraînement, pour lequel le modèle a trop de paramètres libres et manque de données pour les contraindre. En revanche, les modèles \saltd et \nacl s'accordent dans les régions contraintes par les données.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/nacl_mu.png}
     \caption{Résidus des modules de distances $\mu = -2.5\log_{10} X_0 - 0.14 \times X_1 + 3.15 \times  C$ reconstruits par \nacl. Ils présentent un biais d'environ $-0.2$ mag, qui est causé par le ré-entraînement des modèles, mais n'est pas gênant pour l'analyse cosmologique.}
@@ -698,7 +728,7 @@ Les modules de distances reconstruits par \nacl présentent un biais d'environ $
 
 Les vitesses particulières obtenues à l'aide d'\edris sont représentées en Fig. \ref{fig:vp_nacl}. Les vitesses reconstruites sont en bon accord avec les vitesses injectées, mais présentent un léger biais. L'erreur moyenne n'est que de $265$km.s$^{-1}$ et l'écart type de l'erreur commise est de $686$km.s$^{-1}$, ce qui correspond à une augmentation de la dispersion de 18\% par rapport à l'effet attendu de la dispersion intrinsèque.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{figures/vp_nacl.png}
 	\caption{Distribution des vitesses particulières reconstruites avec \edris à partir de \saltd ($v_{pec,SN}$). La ligne en pointillés noire (graphiques de gauche) représente la ligne de base $v_{pec, SN} = v_{pec, Uchuu}$, les lignes oranges (en bas à gauche) représente l'erreur théorique à $1\sigma$ due à la dispersion intrinsèque, et les lignes rouges pleine et en pointillés (en bas à droite) représentent respectivement la moyenne et la déviation standard des erreurs. Les barres d'erreurs en vert (en bas à gauche) montre un biais de la moyenne des erreurs en fonction du redshift, il peut s'agir d'un effet de sélection ou d'un flux cohérent.}
@@ -719,21 +749,20 @@ J'ai identifié et traité différents problèmes et erreurs au sein du pipeline
 
 Un premier problème est apparu lors de l'utilisation de \pets concerne la caractérisation des SNe pour l'entraînement de \nacl. Certaines SNe ne présentent des points de mesure que sur la croissance ou la fin de la décroissance de leur luminosité pour des raisons observationnelles tel que leur concordance avec le début ou la fin d'une période d'observation. Ces SNe posent alors le problème d'être difficiles à caractériser, bien que parfaitement décrites par \saltd. En particulier, les SNe qui n'ont des points de photométrie que sur la fin de leur décroissance présentent souvent deux minimums locaux (voir Figure \ref{fig:pets_worst}). Comme \pets utilise le point de données de flux le plus élevé comme point de départ pour ajuster le $t_{max, 0}$ à partir duquel la grille est générée, il peut converger vers un minimum local bien marqué et générer une grille ne couvrant pas le minimum global au vrai temps de maximum.
 
-La solution employée ici a été de remonter la détection des autres minimums de $3\sigma$ à $8\sigma$, et de retirer les SNe ainsi identifiées comme problématiques du lot de données à analyser. Une meilleure solution, implémentée pour les utilisations futures de \pets, est d'augmenter l'intervalle couvert par la grille, mais cela nécessite en contrepartie soit de diminuer sa résolution et donc l'estimation des incertitudes, soit d'utiliser plus de points, ce qui augmente le temps de calcul. A noter que si ces SNe sont bien décrites par \saltd, elles ne sont pas intéressantes pour entraîner \nacl puisqu'elles ne comportent que peu de point de données et ne couvrent qu'une faible fraction des phases. Elles pourraient être fittées après entraînement afin de gagner en statistiques, mais le gain restera minime puisqu'elles demeurent assez rares (environ ~1\% des SNe respectant par ailleurs les autres critères de \pets).
+La solution employée ici a été de remonter la détection des autres minimums de $3\sigma$ à $8\sigma$, et de retirer les SNe ainsi identifiées comme problématiques du lot de données à analyser. Une meilleure solution, implémentée pour les utilisations futures de \pets, est d'augmenter l'intervalle couvert par la grille, mais cela nécessite en contrepartie soit de diminuer sa résolution et donc l'estimation des incertitudes, soit d'utiliser plus de points, ce qui augmente le temps de calcul. A noter que si ces SNe sont bien décrites par \saltd, elles ne sont pas intéressantes pour entraîner \nacl puisqu'elles ne comportent que peu de points de données et ne couvrent qu'une faible fraction des phases. Elles pourraient être fittées après entraînement afin de gagner en statistique, mais le gain restera minime puisqu'elles demeurent assez rares (environ ~1\% des SNe respectant par ailleurs les autres critères de \pets).
 
 De plus c'est un problème qui est particulièrement présent dans mes simulations, mais devrait être rare lors de l'utilisation de données réelles. En effet, puisque seules des SNe Ia sont générées, elles sont reconstruites en partant du principe que ce sont des SNe Ia. Sur des données réelles, rien ne garantit qu'un événement transitoire dont on a observé uniquement la décroissance soit une SNe Ia. Il pourrait s'agir d'une SNe Ib, Ic, II, ou d'un autre type d'événement cataclysmique. Dans ce cas, l'événement ne sera pas classé avec certitude comme SN Ia, et ne passera pas donc par \pets.
- 
+
+\subsubsection{Régularisation et contraintes dans \nacl}
+
+Un autre problème identifié dans \nacl concerne les coefficients de régularisation $\mu_{reg}$ et de contraintes $\mu_{cons}$. Les premiers tests effectués utilisaient $\mu_{reg} = 1$ et $\mu_{cons} = 10^{-10}$, mais ces valeurs étaient trop faibles et ne permettaient pas d'imposer aux modèles les contraintes et la régularisation voulus. Une des conséquences majeures étaient une mauvaise convergence, et une surestimation des incertitudes sur les paramètres reconstruits.
+Il s'est avéré que prendre des valeurs $\mu_{reg} = 10^2$ et $\mu_{cons} = 10^6$ donnent une bien meilleure convergence, et ne surestiment plus les incertitudes.
 
 \subsubsection{Domaine de définition des modèles}
 
 Un deuxième problème qui est survenu vient du domaine de définition des modèles dans \nacl. Initialement, les modèles couvraient l'intervalle $[-20; 50]$ en phase et $[2000; 9000]$ Ångströms en longueur d'onde. Or, pour le calcul des flux des points de photométrie, il arrive que le support de la transmission du filtre sorte du domaine de définition en longueur d'onde des modèles. Cela revient à couper les filtres et fausse le flux calculé, ce qui en retour biaise la reconstruction des paramètres de standardisation puisque le modèle s'adapte pour compenser cette coupure.
 
 La solution a été simplement d'augmenter le domaine de définition des modèles, de 2 000 à 11 000 Ångströms. Aux redshifts considérés, les filtres ne sortent plus du modèle et l'évaluation redevient correcte.
-
-\subsubsection{Régularisation et contraintes dans \nacl}
-
-Un autre problème identifié dans \nacl concerne les coefficients de régularisation $\mu_{reg}$ et de contraintes $\mu_{cons}$. Les premiers tests effectués utilisaient $\mu_{reg} = 1$ et $\mu_{cons} = 10^{-10}$, mais ces valeurs étaient trop faibles et ne permettaient pas d'imposer aux modèles les contraintes et la régularisation voulus. Une des conséquences majeures étaient une mauvaise convergence, et une surestimation des incertitudes sur les paramètres reconstruits.
-Il s'est avéré que prendre des valeurs $\mu_{reg} = 100$ et $\mu_{cons} = 10^6$ donnent une bien meilleure convergence, et ne surestiment plus les incertitudes.
 
 \subsubsection{Quality cuts pour \edris}
 \label{sec:qc_edris}
@@ -747,7 +776,7 @@ Cela a aussi conduit à appliquer des quality cuts semblables à ceux d'Union 3 
 
 J'ai évoqué comme conséquences des problèmes précédents une mauvaise convergence des modules \nacl ou \edris. Dans les faits, cette mauvaise convergence est caractérisée par plusieurs symptômes, le plus problématique concernant la hessienne du problème $\mcl H$.
 
-Comme il serait trop coûteux d'estimer les incertitudes tout au long de l'optimisation, la solution retenue pour le pipeline \lemaitre est d'utiliser la borne de Cramer-Rao comme estimateur de la covariance. À un coefficient multiplicatif près dépendant de la formulation exacte du problème, la covariance est obtenue en inversant la matrice d'information de Fisher, qui est ici égale la hessienne 
+Comme il serait trop coûteux d'estimer les incertitudes tout au long de l'optimisation, la solution retenue pour le pipeline \lemaitre est d'utiliser la borne de Cramer-Rao comme estimateur de la covariance. À un coefficient multiplicatif près dépendant de la formulation exacte du problème, la covariance est obtenue en inversant la matrice d'information de Fisher. L'information de Fisher étant dans le cas d'une bonne convergence égale à la Hessienne du problème, on obtient
 \begin{equation}
 	Cov = \mcl I^{-1} = \mcl H^{-1}
 \end{equation}
@@ -762,7 +791,7 @@ Dans le cas de \nacl, cela a mis en lumière la nécessité d'avoir une bonne co
 
 \subsubsection{Dégénérescence entre $\beta$ et $\sigma_{int}$} 
 
-Il existe une dégénérescence entre le coefficient $\beta$ de la formule de Tripp et le paramètre de dispersion intrinsèque $\sigma_{int}$ dans \edris, biais qui est particulièrement marqué lorsque l'incertitude sur la couleur $\sigma_c$ est élevée. Ce problème était déjà connu, mais a été confirmé sur les simulations produites lors de ce stage lorsque la reconstruction est effectuée avec \saltd. Ce n'est pas le cas pour la reconstruction avec \nacl car les erreurs sont sous-estimées pour une raison encore inconnue, mais ce problème pourrait également survenir à l'avenir. La solution retenue est alors de fixer la dispersion intrinsèque à sa valeur utilisée pour les simulations, $\sigma_{int} = 0.1$, puisqu'il s'agit de la dispersion observée expérimentalement.
+Il existe une dégénérescence entre le coefficient $\beta$ de la formule de Tripp (eq \ref{eq:tripp}) et le paramètre de dispersion intrinsèque $\sigma_{int}$ dans \edris, biais qui est particulièrement marqué lorsque l'incertitude sur la couleur $\sigma_c$ est élevée. Ce problème était déjà connu, mais a été confirmé sur les simulations produites lors de ce stage lorsque la reconstruction est effectuée avec \saltd. Ce n'est pas le cas pour la reconstruction avec \nacl car les erreurs sont sous-estimées pour une raison encore inconnue, mais ce problème pourrait également survenir à l'avenir. La solution retenue est alors de fixer la dispersion intrinsèque à sa valeur utilisée pour les simulations, $\sigma_{int} = 0.1$, puisqu'il s'agit de la dispersion observée expérimentalement.
 
 \subsubsection{Condition d'arrêt du gradient conjugué dans \edris}
 
@@ -777,7 +806,7 @@ Ce problème demeure à ce jour non résolu d'une part car son effet, s'il est b
 
 
 \chapter{Travail futur}
-\consignes{prolongements possibles du travail de stage : exposé de ce qu’il reste éventuellement à faire pour que les résultats soient complètement obtenus, et de la façon dont le travail pourra être poursuivi par l’entreprise dans le futur}
+
 
 \section{Finalisation du travail effectué lors du stage}
 
@@ -793,17 +822,16 @@ L'intégration des modules du pipeline \lemaitre a eu lieu progressivement tout 
 
 
 \chapter{Bilan personnel}
-\consignes{bilan des principaux apprentissages professionnels et leur mise en perspective pour le futur professionnel}
 
-Au cours de ce stage, j'ai été amené à réaliser un travail de recherche à plein temps au sein d'une équipe. Cette expérience était plutôt nouvelle, car si j'avais déjà effectué un stage de recherche au cours de ma césure à l'Oskar Klein Center, à Stockholm, j'avais moins de contacts et contraintes avec une équipe travaillant sur un sujet commun. Il s'agissait d'estimer le gain sur la localisation de sources d'ondes gravitationnelles à l'aide du champ de densité des galaxies, et constituait également une analyse impliquant plusieurs traceurs. J'ai du pour cela utiliser des packages python déjà développés tels que \textsc{bilby}\footnote{\href{https://lscsoft.docs.ligo.org/bilby/index.html}{https://lscsoft.docs.ligo.org/bilby/index.htm}} et les modifier pour mon utilisation, mais mes développements étaient assez distants des équipes de recherches à l'origine de ces packages. Lors du présent stage, j'ai était en revanche complètement impliqué dans le développement du pipeline \lemaitre. Mes tâches m'ont amené à discuter avec les chercheurs et doctorants travaillant sur toutes les étapes de l'analyse cosmologique, et à devoir comprendre le fonctionnement de chaque modules pour les utiliser correctement. Cette dynamique était donc très différente de celle de mon stage de césure.
 
-Ce stage a également été ma première occasion d'assister à une conférence, puisque j'ai eu la chance d'assister au meeting DESI 2024 qui a eu lieu début juillet à Marseille. Cette expérience a été très enrichissante car j'ai pu discuter avec des chercheurs du monde entier travaillant sur des problématiques diverses liées aux données DESI, et découvrir leurs travaux. Cela m'a aussi permis de rencontrer physiquement certains chercheurs qui travaillait également sur les analyses jointes entre DESI et ZTF, et avec qui j'avais pu échanger par messages. Lors de ce meeting, j'ai également pu présenter mon travail lors des sessions \textit{Spotlight Talks}, qui consistaient en une rapide succession de présentations par des doctorants, stagiaires ou post-doctorants, d'une minute chacune avec une unique slide comme support visuelle. Cet exercice étaient particulièrement instructif puisqu'il a nécessité de sélectionner les informations clés de mon travail et de les synthétiser.
+Au cours de ce stage, j'ai été amené à réaliser un travail de recherche à plein temps au sein d'une équipe. Cette expérience était plutôt nouvelle, car si j'avais déjà effectué un stage de recherche au cours de ma césure à l'Oskar Klein Center, à Stockholm, j'avais moins de contacts et contraintes avec une équipe travaillant sur un sujet commun. Il s'agissait d'estimer le gain sur la localisation de sources d'ondes gravitationnelles à l'aide du champ de densité des galaxies, et constituait également une analyse impliquant plusieurs traceurs. J'ai du pour cela utiliser des packages python déjà développés tels que \textsc{bilby}\footnote{\href{https://lscsoft.docs.ligo.org/bilby/index.html}{https://lscsoft.docs.ligo.org/bilby/index.htm}} et les modifier pour mon utilisation, mais mes développements étaient assez distants des équipes de recherche à l'origine de ces packages. Lors du présent stage, j'ai était en revanche complètement impliqué dans le développement du pipeline \lemaitre. Mes tâches m'ont amené à discuter avec les chercheurs et doctorants travaillant sur toutes les étapes de l'analyse cosmologique, et à devoir comprendre le fonctionnement de chaque module pour les utiliser correctement. Cette dynamique était donc très différente de celle de mon stage de césure.
+
+Ce stage a également été ma première occasion d'assister à une conférence, puisque j'ai eu la chance d'assister au meeting DESI 2024 qui a eu lieu début juillet à Marseille. Cette expérience a été très enrichissante car j'ai pu discuter avec des chercheurs du monde entier travaillant sur des problématiques diverses liées aux données DESI, et découvrir leurs travaux. Cela m'a aussi permis de rencontrer physiquement certains chercheurs qui travaillaient également sur les analyses jointes entre DESI et ZTF, et avec qui j'avais pu échanger par messages. Lors de ce meeting, j'ai également pu présenter mon travail lors des sessions \textit{Spotlight Talks}, qui consistaient en une rapide succession de présentations par des doctorants, stagiaires ou post-doctorants, d'une minute chacune avec une unique slide comme support visuel. Cet exercice étaient particulièrement instructif puisqu'il a nécessité de sélectionner les informations clés de mon travail et de les synthétiser.
 
 Je me sens bien plus confiant pour débuter ma thèse à l'issu de ce stage qu'avant. Je pense qu'il m'a permis de développer des compétences de communication et d'échange au sein d'une équipe comme des techniques de programmation et d'analyse, ce qui est essentiel à tout travail de recherche moderne.
 
 
 \chapter{Enjeux éthiques}
-\consignes{prise de recul sur les enjeux d’ordre éthique}
 
 \section{Éthique de la recherche}
 
@@ -822,8 +850,6 @@ Sorbonne Université a mis en place une cellule d'écoute et d'aide pour lutter 
 L'impact environnemental de la recherche fondamental est non négligeable. Si on peut pointer du doigt les accélérateurs, télescopes et supercalculateurs nécessaires à l'avancée de la science, il ne s'agit pas du point le plus critique pour la réduction des émissions de gaz à effet de serre et de consommation d'énergie. En effet, lors du meeting DESI 2024, une présentation lors d'une session plénière a été consacrée à l'étude de l'impact environnemental de la collaboration. Et loin devant l'utilisation du NERSC pour les simulations et analyses, l'activité la plus polluante était les meetings internationaux eux-mêmes puisqu'ils engendraient de nombreux déplacements, généralement en avion. Cela engendre également un coût que tous les chercheurs ne peuvent pas couvrir, et contraint fortement les emplois du temps.
 
 Ces problèmes n'ont pas encore résolu à une échelle globale mais des solutions commencent à être proposés. Par exemple le \textit{International Centre for Radio Astronomy Research} a organisé le \textit{2024 Astronomical Society of Australia Annual Scientific Meeting} selon une politique \textit{online-first}, sur la base de l'article \cite{sarabipour_changing_2021}. Cela signifie que le principal canal de communication n'est pas le présentiel, mais en ligne. Les présentations sont également retransmises, et les chercheurs sont invités à participer à des \textit{local Hub Day}, des rencontres entre scientifiques d'une même région ne nécessitant que peu de transports. Cela réduit donc les émissions polluantes d'une part, les coûts d'autre part, et permet également une meilleure inclusion des personnes handicapées ou ne pouvant se déplacer internationalement pour diverses raisons. Cette initiative est particulièrement intéressante, puisqu'elle essaye de concilier les besoins des rencontres internationales de chercheurs aux problèmes environnementaux et sociaux à l'aide des outils en ligne perfectionnés pendant la pandémie de COVID-19.
-
-
 
 \appendix
 \chapter{Annexes}
@@ -937,7 +963,7 @@ Ce choix vient du fait qu'un entraînement sur tous les paramètres serait trop 
 \label{anx:edris}
 
 Le module \edris réalise un diagramme de Hubble en ajustant un modèle cosmologique aux modules de distances de SNe en prenant en compte le biais de Malmquist (cf. Figure \ref{fig:malmquist}) et en ré-estimant les paramètres de standardisation, de manière à obtenir directement la matrice de covariance complète. Contrairement aux analyses précédemment employées qui quantifient l'effet du biais de Malmquist par des simulations et propagent ensuite une correction, l'objectif est d'inclure un terme correctif directement dans le modèle. Cette solution est bien plus puissante, car elle s'affranchit de biais potentiels des simulations elles-mêmes et nécessite un temps de calcul bien plus faible.
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{figures/Malmquist.png}
 	\caption{Illustration d'un biais de Malmquist sur une distribution simulée. Un télescope présentant une magnitude limite à 17.5 n'observera pas les SNe marqués en orange, et une analyse ne prenant pas cette effet en compte reconstruira une cosmologie biaisée négativement par rapport à la cosmologie sous-jacente.}
@@ -1017,7 +1043,7 @@ Finalement, la log-vraisemblance s'écrit
 \end{equation}
 Cette vraisemblance est alors explorée avec une Chaîne de Markov Monte Carlo, et produit des résultats comme ceux de \cite{stahl_peculiar-velocity_2021} représentés en Fig. \ref{fig:stahl}, qui sont en très bon accord avec d'autres analyses $f\sigma_8$ et ont une meilleure précision que les analyses $f\sigma_8$ utilisant seulement les RSD.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/Stahl_fig_6.png}
     \caption{Paramètre $S_8 = f \sigma_8/(0.3)^{0.55}$ reconstruit par diverses méthodes. Les lignes noires représentent la valeur et l'incertitude de la valeur reconstruite par \cite{stahl_peculiar-velocity_2021}. Crédit : B. Stahl}
