@@ -8,8 +8,9 @@
 \usetikzlibrary{angles, quotes}
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.pathreplacing, shapes.misc, arrows.meta}
+\usetikzlibrary{shadows}
 \usepackage{pgfplots}
-
+\usepackage{pgf-pie}
 
 \usepackage[T1]{fontenc}
 \UseRawInputEncoding
@@ -18,6 +19,8 @@
 \usepackage{latexsym,xcolor,multicol,booktabs,calligra}
 \usepackage{listings,stackengine}
 \usepackage{subcaption}
+\usepackage{caption}
+\captionsetup[figure]{font=footnotesize}
 \usepackage{tabularx}
 
 \usepackage{QUT}
@@ -71,31 +74,104 @@
 %% 3 slides sur Lambda CDM, Energie noire, SNe Ia. Croissance des structures = derniers gros secteur à explorer
 
 \begin{frame}{Cosmologie}
-	Le modèle cosmologique actuel est $\Lambda$CDM, description remarquable
-	Deux composantes, matière noire et énergie noire
-
-	Domaine en plein essor : 3 projets à 1M\$ : Euclid, DESI, LSST... 	
+\begin{columns}
+\begin{column}{0.5\textwidth}
+	\begin{itemize}
+		\item 	Le modèle cosmologique le plus simple est $\Lambda$CDM
+		\item Décrit remarquablement bien les données
+		\item La cosmologie est un domaine en plein essor~: Euclid, DESI, LSST...
+	\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tikzpicture}
+		\pie[explode=0.05,
+			text=pin,
+			radius=2,
+			style=drop shadow,
+			color={blue!80, black!60, yellow!30}]
+			{68.3/{\small Énergie Noire}, 26.5/{\small Matière Noire}, 4.9/{\small Matière ordinaire}}
+	\end{tikzpicture}
+	}
+	\caption{Composition de l'Univers tel que décrit par $\Lambda$CDM}
+\end{figure}
+\end{column}
+	
+\end{columns}
 \end{frame}
 
 \begin{frame}{Matière noire et galaxies}
-	Matière noire -> vitesses de rotation des galaxies et distribution de matière, structures.
+	La matière noire est nécessaire pour expliquer la vitesses de rotation des galaxies et la distribution de matière dans l'univers
+\begin{columns}
+\begin{column}{0.5\textwidth}
 	\begin{figure}
 		\centering
-		\includegraphics[height=0.5\textheight]{figures/FoG.png}
-		\caption{Fonction de corrélation 2D des galaxies du relevé DR11 CMASS\\ \credits{SDSS Collaboration, Samushia et al. (2013)}}
+		\includegraphics[width=.9\textwidth]{figures/Rotation_curve_galaxy.png}
+		\caption{Courbe de rotation de la galaxie spirale Messier 33 \\ \credits{Wikipedia}}
 	\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+	\begin{figure}
+		\centering
+		\includegraphics[width=.8\textwidth]{figures/sdss_pie2.jpg}
+		\caption{Distribution des galaxies observées par le Sloan Digital Sky Survey \\ \credits{M. Blanton and the Sloan Digital Sky Survey}}
+	\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Energie noire et SNe Ia}
-	La découverte de l'accélération de l'expansion de l'univers a été réalisée avec des SNeIa par S. Perlmutter, B. Schmidt et A. Riess
+\begin{columns}
+\begin{column}{0.6\textwidth}
+	\begin{itemize}
+\item L'énergie noire a été introduite pour expliquer l'accélération de l'expansion de l'univers.
+\item	Cette accélération a été découverte à l'aide de SNeIa par S. Perlmutter, B. Schmidt et A. Riess
+\item Magnitudes décrites par la formule de Tripp
+\begin{equation}
+	M^*_{b,SN} = M_b - \alpha x_{1,SN} + \beta c_{SN} + n(\sigma_{int})
+\end{equation}
+\end{itemize}
+\end{column}
+\begin{column}{0.4\textwidth}
 	\begin{figure}
 		\centering
-		\includegraphics[height=0.5\textheight]{figures/Perlmutter_Schmidt.png}
+		\includegraphics[height=0.6\textheight]{figures/Perlmutter_Schmidt.png}
 		\caption{Diagramme de Hubble construit par Perlmutter et Schmidt en 2003}
 	\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
-% Photo Telescopes
+\subsection{DESI}
+
+\begin{frame}{Dark Energy Spectroscopic Instrument}
+\begin{columns}
+\begin{column}{.5\textwidth}
+	\begin{itemize}
+		\item Utilise le Mayall Telescope à l'Observatoire de Kitt peak 
+		\item 4m de diamètre pour un champ de 8.0 degrés carré
+		\item 5 000 fibres robotisées
+		\item $\sim 30$ millions de galaxies ciblées
+	\end{itemize}
+	\begin{figure}
+		\includegraphics[height=2cm]{figures/DESI_spec.png}
+		\caption{Exemple de spectre observé par DESI \credits{Wikipedia}}
+	\end{figure}
+\end{column}
+
+\begin{column}{.5\textwidth}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\textwidth]{figures/Artistic_DESI.jpg}
+		\includegraphics[width=0.6\textwidth]{figures/DESI_focal_plane.jpg}
+		\caption{Vue d'artiste du Mayall Telescope avec les données DESI Y1 et plan focal supportant les robots\\ \credits{DESI Collaboration/KPNO/NOIRLab/NSF/AURA/P. Horálek/R. Proctor}}
+	\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
 \subsection{ZTF}
 \begin{frame}{ZTF}
 \begin{columns}
@@ -111,49 +187,38 @@
 \begin{column}{.5\textwidth}
 	\begin{figure}
 		\centering
-		\includegraphics[width=.9\textwidth]{figures/ZTF_dome.jpg}
-		\caption{Telescope P48 utilisé par ZTF \\ \credits{Caltech/Palomar}}
+		\includegraphics[width=.5\textwidth]{figures/ZTF_dome.jpg}
+		\includegraphics[width=.6\textwidth]{figures/ZTF_lightcurves.png}
+		\caption{Telescope P48 utilisé par ZTF et exemples de courbes de lumière de SNe Ia \\ \credits{Caltech/Palomar}}
 	\end{figure}
 \end{column}
 \end{columns}
-
 \end{frame}
 
-\subsection{DESI}
+\subsection{Croissances des structures}
 
-\begin{frame}{Uchuu BGS}
-\begin{columns}
-\begin{column}{.5\textwidth}
-	\begin{itemize}
-		\item Utilise le Mayall Telescope à l'Observatoire de Kitt peak 
-		\item 4m de diamètre pour un champ de 8.0 degrés carré
-		\item 5 000 fibres robotisées
-		\item  
-	\end{itemize}
-\end{column}
-
-\begin{column}{.5\textwidth}
+\begin{frame}{Croissance des structures dans l'Univers}
+	Taux de croissance des structues~: $f(z)$
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.9\textwidth]{figures/Artistic_DESI.jpg}
-		\caption{Vue d'artiste du Mayall Telescope et des données DESI Y1 \\ \credits{DESI Collaboration/KPNO/NOIRLab/NSF/AURA/P. Horálek/R. Proctor}}
+		\includegraphics[height=0.6\textheight]{figures/struct_growth.png}
+		\caption{Formation des structures pour différents modèles\\ \credits{Kauffmann, Colberg, Diaferio, and White}}
 	\end{figure}
-\end{column}
-
-\end{columns}
 \end{frame}
 
-\subsection{Observations}
-
-\begin{frame}{Observations}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.9\textwidth, trim = {3cm, 5cm, 2cm, 5cm}, clip]{figures/ZTF_on_DESI.png}
-	\caption{Événements réels observés par ZTF et footprint DESI}
-\end{figure}
+\begin{frame}{Redshift Space Distortion et clustering des galaxies}
+	Les vitesses particulières des galaxies sont proportionnelles à $f(z) \sigma_8(z)$ et décalent le redshift observé
+	\begin{equation}
+		z_{obs} = (1+z_{cosmo}) (1 + z_{pec}) = (1+z_{cosmo}) \qty(1 + \frac{1}{c} \vb v_{pec} \cdot \vu r)
+	\end{equation}
+	\begin{figure}
+		\centering
+		\includegraphics[height=0.5\textheight]{figures/FoG.png}
+		\caption{Fonction de corrélation 2D des galaxies du relevé DR11 CMASS\\ \credits{SDSS Collaboration, Samushia et al. (2013)}}
+	\end{figure}
 \end{frame}
-
-\begin{frame}{Contexte}
+		
+\begin{frame}{Analyse jointe entre galaxies et SNe Ia}
 \begin{figure}
 	\centering
 	\includegraphics[height=0.7\textheight]{figures/fs8.png}
@@ -163,9 +228,10 @@
 
 \begin{frame}{Objectifs du stage}
 \begin{enumerate}
+\itemsep2em 
 \item Générer des supernovae incluant des effets de vitesses particulières
 \item Permettre un test du pipeline \lemaitre
-\item vp pour fs8
+\item Reconstruire les vitesses particulières des SNe Ia en vu d'une analyse $f\sigma_8$
 \end{enumerate}
 \end{frame}
 
@@ -175,6 +241,14 @@
 % Suivre la reconstruction d'une SNe
 
 \subsection{Générations des SNe}
+
+\begin{frame}{Observations}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth, trim = {3cm, 5cm, 2cm, 5cm}, clip]{figures/ZTF_on_DESI.png}
+	\caption{Événements réels observés par ZTF et footprint DESI}
+\end{figure}
+\end{frame}
 
 \begin{frame}{Générations des SNe}
 Skysurvey
