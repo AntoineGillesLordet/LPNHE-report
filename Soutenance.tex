@@ -206,6 +206,14 @@
 	\end{figure}
 \end{frame}
 
+\begin{frame}{Observations}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth, trim = {3cm, 5cm, 2cm, 5cm}, clip]{figures/ZTF_on_DESI.png}
+	\caption{SNe Ia issues de la DR1 de ZTF et footprint DESI}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Redshift Space Distortion et clustering des galaxies}
 	Les vitesses particulières des galaxies sont proportionnelles à $f(z) \sigma_8(z)$ et décalent le redshift observé
 	\begin{equation}
@@ -226,6 +234,8 @@
 \end{figure}
 \end{frame}
 
+
+
 \begin{frame}{Objectifs du stage}
 \begin{enumerate}
 \itemsep2em 
@@ -242,27 +252,51 @@
 
 \subsection{Générations des SNe}
 
-\begin{frame}{Observations}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.9\textwidth, trim = {3cm, 5cm, 2cm, 5cm}, clip]{figures/ZTF_on_DESI.png}
-	\caption{Événements réels observés par ZTF et footprint DESI}
-\end{figure}
-\end{frame}
-
 \begin{frame}{Générations des SNe}
-Skysurvey
-position selon Uchuu
+\begin{columns}
+\begin{column}{.5\textwidth}
+Paramètres des SNe selon les distributions usuelles
 \begin{figure}
 	\centering
-	\includegraphics[height=2cm, trim={2cm 2cm 2cm 2cm}, clip]{figures/Uchuu.png}
-	\caption{Simulation Uchuu}
+	\alt<2>{
+	\includegraphics[height=4cm]{figures/SNe_sampling_pt.png}}
+	{\includegraphics[height=4cm]{figures/SNe_sampling.png}}
+	\caption{Distribution des paramètres des SNe}
 \end{figure}
-paramètres x0 x1 c tmax
+\end{column}
+
+\begin{column}{.5\textwidth}
+Position $(ra, dec, z)$ uniformément dans Uchuu BGS ($z < 0.06$)
+\begin{figure}
+	\centering
+	\includegraphics[height=4cm, trim={3cm 5cm 55mm 6cm}, clip]{figures/Uchuu.png}
+	\caption{Distributions des galaxies du Uchuu BGS}
+\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Courbes de lumière et spectres}
-	pictures
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{figure}
+	\centering
+	\alt<2-3>{
+	\includegraphics[width=.9\textwidth]{figures/26_lc_pt.png}}
+	{\includegraphics[width=.9\textwidth]{figures/26_lc.png}}
+	\caption{Courbes de lumière de la SNe tirée}
+\end{figure}
+\end{column}
+
+\begin{column}{.5\textwidth}
+\begin{figure}
+	\centering
+	\invisible<1-2>{
+	\includegraphics[width=.9\textwidth]{figures/26_spec.png}
+	\caption{Spectre de la SNe tirée}}
+\end{figure}
+\end{column}
+\end{columns}	
 \end{frame}
 
 \subsection{Reconstruction des paramètres de standardisations}
@@ -290,8 +324,20 @@ Interpolation pour $z(\mu)$, puis $v_{pec} = c(z_{obs} - z(\mu))$
 \subsection[Contribution dans \textsc{Lemaître}]{Exemple de contribution dans la chaîne~: Réglages de hyperparamètres dans NaCl}
 
 \begin{frame}{Réglages de hyperparamètres dans NaCl}
-Contraintes et régularisations
- 
+\only<1>{
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/mu_reg_M0.png}
+	\includegraphics[width=\textwidth]{figures/mu_reg_M1.png}
+	\caption{Effet de $\mu_{reg}$ sur la reconstruction des modèles}
+\end{figure}}
+\only<2>{
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/mu_reg_M0_diff.png}
+	\includegraphics[width=\textwidth]{figures/mu_reg_M1_diff.png}
+	\caption{Effet de $\mu_{reg}$ sur la reconstruction des modèles}
+\end{figure}}
 \end{frame}
 
 \subsection{Vitesses particulières obtenues}
@@ -305,11 +351,19 @@ Contraintes et régularisations
 \section{Conclusion}
 
 \begin{frame}{Conclusion}
-
+\begin{enumerate}
+\item Possibilité de générer des SNe Ia possédant des vitesses particulières, actuellement en cours d'intégration à \texttt{skysurvey}.
+\item Le pipeline \lemaitre va produire ses premiers prochainement (Data Challenge 1).
+\item Les vitesses particulières sont reconstruites
+\end{enumerate}
 \end{frame}
 
-\begin{frame}{Persepectives}
-
+\begin{frame}{Perspectives futures}
+\begin{itemize}
+\item Analyse $f\sigma_8$ utilisant un méthode de comparaison densité-vitesses
+\item La génération peut utiliser n'importe quelle catalogue de galaxies, réel comme simulé
+\item Permet l'étude des effets de potentielles erreurs systématiques sur les vitesses particulières
+\end{itemize}
 \end{frame}
 
 
