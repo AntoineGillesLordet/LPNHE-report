@@ -296,19 +296,105 @@ Position $(ra, dec, z)$ uniformément dans Uchuu BGS ($z < 0.06$)
 	\caption{Spectre de la SNe tirée}}
 \end{figure}
 \end{column}
-\end{columns}	
+\end{columns}
 \end{frame}
+
+\subsection{Sélection par \texttt{PETS}}
+
+\begin{frame}{Filtrage}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/26_pets_old.png}
+	\caption{Variation des paramètres en fonction de $t_{max}$ utilisée par \texttt{PETS}}
+\end{figure}
+\end{column}
+
+\begin{column}{.5\textwidth}
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/26_lc_pets.png}
+	\caption{Courbes de lumière obtenues par \texttt{PETS}}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Après correction des cartes de poussières}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/26_pets_new.png}
+	\caption{Variation des paramètres en fonction de $t_{max}$ utilisée par \texttt{PETS}}
+\end{figure}
+\end{column}
+
+\begin{column}{.5\textwidth}
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/26_lc_pets_new.png}
+	\caption{Courbes de lumière obtenues par \texttt{PETS}}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
 
 \subsection{Reconstruction des paramètres de standardisations}
 
-\begin{frame}{Paramètres de standardisations}
-Salt/NaCl
+\begin{frame}{\texttt{SALT2.4}}
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=.8\textwidth]{figures/salt_x0.png}
+		\includegraphics[width=.8\textwidth]{figures/salt_c.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=.8\textwidth]{figures/salt_x1.png}
+		\includegraphics[width=.8\textwidth]{figures/salt_tmax.png}
+	\end{subfigure}
+	\caption{Paramètres de standardisations reconstruits par \texttt{SALT2.4}}
+\end{figure}
+\end{frame}
+
+\begin{frame}{\texttt{NaCl}}
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=.8\textwidth]{figures/nacl_x0.png}
+		\includegraphics[width=.8\textwidth]{figures/nacl_c.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=.8\textwidth]{figures/nacl_x1.png}
+		\includegraphics[width=.8\textwidth]{figures/nacl_tmax.png}
+	\end{subfigure}
+	\caption{Paramètres de standardisations reconstruits par \texttt{NaCl}}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Première estimation des distances à partir des paramètres de standardisation}
+En supposant $\alpha=0.14$ et $\beta=3.15$ dans la formule de Tripp, on obtient
+\begin{figure}
+	\centering
+	\includegraphics[width=.48\textwidth]{figures/salt_mu.png}
+	\includegraphics[width=.48\textwidth]{figures/nacl_mu.png}
+	\caption{Modules de distance déterminés en utilisant \texttt{SALT2.4} (gauche) et \texttt{NaCl} (droite)}
+\end{figure}
 \end{frame}
 
 \subsection{Reconstruction des distances et de la cosmologie}
 
 \begin{frame}{Reconstruction des distances et de la cosmologie}
-EDRIS
+\begin{figure}
+	\centering
+	\includegraphics[width=.48\textwidth]{figures/salt_cosmo.png}
+	\includegraphics[width=.48\textwidth]{figures/nacl_cosmo.png}
+	\caption{Modules de distance et cosmologie déterminés par \texttt{EDRIS} pour \texttt{SALT2.4} (gauche) et \texttt{NaCl} (droite)}
+\end{figure}
 \end{frame}
 
 \subsection{Reconstruction des vitesses particulières}
@@ -316,12 +402,31 @@ EDRIS
 % Préciser que c'est grâce à ZTF qu'on peut avoir des vp, car bas redshift et précision
 
 \begin{frame}{Vitesses particulières}
-Interpolation pour $z(\mu)$, puis $v_{pec} = c(z_{obs} - z(\mu))$
+Interpolation de la cosmologie $\mu(z)$ trouvée par \textit{EDRIS} pour obtenir $z(\mu)$, puis récupération des vitesses particulières par
+\begin{equation}
+	v_{pec} = c(z_{obs} - z(\mu))
+\end{equation}
+\begin{figure}
+	\centering
+	\includegraphics[width=.48\textwidth]{figures/z_mu.png}
+	\caption{Inversion de $\mu(z)$ en $z(\mu)$}
+\end{figure}
 \end{frame}
 
 \section{Résultats}
 
-\subsection[Contribution dans \textsc{Lemaître}]{Exemple de contribution dans la chaîne~: Réglages de hyperparamètres dans NaCl}
+\subsection{Vitesses particulières obtenues}
+
+\begin{frame}{NaCl vs Salt2.4}
+\begin{figure}
+	\centering
+	\includegraphics[width=.48\textwidth, trim = {0 0 0 0}, clip]{figures/vp_salt.png}
+	\includegraphics[width=.48\textwidth, trim = {0 0 0 0}, clip]{figures/vp_nacl.png}
+	\caption{Vitesses particulières reconstruites à partir de \texttt{SALT2.4} (gauche) et \texttt{NaCl} (droite)}
+\end{figure}
+\end{frame}
+
+\subsection[Contribution dans \textsc{Lemaître}]{Exemple de contribution dans la chaîne~: Réglages des hyperparamètres dans NaCl}
 
 \begin{frame}{Réglages de hyperparamètres dans NaCl}
 \only<1>{
@@ -340,15 +445,11 @@ Interpolation pour $z(\mu)$, puis $v_{pec} = c(z_{obs} - z(\mu))$
 \end{figure}}
 \end{frame}
 
-\subsection{Vitesses particulières obtenues}
-
-\begin{frame}{NaCl vs Salt2.4}
-
-\end{frame}
-
 % Potentiellement effet extinction galactique si implémentée d'ici-là
 
 \section{Conclusion}
+
+\subsection{Validation des objectifs}
 
 \begin{frame}{Conclusion}
 \begin{enumerate}
@@ -357,6 +458,8 @@ Interpolation pour $z(\mu)$, puis $v_{pec} = c(z_{obs} - z(\mu))$
 \item Les vitesses particulières sont reconstruites
 \end{enumerate}
 \end{frame}
+
+\subsection{Persepctives futures}
 
 \begin{frame}{Perspectives futures}
 \begin{itemize}
