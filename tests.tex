@@ -1,0 +1,119 @@
+\documentclass{beamer}
+
+\usepackage[francais]{babel}
+
+\usepackage{tikz}
+\usepackage[compat=1.1.0]{tikz-feynman}
+\usetikzlibrary{angles, quotes}
+\usetikzlibrary{calc}
+\usetikzlibrary{external}
+\usetikzlibrary{decorations.pathreplacing, shapes.misc}
+\usetikzlibrary{decorations.markings}
+\tikzexternalize[prefix=tikz/]
+\tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+\usepackage{shellesc}
+\usepackage{subcaption}
+
+\usepackage{geometry}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17} 
+\usepgfplotslibrary{fillbetween}
+\usepackage{pgf-pie}
+
+\usepackage{csquotes}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{xspace}
+
+
+\usepackage[T1]{fontenc}
+\UseRawInputEncoding
+\usetheme{Warsaw}
+\usepackage{pgfpages}
+\usepackage{latexsym,xcolor,multicol,booktabs,calligra}
+\usepackage{listings,stackengine}
+\usepackage{subcaption}
+\usepackage{caption}
+\captionsetup[figure]{font=footnotesize}
+\usepackage{tabularx}
+
+\usepackage{QUT}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{dsfont}
+\usepackage{xspace}
+
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{halfgray}{gray}{0.55}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\bfseries\color{deepblue},
+    emphstyle=\ttfamily\color{deepred},
+    stringstyle=\color{deepgreen},
+    numbers=left,
+    numberstyle=\small\color{halfgray},
+    rulesepcolor=\color{red!20!green!20!blue!20},
+    frame=shadowbox,
+}
+
+\def\lemaitre{\textsc{Lemaître}\xspace}
+\def\skysurvey{\texttt{skysurvey}\xspace}
+\def\pets{\texttt{PETS}\xspace}
+\def\nacl{\texttt{NaCl}\xspace}
+\def\edris{\texttt{EDRIS}\xspace}
+\def\saltd{\texttt{SALT2.4}\xspace}
+\newcommand{\credits}[1]{\tiny Credits : #1}
+
+
+\title[Mesure de la croissance des structures avec DESI et ZTF]{Mesure de la croissance des structures avec les galaxies du DESI BGS et les supernovae de type Ia de ZTF : vers une analyse jointe}
+\subtitle{Stage de fin d'études}
+\author[Antoine Gilles--Lordet]{Antoine Gilles--Lordet \\ \footnotesize encadré par Pauline Zarrouk et Nicolas Regnault}
+\date{10 octobre 2024}
+
+\begin{document}
+
+\begin{frame}{Analyse jointe entre galaxies et SNe Ia}
+\begin{figure}
+	\centering
+	\resizebox{!}{0.8\textheight}{
+	\begin{tikzpicture}[-stealth, line width=1.2pt]
+		\node[rectangle, draw, red!50!black] (skys) at (0,0) {\skysurvey};
+
+		\node[rectangle, draw, above left=of skys, color=blue, align=center] (logs) {INPUT \\ Logs d'observation de ZTF};
+		\node[rectangle, draw, above right=of skys, color=blue, align=center] (uchuu) {INPUT \\ Simulation Uchuu};
+
+		\node[rectangle, draw, below=of skys] (pets) {\pets};
+		\node[rectangle, draw, below=of pets] (nacl) {\nacl};
+		\node[rectangle, draw, below=of nacl] (edris) {\edris};
+		\node[rectangle, draw, below=of edris,  align=center, color=green!70!black] (out) {Output \\ - $\mu_{obs}$ \\ - Cosmologie};
+		\node[rectangle, draw, below= of out, color=green!70!black] (vpec) {$v_{pec}$};
+
+		\path (pets) -- (nacl) node[pos=.5] (mid) {};
+		\node[rectangle, draw, right=of mid, align=center, red!50!black] (rec) {Reconstruction \\ avec \saltd \\ (via \skysurvey/\texttt{sncosmo})};
+		\draw[black] (logs) edge (skys) (skys) edge (pets) (pets) edge (nacl) (nacl) edge (edris) (edris) edge (out);
+		\draw[dashed, orange] (skys) edge (pets) (pets) edge (nacl) (nacl) edge (edris) (edris) edge (out);
+		\draw[orange] (uchuu) -- (skys);
+		\draw[orange] (skys) -| (rec);
+		\draw[orange] (rec) |- (edris);
+		\draw[orange] (out) -- (vpec);
+	\end{tikzpicture}
+	}
+\end{figure}
+\end{frame}
+\end{document}
